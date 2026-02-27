@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard - Creative Roots Rwanda">
+    <title>Admin Dashboard | Creative Roots Rwanda</title>
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>" type="image/svg+xml">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* ============================================
+           ADMIN DASHBOARD STYLES
+           ============================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FDF6EC;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2C2C2C;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           SIDEBAR
+           ============================================ */
+
+        .sidebar {
+            background: linear-gradient(180deg, #8B5E3C 0%, #6B4630 100%);
+            color: #FDF6EC;
+            padding: 30px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .sidebar-logo-emoji {
+            font-size: 1.8rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #FDF6EC;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: rgba(212, 163, 115, 0.2);
+            border-color: #D4A373;
+            padding-left: 20px;
+        }
+
+        .sidebar-menu a.active {
+            background-color: #D4A373;
+            color: #2C2C2C;
+            border-color: #D4A373;
+            font-weight: 700;
+        }
+
+        .sidebar-icon {
+            font-size: 1.3rem;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 163, 115, 0.3);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background-color: rgba(255, 107, 107, 0.2);
+            color: #FDF6EC;
+            border: 2px solid #ff6b6b;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+
+        .main-content {
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #E8E0D0;
+        }
+
+        .dashboard-title h1 {
+            font-size: 2rem;
+            color: #8B5E3C;
+            margin-bottom: 0.3rem;
+        }
+
+        .dashboard-title p {
+            color: #8B5E3C;
+            opacity: 0.7;
+            font-size: 0.95rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info p {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .username {
+            font-weight: 700;
+            color: #8B5E3C;
+            font-size: 1rem;
+        }
+
+        /* ============================================
+           TABS
+           ============================================ */
+
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background-color: white;
+            border: 2px solid #E8E0D0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #2C2C2C;
+        }
+
+        .tab-btn:hover {
+            border-color: #D4A373;
+            background-color: rgba(212, 163, 115, 0.05);
+        }
+
+        .tab-btn.active {
+            background-color: #8B5E3C;
+            color: #FDF6EC;
+            border-color: #8B5E3C;
+        }
+
+        /* ============================================
+           TAB CONTENT
+           ============================================ */
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           FORM GROUPS
+           ============================================ */
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2C2C2C;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E8E0D0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8B5E3C;
+            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+
+        .btn-primary {
+            background-color: #8B5E3C;
+            color: #FDF6EC;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #6B4630;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 94, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #8B5E3C;
+            border: 2px solid #8B5E3C;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: #8B5E3C;
+            color: #FDF6EC;
+        }
+
+        .btn-danger {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #ff5252;
+        }
+
+        /* ============================================
+           CARDS
+           ============================================ */
+
+        .card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(139, 94, 60, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid #E8E0D0;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: #8B5E3C;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* ============================================
+           GALLERY ITEMS
+           ============================================ */
+
+        .gallery-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .gallery-preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(139, 94, 60, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-preview-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .delete-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-preview-item:hover .delete-overlay {
+            display: flex;
+        }
+
+        .delete-overlay button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           LIST ITEMS
+           ============================================ */
+
+        .list-item {
+            background-color: #FDF6EC;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #D4A373;
+        }
+
+        .list-item-content {
+            flex: 1;
+        }
+
+        .list-item-title {
+            font-weight: 700;
+            color: #8B5E3C;
+            margin-bottom: 0.3rem;
+        }
+
+        .list-item-desc {
+            font-size: 0.9rem;
+            color: #2C2C2C;
+            opacity: 0.7;
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* ============================================
+           SUCCESS MESSAGE
+           ============================================ */
+
+        .success-alert {
+            display: none;
+            background-color: #D4A373;
+            color: #2C2C2C;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success-alert.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+                position: fixed;
+                left: 0;
+                top: 0;
+                z-index: 999;
+                width: 250px;
+                height: 100vh;
+            }
+
+            .sidebar.active {
+                display: block;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .user-info {
+                text-align: left;
+                width: 100%;
+            }
+
+            .tabs-container {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
+
+            .gallery-preview {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+
+            .list-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .list-item-actions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         DASHBOARD LAYOUT
+         ============================================ -->
+
+    <div class="dashboard-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <span class="sidebar-logo-emoji">🎨</span>
+                <span>Admin</span>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="menu-link active" data-tab="gallery" href="#gallery">
+                        <span class="sidebar-icon">🖼️</span>
+                        <span>Gallery Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="menu-link" data-tab="testimonials" href="#testimonials">
+                        <span class="sidebar-icon">💬</span>
+                        <span>Success Stories</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="menu-link" data-tab="projects" href="#projects">
+                        <span class="sidebar-icon">📋</span>
+                        <span>Projects</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="menu-link" data-tab="content" href="#content">
+                        <span class="sidebar-icon">✏️</span>
+                        <span>Edit Content</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="menu-link" data-tab="settings" href="#settings">
+                        <span class="sidebar-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">
+                    <span class="sidebar-icon">🚪</span>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <h1>Dashboard</h1>
+                    <p>Welcome to Creative Roots Rwanda Admin Portal</p>
+                </div>
+                <div class="user-info">
+                    <p>Logged in as:</p>
+                    <p class="username" id="username">Admin User</p>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-alert" id="successAlert"></div>
+
+            <!-- ============================================
+                 TAB 1: GALLERY MANAGEMENT
+                 ============================================ -->
+            <div class="tab-content active" id="gallery">
+                <div class="card">
+                    <h2 class="card-title">📸 Upload & Manage Gallery</h2>
+                    <p>Add new artwork images to the gallery</p>
+
+                    <div class="form-group">
+                        <label for="imageTitle">Image Title</label>
+                        <input type="text" id="imageTitle" placeholder="e.g., Abstract Dreams">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageDescription">Description</label>
+                        <textarea id="imageDescription" placeholder="Describe the artwork..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageArtist">Artist Name</label>
+                        <input type="text" id="imageArtist" placeholder="Youth Artist">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageUpload">Upload Image</label>
+                        <input type="file" id="imageUpload" accept="image/*">
+                        <small>Note: Images stored in browser storage (demo only)</small>
+                    </div>
+
+                    <button class="btn-primary" onclick="uploadImage()">Upload Image</button>
+                </div>
+
+                <!-- Gallery Preview -->
+                <div class="card">
+                    <h2 class="card-title">Gallery Items</h2>
+                    <div class="gallery-preview" id="galleryPreview">
+                        <p>No images uploaded yet. Click "Upload Image" to add artwork.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 TAB 2: SUCCESS STORIES / TESTIMONIALS
+                 ============================================ -->
+            <div class="tab-content" id="testimonials">
+                <div class="card">
+                    <h2 class="card-title">💬 Add Success Story</h2>
+
+                    <div class="form-group">
+                        <label for="storyName">Student Name</label>
+                        <input type="text" id="storyName" placeholder="e.g., Amara">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="storyAge">Age</label>
+                        <input type="number" id="storyAge" max="100" placeholder="16">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="storyQuote">Success Story / Quote</label>
+                        <textarea id="storyQuote" placeholder="Share their creative journey and impact..."></textarea>
+                    </div>
+
+                    <button class="btn-primary" onclick="addStory()">Add Success Story</button>
+                </div>
+
+                <!-- Stories List -->
+                <div class="card">
+                    <h2 class="card-title">Current Stories</h2>
+                    <div id="storiesList">
+                        <p>No stories added yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 TAB 3: PROJECTS
+                 ============================================ -->
+            <div class="tab-content" id="projects">
+                <div class="card">
+                    <h2 class="card-title">📋 Add/Edit Projects</h2>
+
+                    <div class="form-group">
+                        <label for="projectTitle">Project Title</label>
+                        <input type="text" id="projectTitle" placeholder="e.g., Youth Art Workshops">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectIcon">Icon (Emoji)</label>
+                        <input type="text" id="projectIcon" placeholder="🎨" maxlength="2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectDescription">Description</label>
+                        <textarea id="projectDescription" placeholder="Describe the project..."></textarea>
+                    </div>
+
+                    <button class="btn-primary" onclick="addProject()">Add Project</button>
+                </div>
+
+                <!-- Projects List -->
+                <div class="card">
+                    <h2 class="card-title">Current Projects</h2>
+                    <div id="projectsList">
+                        <p>Projects will appear here.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 TAB 4: EDIT CONTENT
+                 ============================================ -->
+            <div class="tab-content" id="content">
+                <div class="card">
+                    <h2 class="card-title">✏️ Edit Homepage Text</h2>
+
+                    <div class="form-group">
+                        <label for="aboutText">About Section Text</label>
+                        <textarea id="aboutText" placeholder="Edit the about section..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="missionText">Mission Text</label>
+                        <textarea id="missionText" placeholder="Edit the mission..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="heroText">Hero Section Subtitle</label>
+                        <input type="text" id="heroText" placeholder="Edit hero subtitle...">
+                    </div>
+
+                    <button class="btn-primary" onclick="saveContent()">Save Changes</button>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">📊 Impact Numbers</h2>
+
+                    <div class="form-group">
+                        <label for="impactNum1">Youth Empowered</label>
+                        <input type="number" id="impactNum1" placeholder="15" value="15">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="impactNum2">Volunteer Percentage</label>
+                        <input type="number" id="impactNum2" placeholder="100" max="100" value="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="impactNum3">Community Engagements</label>
+                        <input type="number" id="impactNum3" placeholder="50" value="50">
+                    </div>
+
+                    <button class="btn-primary" onclick="saveImpact()">Update Impact Numbers</button>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 TAB 5: SETTINGS
+                 ============================================ -->
+            <div class="tab-content" id="settings">
+                <div class="card">
+                    <h2 class="card-title">⚙️ Admin Settings</h2>
+
+                    <div class="form-group">
+                        <label for="orgName">Organization Name</label>
+                        <input type="text" id="orgName" value="Creative Roots Rwanda" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="founderName">Founder Name</label>
+                        <input type="text" id="founderName" value="NIYOMUKIZA Didier" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="founderEmail">Founder Email</label>
+                        <input type="email" id="founderEmail" value="niyodidie@gmail.com" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="founderPhone">Founder Phone</label>
+                        <input type="tel" id="founderPhone" value="+250 792 505 680" disabled>
+                    </div>
+
+                    <button class="btn-secondary" onclick="showAlert('Settings are read-only in demo mode')">Edit Settings</button>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">🗑️ Danger Zone</h2>
+                    <p style="margin-bottom: 1rem; color: #ff6b6b; font-weight: 600;">Warning: These actions cannot be undone.</p>
+                    <button class="btn-danger" onclick="clearAllData()">Clear All Demo Data</button>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">ℹ️ System Info</h2>
+                    <p><strong>Demo Type:</strong> Frontend-only (localStorage)</p>
+                    <p><strong>Data Storage:</strong> Browser localStorage</p>
+                    <p><strong>Session Duration:</strong> 24 hours</p>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.7;">
+                        ⚠️ This is a demo-level admin dashboard. Real deployment requires secure backend authentication and database.
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============================================
+         ADMIN DASHBOARD JAVASCRIPT
+         ============================================ -->
+    <script src="../js/testimonials.js"></script>
+    <script>
+        // ============================================
+        // ADMIN DASHBOARD LOGIC
+        // ============================================
+
+        const SESSION_KEY = 'creativeRootsAdminSession';
+        const GALLERY_KEY = 'crwAdminGallery';
+        const STORIES_KEY = 'crwAdminStories';
+        const PROJECTS_KEY = 'crwAdminProjects';
+
+        // Check authentication
+        window.addEventListener('DOMContentLoaded', () => {
+            const session = localStorage.getItem(SESSION_KEY);
+            
+            if (!session) {
+                // Not logged in, redirect to login
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const sessionData = JSON.parse(session);
+                document.getElementById('username').textContent = sessionData.username;
+                
+                // Check if session expired
+                if (new Date(sessionData.expiresAt) < new Date()) {
+                    localStorage.removeItem(SESSION_KEY);
+                    window.location.href = 'login.html';
+                    return;
+                }
+            } catch (e) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Initialize dashboard
+            initDashboard();
+        });
+
+        function initDashboard() {
+            setupTabNavigation();
+            loadGallery();
+            loadStories();
+            loadProjects();
+            console.log('Admin Dashboard initialized ✨');
+        }
+
+        // ============================================
+        // TAB NAVIGATION
+        // ============================================
+
+        function setupTabNavigation() {
+            const menuLinks = document.querySelectorAll('.menu-link');
+            
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const tabName = link.getAttribute('data-tab');
+                    showTab(tabName);
+                    
+                    // Update active menu item
+                    menuLinks.forEach(m => m.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+        }
+
+        function showTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            const activeTab = document.getElementById(tabName);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+        }
+
+        // ============================================
+        // SUCCESS MESSAGE
+        // ============================================
+
+        function showSuccess(message) {
+            const alert = document.getElementById('successAlert');
+            alert.textContent = '✓ ' + message;
+            alert.classList.add('show');
+            
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 3000);
+        }
+
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // ============================================
+        // GALLERY MANAGEMENT
+        // ============================================
+
+        function uploadImage() {
+            const title = document.getElementById('imageTitle').value.trim();
+            const description = document.getElementById('imageDescription').value.trim();
+            const artist = document.getElementById('imageArtist').value.trim() || 'Youth Artist';
+            const fileInput = document.getElementById('imageUpload');
+
+            if (!title || !description) {
+                showAlert('Please fill in title and description');
+                return;
+            }
+
+            if (fileInput.files.length === 0) {
+                showAlert('Please select an image');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const gallery = JSON.parse(localStorage.getItem(GALLERY_KEY) || '[]');
+                gallery.push({
+                    id: Date.now(),
+                    title,
+                    description,
+                    artist,
+                    image: e.target.result
+                });
+
+                localStorage.setItem(GALLERY_KEY, JSON.stringify(gallery));
+                
+                // Clear form
+                document.getElementById('imageTitle').value = '';
+                document.getElementById('imageDescription').value = '';
+                document.getElementById('imageArtist').value = '';
+                fileInput.value = '';
+
+                loadGallery();
+                showSuccess('Image uploaded successfully!');
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+
+        function loadGallery() {
+            const gallery = JSON.parse(localStorage.getItem(GALLERY_KEY) || '[]');
+            const preview = document.getElementById('galleryPreview');
+
+            if (gallery.length === 0) {
+                preview.innerHTML = '<p>No images uploaded yet. Click "Upload Image" to add artwork.</p>';
+                return;
+            }
+
+            preview.innerHTML = gallery.map(item => `
+                <div class="gallery-preview-item" title="${item.title}">
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="delete-overlay">
+                        <button onclick="deleteGalleryItem(${item.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteGalleryItem(id) {
+            if (confirm('Delete this image?')) {
+                let gallery = JSON.parse(localStorage.getItem(GALLERY_KEY) || '[]');
+                gallery = gallery.filter(item => item.id !== id);
+                localStorage.setItem(GALLERY_KEY, JSON.stringify(gallery));
+                loadGallery();
+                showSuccess('Image deleted');
+            }
+        }
+
+        // ============================================
+        // SUCCESS STORIES
+        // ============================================
+
+        function addStory() {
+            const name = document.getElementById('storyName').value.trim();
+            const age = document.getElementById('storyAge').value;
+            const quote = document.getElementById('storyQuote').value.trim();
+
+            if (!name || !age || !quote) {
+                showAlert('Please fill in all fields');
+                return;
+            }
+
+            const stories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
+            stories.push({
+                id: Date.now(),
+                name,
+                age,
+                quote
+            });
+
+            localStorage.setItem(STORIES_KEY, JSON.stringify(stories));
+
+            // Clear form
+            document.getElementById('storyName').value = '';
+            document.getElementById('storyAge').value = '';
+            document.getElementById('storyQuote').value = '';
+
+            loadStories();
+            showSuccess('Success story added!');
+        }
+
+        function loadStories() {
+            const stories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
+            const list = document.getElementById('storiesList');
+
+            if (stories.length === 0) {
+                list.innerHTML = '<p>No stories added yet.</p>';
+                return;
+            }
+
+            list.innerHTML = stories.map(story => `
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">${story.name}, ${story.age}</div>
+                        <div class="list-item-desc">"${story.quote}"</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-danger" onclick="deleteStory(${story.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteStory(id) {
+            if (confirm('Delete this story?')) {
+                let stories = JSON.parse(localStorage.getItem(STORIES_KEY) || '[]');
+                stories = stories.filter(item => item.id !== id);
+                localStorage.setItem(STORIES_KEY, JSON.stringify(stories));
+                loadStories();
+                showSuccess('Story deleted');
+            }
+        }
+
+        // ============================================
+        // PROJECTS
+        // ============================================
+
+        function addProject() {
+            const title = document.getElementById('projectTitle').value.trim();
+            const icon = document.getElementById('projectIcon').value.trim();
+            const description = document.getElementById('projectDescription').value.trim();
+
+            if (!title || !icon || !description) {
+                showAlert('Please fill in all fields');
+                return;
+            }
+
+            const projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) || '[]');
+            projects.push({
+                id: Date.now(),
+                title,
+                icon,
+                description
+            });
+
+            localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
+
+            // Clear form
+            document.getElementById('projectTitle').value = '';
+            document.getElementById('projectIcon').value = '';
+            document.getElementById('projectDescription').value = '';
+
+            loadProjects();
+            showSuccess('Project added!');
+        }
+
+        function loadProjects() {
+            const projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) || '[]');
+            const list = document.getElementById('projectsList');
+
+            if (projects.length === 0) {
+                list.innerHTML = '<p>No projects added yet.</p>';
+                return;
+            }
+
+            list.innerHTML = projects.map(project => `
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <div class="list-item-title">${project.icon} ${project.title}</div>
+                        <div class="list-item-desc">${project.description}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="btn-danger" onclick="deleteProject(${project.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteProject(id) {
+            if (confirm('Delete this project?')) {
+                let projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) || '[]');
+                projects = projects.filter(item => item.id !== id);
+                localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
+                loadProjects();
+                showSuccess('Project deleted');
+            }
+        }
+
+        // ============================================
+        // CONTENT EDIT & IMPACT
+        // ============================================
+
+        function saveContent() {
+            showSuccess('Content changes saved! (Demo mode - changes not persisted to live site)');
+        }
+
+        function saveImpact() {
+            showAlert('Impact numbers updated! (Demo mode - changes visible in this dashboard only)');
+            showSuccess('Impact numbers saved!');
+        }
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem(SESSION_KEY);
+                window.location.href = 'login.html';
+            }
+        }
+
+        // ============================================
+        // CLEAR DATA
+        // ============================================
+
+        function clearAllData() {
+            if (confirm('This will delete ALL demo data. Are you sure?')) {
+                localStorage.removeItem(GALLERY_KEY);
+                localStorage.removeItem(STORIES_KEY);
+                localStorage.removeItem(PROJECTS_KEY);
+                loadGallery();
+                loadStories();
+                loadProjects();
+                showSuccess('All demo data cleared');
+            }
+        }
+
+        console.log('Admin Dashboard script loaded ✨');
+    </script>
+</body>
+</html>

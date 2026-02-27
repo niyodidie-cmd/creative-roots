@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Donate to Creative Roots Rwanda - Support youth empowerment through art and storytelling.">
+    <title>Donate | Creative Roots Rwanda</title>
+    <link rel="shortcut icon" href="images/logo-cr.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* ============================================
+           DONATION PAGE SPECIFIC STYLES
+           ============================================ */
+        
+        .donation-hero {
+            background: linear-gradient(135deg, #D4A373 0%, #8B5E3C 100%);
+            color: #FDF6EC;
+            padding: 100px 0;
+            text-align: center;
+            margin-top: 70px;
+        }
+        
+        .donation-hero h1 {
+            color: #FDF6EC;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .donation-hero p {
+            color: #FDF6EC;
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        
+        .donation-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .donation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin: 80px 0;
+        }
+        
+        .donation-form-wrapper,
+        .donation-info-wrapper {
+            background: white;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(139, 94, 60, 0.1);
+        }
+        
+        .donation-form-wrapper h2,
+        .donation-info-wrapper h2 {
+            color: #8B5E3C;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2C2C2C;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E8E0D0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8B5E3C;
+            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .amount-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .amount-btn {
+            padding: 12px;
+            border: 2px solid #D4A373;
+            background-color: white;
+            color: #8B5E3C;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .amount-btn:hover,
+        .amount-btn.active {
+            background-color: #8B5E3C;
+            color: #FDF6EC;
+            border-color: #8B5E3C;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 2rem 0;
+        }
+        
+        .payment-method {
+            padding: 20px;
+            border: 2px solid #E8E0D0;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .payment-method:hover {
+            border-color: #D4A373;
+            background-color: rgba(212, 163, 115, 0.05);
+        }
+        
+        .payment-method.active {
+            background-color: #8B5E3C;
+            color: #FDF6EC;
+            border-color: #8B5E3C;
+        }
+        
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .payment-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #8B5E3C;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method.active .payment-icon svg {
+            color: #FDF6EC;
+        }
+        
+        .payment-method-label {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: #8B5E3C;
+            color: #FDF6EC;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            background-color: #6B4630;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 94, 60, 0.4);
+        }
+        
+        .info-box {
+            background-color: rgba(212, 163, 115, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #D4A373;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-box strong {
+            color: #8B5E3C;
+        }
+        
+        .donation-info-wrapper h3 {
+            color: #8B5E3C;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .donation-info-wrapper p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        .donation-faq {
+            padding: 30px;
+            background-color: #FDF6EC;
+            border-radius: 12px;
+            margin-top: 3rem;
+        }
+        
+        .faq-item {
+            margin-bottom: 2rem;
+        }
+        
+        .faq-item strong {
+            color: #8B5E3C;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #D4A373;
+            color: #2C2C2C;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        .back-to-home {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #8B5E3C;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-to-home:hover {
+            opacity: 0.7;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .donation-hero {
+                padding: 60px 0;
+                margin-top: 70px;
+            }
+            
+            .donation-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .donation-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin: 40px 0;
+            }
+            
+            .donation-form-wrapper,
+            .donation-info-wrapper {
+                padding: 30px;
+            }
+            
+            .amount-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         NAVIGATION BAR (Same as main site)
+         ============================================ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="images/logo-cr.svg" alt="Creative Roots Logo" style="width: 40px; height: 40px; margin-right: 10px;">
+                <span class="logo-text">Creative Roots Rwanda</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link" data-i18n="nav.home">Home</a></li>
+                
+                <li class="dropdown">
+                    <a href="index.html#about" class="nav-link dropdown-toggle" data-i18n="nav.about">About Us</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#who-we-are" data-i18n="nav.who_we_are">Who We Are</a></li>
+                        <li><a href="index.html#mission" data-i18n="nav.mission">Mission & Vision</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="index.html#projects" class="nav-link" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="index.html#impact" class="nav-link" data-i18n="nav.impact">Impact</a></li>
+                <li><a href="index.html#gallery" class="nav-link" data-i18n="nav.gallery">Gallery</a></li>
+                <li><a href="donate.html" class="nav-link donate-btn" data-i18n="nav.donate">Donate</a></li>
+                <li><a href="admin/login.html" class="nav-link admin-link" data-i18n="nav.admin">Admin</a></li>
+            </ul>
+
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="language-switch">
+                <a href="#" data-lang="en" class="lang-link active">EN</a>
+                <span>|</span>
+                <a href="#" data-lang="fr" class="lang-link">FR</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         DONATION PAGE HERO
+         ============================================ -->
+    <section class="donation-hero">
+        <div class="donation-container">
+            <h1 data-i18n="donate.title">Support Hidden Talent</h1>
+            <p data-i18n="donate.subtitle">Your generous donation helps us empower youth through art, sculpture, and storytelling</p>
+        </div>
+    </section>
+
+    <!-- ============================================
+         MAIN DONATION CONTENT
+         ============================================ -->
+    <div class="donation-container">
+        <a href="index.html" class="back-to-home">← Back to Home</a>
+
+        <div class="donation-grid">
+            <!-- LEFT: Donation Form -->
+            <div class="donation-form-wrapper">
+                <h2 data-i18n="donate.title">Make Your Donation</h2>
+                
+                <div class="success-message" id="successMessage">
+                    ✓ <span data-i18n="donate.success">Thank you! Your donation has been processed.</span>
+                </div>
+                <style>
+                    .success-message {
+                        display: none;
+                        background-color: #D4A373;
+                        color: #2C2C2C;
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                        font-weight: 600;
+                    }
+                    .success-message.visible {
+                        display: block;
+                        animation: slideDown 0.3s ease;
+                    }
+                </style>
+
+                <form id="donationForm">
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullName" data-i18n="booking.name">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Your full name">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email" data-i18n="booking.email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+
+                    <!-- Donation Amount - Quick Select -->
+                    <div class="form-group">
+                        <label data-i18n="donate.amount">Select Amount (USD) *</label>
+                        <div class="amount-buttons">
+                            <button type="button" class="amount-btn" data-amount="10">$10</button>
+                            <button type="button" class="amount-btn" data-amount="25">$25</button>
+                            <button type="button" class="amount-btn" data-amount="50">$50</button>
+                            <button type="button" class="amount-btn" data-amount="100">$100</button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Amount -->
+                    <div class="form-group">
+                        <label for="customAmount" data-i18n="donate.custom">Or Enter Custom Amount (USD) *</label>
+                        <input type="number" id="customAmount" name="customAmount" min="1" placeholder="Enter amount" required>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="form-group">
+                        <label data-i18n="donate.payment">Payment Method *</label>
+                        <div class="payment-methods">
+                            <button type="button" class="payment-method active" data-method="card">
+                                <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M 3 5 L 3 19 C 3 20.1 3.9 21 5 21 L 19 21 C 20.1 21 21 20.1 21 19 L 21 5 C 21 3.9 20.1 3 19 3 L 5 3 C 3.9 3 3 3.9 3 5 Z M 19 5 L 19 8 L 5 8 L 5 5 L 19 5 Z M 5 19 L 5 10 L 19 10 L 19 19 L 5 19 Z M 7 15 L 10 15 L 10 17 L 7 17 L 7 15 Z"/></svg>
+                                <div class="payment-method-label" data-i18n="donate.card">Card (Stripe)</div>
+                            </button>
+                            <button type="button" class="payment-method" data-method="mobile">
+                                <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M 17 2 L 7 2 C 5.9 2 5 2.9 5 4 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 4 C 19 2.9 18.1 2 17 2 Z M 12 20 C 10.9 20 10 19.1 10 18 C 10 16.9 10.9 16 12 16 C 13.1 16 14 16.9 14 18 C 14 19.1 13.1 20 12 20 Z M 17 16 L 7 16 L 7 4 L 17 4 L 17 16 Z"/></svg>
+                                <div class="payment-method-label" data-i18n="donate.mobile">Mobile Money</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group">
+                        <label for="message" data-i18n="donate.message">Message (Optional)</label>
+                        <textarea id="message" name="message" placeholder="Share why this cause matters to you..."></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn" data-i18n="donate.submit">Process Donation</button>
+
+                    <!-- Note -->
+                    <div class="info-box" style="margin-top: 2rem; font-size: 0.85rem;">
+                        ⚠️ <strong>Demo Note:</strong> This is a frontend demo. 
+                        Real payment processing requires backend integration with Stripe or Flutterwave. 
+                        Currently, form submission displays a success message for testing.
+                    </div>
+                </form>
+            </div>
+
+            <!-- RIGHT: Donation Information -->
+            <div class="donation-info-wrapper">
+                <h2>Why Support Us?</h2>
+
+                <div class="info-box">
+                    <strong>100% of donations go directly to youth programs</strong>
+                    <p>We are a completely volunteer-led organization with zero overhead.</p>
+                </div>
+
+                <h3>Your Impact</h3>
+                <p>
+                    <strong>$10</strong> provides art supplies for one youth workshop session
+                </p>
+                <p>
+                    <strong>$25</strong> funds transportation for youth to creativity workshops
+                </p>
+                <p>
+                    <strong>$50</strong> sponsors a youth artist to lead a storytelling circle
+                </p>
+                <p>
+                    <strong>$100+</strong> helps organize a community art exhibition
+                </p>
+
+                <h3>Our Mission</h3>
+                <p>
+                    Creative Roots Rwanda empowers youth and out-of-school individuals to discover 
+                    their hidden talents through art, sculpture, and storytelling. When young people 
+                    find their creative voice, they find their power.
+                </p>
+
+                <h3>Founded By</h3>
+                <p>
+                    <strong>NIYOMUKIZA Didier</strong><br>
+                    +250 792 505 680<br>
+                    niyodidie@gmail.com
+                </p>
+
+                <h3>Questions?</h3>
+                <p>
+                    Contact us at <a href="mailto:niyodidie@gmail.com" style="color: #8B5E3C; font-weight: 600;">niyodidie@gmail.com</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="donation-faq">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <strong>Q: Are donations tax-deductible?</strong>
+                <p>
+                    This depends on your country's regulations and our organization's registration status. 
+                    Contact us directly for tax documentation.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <strong>Q: Can I donate via other methods?</strong>
+                <p>
+                    Yes! You can reach out to niyodidie@gmail.com to arrange bank transfer or mobile money donations directly.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <strong>Q: How can I volunteer?</strong>
+                <p>
+                    We welcome volunteers! Contact NIYOMUKIZA Didier at +250 792 505 680 or niyodidie@gmail.com to learn about opportunities.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <strong>Q: How often can I donate?</strong>
+                <p>
+                    You can donate as often as you'd like. Many supporters choose monthly donations to provide consistent support.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <strong>Q: Will I receive updates?</strong>
+                <p>
+                    Yes! When you donate, provide your email and we'll send you regular updates about our youth programs and impact.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" style="margin-top: 80px;">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Creative Roots Rwanda</h4>
+                    <p>Empowering youth through art, sculpture, and storytelling.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#gallery">Gallery</a></li>
+                        <li><a href="donate.html">Donate</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>+250 792 505 680</p>
+                    <p>niyodidie@gmail.com</p>
+                    <p>Rwanda</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Creative Roots Rwanda. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         DONATION PAGE JAVASCRIPT
+         ============================================ -->
+    <script>
+        // ============================================
+        // DONATION PAGE - INTERACTIVE FEATURES
+        // ============================================
+
+        // Hamburger Menu (copied from main.js)
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // ============================================
+        // AMOUNT BUTTON SELECTION
+        // ============================================
+
+        const amountButtons = document.querySelectorAll('.amount-btn');
+        const customAmountInput = document.getElementById('customAmount');
+
+        amountButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all buttons
+                amountButtons.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Set custom amount input
+                const amount = btn.getAttribute('data-amount');
+                customAmountInput.value = amount;
+            });
+        });
+
+        // Remove active class when custom amount is edited
+        customAmountInput.addEventListener('input', () => {
+            amountButtons.forEach(btn => btn.classList.remove('active'));
+        });
+
+        // ============================================
+        // PAYMENT METHOD SELECTION
+        // ============================================
+
+        const paymentMethods = document.querySelectorAll('.payment-method');
+
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all methods
+                paymentMethods.forEach(m => m.classList.remove('active'));
+                
+                // Add active class to clicked method
+                method.classList.add('active');
+            });
+        });
+
+        // ============================================
+        // FORM SUBMISSION WITH PAYMENT PROCESSING
+        // ============================================
+
+        const donationForm = document.getElementById('donationForm');
+        const successMessage = document.getElementById('successMessage');
+
+        donationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Collect form data
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const amount = document.getElementById('customAmount').value;
+            const message = document.getElementById('message').value.trim();
+            const activePaymentMethod = document.querySelector('.payment-method.active');
+            const paymentMethodType = activePaymentMethod ? activePaymentMethod.getAttribute('data-method') : 'card';
+
+            // Validate form
+            if (!fullName || !email || !amount) {
+                alert('❌ Please fill in all required fields');
+                console.error('Form validation failed');
+                return;
+            }
+
+            if (amount < 1) {
+                alert('❌ Please enter a valid donation amount (minimum $1)');
+                return;
+            }
+
+            // Create donation record
+            const donationData = {
+                id: Date.now(),
+                fullName,
+                email,
+                amount: parseFloat(amount),
+                message,
+                paymentMethod: paymentMethodType,
+                currency: 'USD',
+                timestamp: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            // Log donation data
+            console.log('💰 Processing donation:', donationData);
+
+            // Process payment based on method
+            processPayment(paymentMethodType, donationData);
+        });
+
+        // ============================================
+        // PAYMENT PROCESSING HANDLERS
+        // ============================================
+
+        function processPayment(method, donationData) {
+            console.log(`Processing payment via: ${method}`);
+
+            if (method === 'card') {
+                // Stripe integration (placeholder with redirect)
+                processStripePayment(donationData);
+            } else if (method === 'mobile') {
+                // Mobile Money - Flutterwave or similar (placeholder with redirect)
+                processMobileMoneyPayment(donationData);
+            }
+        }
+
+        function processStripePayment(donationData) {
+            // DEMO: This would redirect to Stripe in production
+            // Real implementation: Use Stripe.js library and API
+            
+            console.log('💳 Stripe payment initiated for:', donationData.fullName);
+            console.log('Amount: $' + donationData.amount);
+            
+            // Store donation info in localStorage (demo only)
+            const donations = JSON.parse(localStorage.getItem('creativeRootsDonations') || '[]');
+            donations.push(donationData);
+            localStorage.setItem('creativeRootsDonations', JSON.stringify(donations));
+
+            // Show success message (in real system, Stripe would handle this)
+            showDonationSuccess(donationData);
+
+            // In production, redirect to Stripe Checkout:
+            // window.location.href = `https://checkout.stripe.com/pay/stripe_hosted_checkout_id`;
+        }
+
+        function processMobileMoneyPayment(donationData) {
+            // DEMO: This simulates Flutterwave or similar mobile money provider
+            // Real implementation: Use Flutterwave API or similar
+            
+            console.log('📱 Mobile Money payment initiated for:', donationData.fullName);
+            console.log('Amount: $' + donationData.amount);
+
+            // Simulate phone notification
+            showPhoneSimulation(donationData);
+
+            // Store donation info
+            const donations = JSON.parse(localStorage.getItem('creativeRootsDonations') || '[]');
+            donations.push(donationData);
+            localStorage.setItem('creativeRootsDonations', JSON.stringify(donations));
+
+            // Show success after brief delay (simulating processing)
+            setTimeout(() => {
+                showDonationSuccess(donationData);
+            }, 2000);
+
+            // In production, redirect to Flutterwave:
+            // window.location.href = `https://checkout.flutterwave.com/v3/${publicKey}`;
+        }
+
+        function showPhoneSimulation(donationData) {
+            // Create a visual simulation of phone notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #8B5E3C, #6B4630);
+                color: white;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-weight: 600;
+                max-width: 300px;
+                animation: slideIn 0.4s ease;
+            `;
+            
+            notification.innerHTML = `
+                <div style="margin-bottom: 10px; font-size: 1.1rem;">📱 Phone Notification</div>
+                <div style="font-size: 0.9rem; opacity: 0.9;">
+                    USSD Request: Confirm donation of $${donationData.amount}<br>
+                    To account: Creative Roots Rwanda
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Remove notification after 4 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        function showDonationSuccess(donationData) {
+            const successMessage = document.getElementById('successMessage');
+            
+            // Update success message
+            successMessage.innerHTML = `
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">✓ Thank You for Your Generosity!</div>
+                <div style="font-size: 0.95rem;">
+                    Your donation of <strong>$${donationData.amount}</strong> via 
+                    <strong>${donationData.paymentMethod === 'card' ? 'Card (Stripe)' : 'Mobile Money'}</strong> 
+                    has been processed.<br>
+                    A confirmation email will be sent to: <strong>${donationData.email}</strong>
+                </div>
+            `;
+            
+            successMessage.classList.add('show');
+            
+            // Reset form
+            donationForm.reset();
+            amountButtons.forEach(btn => btn.classList.remove('active'));
+            paymentMethods[0].classList.add('active'); // Reset to card method
+
+            // Hide success message after 6 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 6000);
+
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Log for verification
+            console.log('✅ Donation processed successfully:', donationData);
+        }
+
+        // ============================================
+        // POLYFILL FOR ANIMATION
+        // ============================================
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(400px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(400px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        console.log('✨ Donation page loaded successfully with payment processing');
+    </script>
+</body>
+</html>

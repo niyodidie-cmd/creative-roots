@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <!-- Creative Roots Logo -->
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A373;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5E3C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="150" cy="150" r="145" fill="url(#logoGrad)" opacity="0.1" stroke="#8B5E3C" stroke-width="2"/>
+  
+  <!-- Root system -->
+  <g stroke="#8B5E3C" stroke-width="3" fill="none" opacity="0.8">
+    <!-- Main root -->
+    <path d="M 150 80 Q 150 120 150 160"/>
+    <!-- Left roots -->
+    <path d="M 150 110 Q 120 130 100 150"/>
+    <path d="M 150 130 Q 110 140 90 160"/>
+    <!-- Right roots -->
+    <path d="M 150 110 Q 180 130 200 150"/>
+    <path d="M 150 130 Q 190 140 210 160"/>
+  </g>
+  
+  <!-- Growing leaves -->
+  <g fill="#D4A373" opacity="0.7">
+    <ellipse cx="130" cy="95" rx="12" ry="20" transform="rotate(-30 130 95)"/>
+    <ellipse cx="170" cy="95" rx="12" ry="20" transform="rotate(30 170 95)"/>
+    <ellipse cx="120" cy="120" rx="14" ry="22" transform="rotate(-45 120 120)"/>
+    <ellipse cx="180" cy="120" rx="14" ry="22" transform="rotate(45 180 120)"/>
+  </g>
+  
+  <!-- Central circle with art symbol -->
+  <circle cx="150" cy="200" r="35" fill="#FDF6EC" stroke="#8B5E3C" stroke-width="2"/>
+  <text x="150" y="215" font-size="40" text-anchor="middle" fill="#8B5E3C">🎨</text>
+  
+  <!-- Decorative rings -->
+  <circle cx="150" cy="150" r="60" fill="none" stroke="#D4A373" stroke-width="1" opacity="0.4"/>
+  <circle cx="150" cy="150" r="80" fill="none" stroke="#D4A373" stroke-width="1" opacity="0.2"/>
+</svg>

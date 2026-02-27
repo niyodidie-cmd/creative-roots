@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A373;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5E3C;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5E3C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6B4630;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main background -->
+  <rect width="1200" height="800" fill="url(#grad1)"/>
+  
+  <!-- Decorative rings -->
+  <circle cx="300" cy="200" r="180" fill="none" stroke="#FDF6EC" stroke-width="3" opacity="0.2"/>
+  <circle cx="300" cy="200" r="140" fill="none" stroke="#FDF6EC" stroke-width="2" opacity="0.3"/>
+  <circle cx="300" cy="200" r="100" fill="none" stroke="#FDF6EC" stroke-width="2" opacity="0.4"/>
+  
+  <!-- Central artistic shapes -->
+  <circle cx="600" cy="400" r="150" fill="#FDF6EC" opacity="0.1"/>
+  <circle cx="600" cy="400" r="120" fill="#D4A373" opacity="0.15"/>
+  
+  <!-- Brush stroke elements -->
+  <path d="M 800 100 Q 900 150 950 250 Q 1000 350 900 450" stroke="#FDF6EC" stroke-width="30" fill="none" opacity="0.1"/>
+  <path d="M 950 50 Q 1050 100 1100 200" stroke="#D4A373" stroke-width="20" fill="none" opacity="0.15"/>
+  
+  <!-- Art palette representation -->
+  <circle cx="150" cy="600" r="60" fill="#D4A373" opacity="0.3"/>
+  <circle cx="130" cy="630" r="20" fill="#FDF6EC" opacity="0.8"/>
+  <circle cx="170" cy="630" r="20" fill="#8B5E3C" opacity="0.8"/>
+  
+  <!-- Youth silhouettes -->
+  <circle cx="900" cy="650" r="25" fill="#FDF6EC" opacity="0.4"/>
+  <path d="M 920 680 L 920 750" stroke="#FDF6EC" stroke-width="8" opacity="0.4"/>
+  <path d="M 900 700 L 880 740" stroke="#FDF6EC" stroke-width="8" opacity="0.4"/>
+  <path d="M 900 700 L 920 740" stroke="#FDF6EC" stroke-width="8" opacity="0.4"/>
+  
+  <!-- Decorative text -->
+  <text x="600" y="750" font-size="24" font-weight="bold" text-anchor="middle" fill="#FDF6EC" opacity="0.6">Art & Stories for All</text>
+</svg>

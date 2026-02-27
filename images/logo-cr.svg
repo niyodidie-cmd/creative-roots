@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#8B5E3C"/>
+  <circle cx="100" cy="100" r="90" fill="#D4A373"/>
+  
+  <!-- Stylized brush stroke -->
+  <path d="M 60 80 Q 70 60 90 70 T 140 90" stroke="#8B5E3C" stroke-width="6" fill="none" stroke-linecap="round"/>
+  
+  <!-- Paintbrush element -->
+  <circle cx="145" cy="110" r="8" fill="#8B5E3C"/>
+  
+  <!-- Decorative shapes representing creativity -->
+  <rect x="80" y="120" width="40" height="5" fill="#8B5E3C" rx="2"/>
+  <circle cx="70" cy="140" r="6" fill="#8B5E3C"/>
+  <polygon points="115,130 120,145 110,145" fill="#8B5E3C"/>
+  
+  <!-- Text -->
+  <text x="100" y="175" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#8B5E3C">CR</text>
+</svg>

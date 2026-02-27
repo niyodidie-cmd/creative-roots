@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative Roots Rwanda - Art & Stories for All. Empowering youth through art, sculpture, and storytelling.">
+    <meta name="author" content="NIYOMUKIZA Didier">
+    <title>Creative Roots Rwanda | Art & Stories for All</title>
+    <link rel="shortcut icon" href="images/logo-cr.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- ============================================
+         NAVIGATION BAR - Sticky Header
+         ============================================ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo -->
+            <div class="nav-logo">
+                <a href="#home" class="logo-link">
+                    <img src="images/logo.svg" alt="Creative Roots Rwanda" class="logo-image">
+                    <span class="logo-text">Creative Roots Rwanda</span>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation Menu -->
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link" data-i18n="nav.home">Home</a></li>
+                
+                <!-- About Dropdown -->
+                <li class="dropdown">
+                    <a href="#about" class="nav-link dropdown-toggle" data-i18n="nav.about">About Us</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#who-we-are" data-i18n="nav.who_we_are">Who We Are</a></li>
+                        <li><a href="#mission" data-i18n="nav.mission">Mission & Vision</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="#impact" class="nav-link" data-i18n="nav.impact">Impact</a></li>
+                <li><a href="#gallery" class="nav-link" data-i18n="nav.gallery">Gallery</a></li>
+                <li><a href="#events" class="nav-link" data-i18n="events.title">Events</a></li>
+                <li><a href="donate.html" class="nav-link donate-btn">Donate</a></li>
+                <li><a href="admin/login.html" class="nav-link admin-link">Admin</a></li>
+                <li class="language-switch">
+                    <a href="#" data-lang="en" class="lang-link active">EN</a>
+                    <span>|</span>
+                    <a href="#" data-lang="fr" class="lang-link">FR</a>
+                </li>
+            </ul>
+
+            <!-- Hamburger Menu for Mobile -->
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         HERO SECTION - Full Screen Slideshow with Landscape Images
+         ============================================ -->
+    <section id="home" class="hero">
+        <!-- Hero Slideshow Container -->
+        <div class="hero-slideshow">
+            <!-- Slide 1 - Landscape Image with Ken Burns Effect -->
+            <div class="hero-slide active" data-text="Everyone Has Hidden Power.">
+                <img src="images/hero/Gemini_Generated_Image_9qcfyd9qcfyd9qcf.png" alt="Creative youth artwork" class="hero-slide-image">
+            </div>
+            <!-- Slide 2 -->
+            <div class="hero-slide" data-text="Art Gives It a Voice.">
+                <img src="images/hero/Gemini_Generated_Image_43dziw43dziw43dz.png" alt="Art in action" class="hero-slide-image">
+            </div>
+            <!-- Slide 3 -->
+            <div class="hero-slide" data-text="Stories Build Strong Communities.">
+                <img src="images/hero/Gemini_Generated_Image_c3y70fc3y70fc3y7.png" alt="Community storytelling" class="hero-slide-image">
+            </div>
+            <!-- Slide 4 -->
+            <div class="hero-slide" data-text="Creativity Changes Lives.">
+                <img src="images/hero/Gemini_Generated_Image_ilbvweilbvweilbv.png" alt="Creative transformation" class="hero-slide-image">
+            </div>
+        </div>
+
+        <!-- Warm Gradient Overlay for Text Readability -->
+        <div class="hero-overlay"></div>
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h1 class="hero-title fade-text animate-slide-in" data-i18n="hero.title">Everyone Has Hidden Power.</h1>
+            <p class="hero-subtitle animate-fade-in-delayed" data-i18n="hero.subtitle">Discover Your Creative Voice</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary animate-glow-hover" data-i18n="hero.join">Join the Movement</a>
+                <a href="donate.html" class="btn btn-secondary animate-glow-hover" data-i18n="hero.donate_cta">Donate Now</a>
+            </div>
+        </div>
+
+        <!-- Slideshow Indicators -->
+        <div class="slideshow-indicators">
+            <span class="indicator active" data-slide="0"></span>
+            <span class="indicator" data-slide="1"></span>
+            <span class="indicator" data-slide="2"></span>
+            <span class="indicator" data-slide="3"></span>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         ABOUT PREVIEW SECTION
+         ============================================ -->
+    <section id="about" class="about-preview">
+        <div class="container">
+            <div class="about-content">
+                <h2 class="section-title" data-i18n="about.mission">Our Mission</h2>
+                <p class="about-text">
+                    Art & Stories for All is empowering youth and out-of-school individuals to discover and express 
+                    their hidden talents through art, sculpture, and storytelling. We believe that every person has a creative voice, 
+                    and when given the space and tools to express it, transformation happens. Our volunteer-led initiative promotes 
+                    cultural preservation, confidence building, and community engagement—creating pathways for young people to see 
+                    themselves as creators, not just consumers.
+                </p>
+                <div class="about-highlights">
+                    <div class="highlight-item">
+                        <svg class="highlight-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#D4A373"><circle cx="12" cy="8" r="4"/><path d="M 12 14 C 8 14 5 16 5 20 L 19 20 C 19 16 16 14 12 14"/></svg>
+                        <p><strong>Youth Empowerment</strong> Through creative expression</p>
+                    </div>
+                    <div class="highlight-item">
+                        <svg class="highlight-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#D4A373"><path d="M 12 2 L 15 10 L 23 10 L 17 15 L 19 23 L 12 18 L 5 23 L 7 15 L 1 10 L 9 10 Z"/></svg>
+                        <p><strong>Cultural Preservation</strong> Through art & tradition</p>
+                    </div>
+                    <div class="highlight-item">
+                        <svg class="highlight-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#D4A373"><circle cx="6" cy="8" r="3"/><circle cx="18" cy="8" r="3"/><path d="M 18 12 C 16 12 14 13 14 16 L 22 16 C 22 13 20 12 18 12 Z M 6 12 C 4 12 2 13 2 16 L 10 16 C 10 13 8 12 6 12 Z M 12 2 C 9 2 7 4 7 7 C 7 10 9 12 12 12 C 15 12 17 10 17 7 C 17 4 15 2 12 2 Z M 12 6 C 13 6 14 7 14 8 C 14 9 13 10 12 10 C 11 10 10 9 10 8 C 10 7 11 6 12 6 Z\"/></svg>
+                        <p><strong>Community Building</strong> Through storytelling</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION: WHO WE ARE
+         ============================================ -->
+    <section id="who-we-are" class="image-text-section">
+        <div class="container">
+            <div class="image-text-grid">
+                <!-- Left: Image, Right: Text -->
+                <div class="image-text-item">
+                    <div class="text-content fade-on-scroll">
+                        <h2>Who We Are</h2>
+                        <p>
+                            Founded by NIYOMUKIZA Didier, Creative Roots Rwanda is a grassroots creative initiative 
+                            born from the passion to unlock potential in Rwandan youth. We operate as a 100% volunteer-led 
+                            organization, demonstrating that transformative change doesn't require institutional overhead—
+                            it requires heart, dedication, and belief in people.
+                        </p>
+                        <p>
+                            We work with young people aged 10-30, in and out of school, creating safe spaces where art 
+                            becomes a tool for self-discovery, confidence building, and community engagement. Whether through 
+                            sculpture, painting, or personal storytelling, we help young people find their voice.
+                        </p>
+                    </div>
+                    <div class="image-wrapper fade-on-scroll">
+                        <img src="images/Gemini_Generated_Image_9qcfyd9qcfyd9qcf.png" alt="Youth Creators" loading="lazy" class="responsive-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION: MISSION & VISION
+         ============================================ -->
+    <section id="mission" class="image-text-section alternate">
+        <div class="container">
+            <div class="image-text-grid reverse">
+                <!-- Right: Image, Left: Text (Reversed) -->
+                <div class="image-text-item">
+                    <div class="image-wrapper fade-on-scroll">
+                        <img src="images/Gemini_Generated_Image_c3y70fc3y70fc3y7.png" alt="Expression & Mission" loading="lazy" class="responsive-image">
+                    </div>
+                    <div class="text-content fade-on-scroll">
+                        <h2>Mission & Vision</h2>
+                        <h3>Our Mission</h3>
+                        <p>
+                            To empower youth in Rwanda to discover, develop, and express their creative talents through 
+                            accessible art and storytelling, fostering confidence, cultural pride, and community belonging.
+                        </p>
+                        <h3>Our Vision</h3>
+                        <p>
+                            A Rwanda where every young person—regardless of background or schooling status—sees themselves 
+                            as a creative force capable of shaping their community and future through art.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         IMPACT NUMBERS SECTION
+         ============================================ -->
+    <section id="impact" class="impact-section">
+        <div class="container">
+            <h2 class="section-title white-text" data-i18n="impact.title">Our Impact</h2>
+            <div class="impact-grid">
+                <!-- Counter 1 -->
+                <div class="impact-card fade-on-scroll">
+                    <div class="impact-number counter" data-target="15">0</div>
+                    <p class="impact-label">Youth Directly Empowered</p>
+                </div>
+
+                <!-- Counter 2 -->
+                <div class="impact-card fade-on-scroll">
+                    <div class="impact-number counter" data-target="100">0</div>
+                    <span class="impact-symbol">%</span>
+                    <p class="impact-label">Volunteer-Led Organization</p>
+                </div>
+
+                <!-- Counter 3 -->
+                <div class="impact-card fade-on-scroll">
+                    <div class="impact-number counter" data-target="50">0</div>
+                    <span class="impact-symbol">+</span>
+                    <p class="impact-label">Community Engagements</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PROJECTS SECTION
+         ============================================ -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="projects.title">Our Projects</h2>
+            <div class="projects-grid">
+                <!-- Project Card 1 -->
+                <div class="project-card fade-on-scroll">
+                    <div class="project-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 3 3 L 3 21 L 21 21 L 21 3 L 3 3 Z M 7 7 L 10 7 L 10 10 L 7 10 L 7 7 Z M 14 7 L 17 7 L 17 10 L 14 10 L 14 7 Z M 7 14 L 10 14 L 10 17 L 7 17 L 7 14 Z M 14 14 L 17 14 L 17 17 L 14 17 L 14 14 Z"/></svg>
+                    </div>
+                    <h3>Youth Art Workshops</h3>
+                    <p>
+                        Interactive sessions where young people learn painting, sculpture, and mixed media techniques 
+                        while building confidence and creative skills.
+                    </p>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="project-card fade-on-scroll">
+                    <div class="project-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 4 6 L 4 20 C 4 21.1 4.9 22 6 22 L 18 22 C 19.1 22 20 21.1 20 20 L 20 6 L 4 6 Z M 6 8 L 18 8 L 18 20 L 6 20 L 6 8 Z M 2 6 L 2 4 C 2 2.9 2.9 2 4 2 L 20 2 C 21.1 2 22 2.9 22 4 L 22 6 L 2 6 Z"/></svg>
+                    </div>
+                    <h3>Storytelling Circles</h3>
+                    <p>
+                        Safe spaces for youth to share their personal stories, cultural narratives, and community histories, 
+                        preserving cultural heritage while building unity.
+                    </p>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="project-card fade-on-scroll">
+                    <div class="project-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><circle cx="12" cy="12" r="10" stroke="#8B5E3C" stroke-width="1.5" fill="none"/><path d="M 12 2 L 14 10 L 22 10 L 16 15 L 18 23 L 12 18 L 6 23 L 8 15 L 2 10 L 10 10 Z" fill="none" stroke="#8B5E3C" stroke-width="1.5"/></svg>
+                    </div>
+                    <h3>Community Art Exhibitions</h3>
+                    <p>
+                        Public showcases of young people's artwork and creative projects, celebrating their talent and 
+                        inspiring broader community engagement.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SUCCESS STORIES SECTION - "Voices of Impact" (Admin Editable)
+         ============================================ -->
+    <section id="impact-voices" class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="stories.title">Voices of Impact</h2>
+            <div class="testimonials-grid" id="testimonials-grid">
+                <!-- Testimonials loaded dynamically from localStorage -->
+                <!-- Fallback testimonials will be loaded via JavaScript -->
+            </div>
+        </div>
+    </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION: EVENTS
+         ============================================ -->
+    <section id="events" class="events-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="events.title">Upcoming Events</h2>
+            <p class="events-subtitle">Join our upcoming workshops and community events</p>
+            <div class="events-grid" id="events-grid">
+                <!-- Events loaded dynamically from localStorage -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         GALLERY SECTION - Image Grid with Modal
+         ============================================ -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="gallery.title">Gallery of Creativity</h2>
+            <p class="gallery-subtitle">Art created by our young talented creators</p>
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Gallery items loaded dynamically from localStorage -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CALL TO ACTION SECTION
+         ============================================ -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Support Hidden Talent. Support the Future.</h2>
+            <p class="cta-subtitle">
+                Your support helps us continue empowering youth through art, sculpture, and storytelling.
+            </p>
+            <a href="donate.html" class="btn btn-large">Donate Now</a>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CONTACT SECTION
+         ============================================ -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="contact.title">Get in Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-info fade-on-scroll">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 17 2 L 7 2 C 5.9 2 5 2.9 5 4 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 4 C 19 2.9 18.1 2 17 2 Z M 12 20 C 10.9 20 10 19.1 10 18 C 10 16.9 10.9 16 12 16 C 13.1 16 14 16.9 14 18 C 14 19.1 13.1 20 12 20 Z M 17 16 L 7 16 L 7 4 L 17 4 L 17 16 Z"/></svg>
+                        <p><strong>Phone:</strong> +250 792 505 680</p>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 20 4 L 4 4 C 2.9 4 2 4.9 2 6 L 2 18 C 2 19.1 2.9 20 4 20 L 20 20 C 21.1 20 22 19.1 22 18 L 22 6 C 22 4.9 21.1 4 20 4 Z M 20 6 L 12 12 L 4 6 L 20 6 Z M 20 18 L 4 18 L 4 8 L 12 14 L 20 8 L 20 18 Z"/></svg>
+                        <p><strong>Email:</strong> <a href="mailto:niyodidie@gmail.com">niyodidie@gmail.com</a></p>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 12 2 C 8.1 2 5 5.1 5 9 C 5 14 12 22 12 22 S 19 14 19 9 C 19 5.1 15.9 2 12 2 Z M 12 12 C 10.3 12 9 10.7 9 9 C 9 7.3 10.3 6 12 6 C 13.7 6 15 7.3 15 9 C 15 10.7 13.7 12 12 12 Z"/></svg>
+                        <p><strong>Location:</strong> Rwanda</p>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 3 2 L 3 22 L 21 22 L 21 2 L 3 2 Z M 7 4 L 9 4 L 9 6 L 7 6 L 7 4 Z M 7 8 L 9 8 L 9 10 L 7 10 L 7 8 Z M 7 12 L 9 12 L 9 14 L 7 14 L 7 12 Z M 12 4 L 14 4 L 14 6 L 12 6 L 12 4 Z M 12 8 L 14 8 L 14 10 L 12 10 L 12 8 Z M 12 12 L 14 12 L 14 14 L 12 14 L 12 12 Z M 17 4 L 19 4 L 19 6 L 17 6 L 17 4 Z M 17 8 L 19 8 L 19 10 L 17 10 L 17 8 Z M 17 12 L 19 12 L 19 14 L 17 14 L 17 12 Z"/></svg>
+                        <p><strong>Organization:</strong> Creative Roots Rwanda</p>
+                    </div>
+                </div>
+
+                <div class="contact-cta fade-on-scroll">
+                    <h3>Ready to Join Us?</h3>
+                    <p>Reach out to learn more about volunteering, partnerships, or participating in our workshops.</p>
+                    <a href="mailto:niyodidie@gmail.com" class="btn btn-secondary">Send Email</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Creative Roots Rwanda</h4>
+                    <p>Empowering youth through art, sculpture, and storytelling.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" title="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M 9 8 C 9 9.1 8.1 10 7 10 C 5.9 10 5 9.1 5 8 C 5 6.9 5.9 6 7 6 C 8.1 6 9 6.9 9 8 Z M 5 20 L 9 20 L 9 11 L 5 11 L 5 20 Z M 11 20 L 15 20 L 15 14 C 15 11 17 10 19 10 C 21 10 22 11 22 14 L 22 20 L 18 20 L 18 14 C 18 13 17 13 16 13 C 15 13 15 14 15 14 L 15 20 Z"/></svg></a>
+                        <a href="#" class="social-icon" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M 23 3 C 22.1 3.3 21.1 3.5 20 3.7 C 21.1 3.1 22 2 22.3 0.8 C 21.3 1.3 20.2 1.7 19 1.8 C 18.1 1 16.8 0.5 15.5 0.5 C 12.9 0.5 10.8 2.4 10.8 4.8 C 10.8 5.1 10.9 5.4 11 5.7 C 7.7 5.5 4.9 3.9 3.1 1.5 C 2.7 2.2 2.5 3 2.5 3.9 C 2.5 5.6 3.4 7.1 4.8 7.9 C 4 7.9 3.2 7.7 2.5 7.4 C 2.5 7.4 2.5 7.5 2.5 7.6 C 2.5 9.7 4 11.5 6 11.9 C 5.6 12 5.2 12 4.8 12 C 4.5 12 4.3 12 4 12 C 4.5 13.7 6.2 14.9 8.1 15 C 6.7 16 4.9 16.6 3 16.6 C 2.7 16.6 2.3 16.6 2 16.5 C 3.9 17.6 6.2 18.3 8.7 18.3 C 15.5 18.3 19.4 12.4 19.4 7.2 C 19.4 7 19.4 6.8 19.4 6.6 C 20.4 6 21.3 5.2 22 4.3 Z"/></svg></a>
+                        <a href="#" class="social-icon" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M 12 2 C 6.5 2 2 6.5 2 12 C 2 17.5 6.5 22 12 22 C 17.5 22 22 17.5 22 12 C 22 6.5 17.5 2 12 2 Z M 12 5 C 14.8 5 17 7.2 17 10 C 17 12.8 14.8 15 12 15 C 9.2 15 7 12.8 7 10 C 7 7.2 9.2 5 12 5 Z M 18 4 C 17.4 4 17 4.4 17 5 C 17 5.6 17.4 6 18 6 C 18.6 6 19 5.6 19 5 C 19 4.4 18.6 4 18 4 Z"/></svg></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>+250 792 505 680</p>
+                    <p>niyodidie@gmail.com</p>
+                    <p>Rwanda</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Creative Roots Rwanda. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         MODAL POPUP FOR GALLERY
+         ============================================ -->
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <img id="modalImage" src="" alt="Gallery Image">
+            <div class="modal-info">
+                <h3 id="modalTitle">Artwork Title</h3>
+                <p id="modalDescription">Artwork details</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         JAVASCRIPT LINKS
+         ============================================ -->
+    <script src="js/storage.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/testimonials.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

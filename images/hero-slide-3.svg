@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A373;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5E3C;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="grad5" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FDF6EC;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#8B5E3C;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <rect width="1200" height="800" fill="url(#grad4)"/>
+  
+  <!-- Radial glow -->
+  <circle cx="600" cy="400" r="400" fill="url(#grad5)"/>
+  
+  <!-- Sculpture/statue representation -->
+  <g transform="translate(600, 300)">
+    <!-- Head -->
+    <circle cx="0" cy="-80" r="50" fill="#FDF6EC" opacity="0.4"/>
+    <!-- Body -->
+    <rect x="-40" y="-20" width="80" height="100" fill="#FDF6EC" opacity="0.3" rx="10"/>
+    <!-- Arms -->
+    <circle cx="-70" cy="20" r="15" fill="#FDF6EC" opacity="0.3"/>
+    <circle cx="70" cy="20" r="15" fill="#FDF6EC" opacity="0.3"/>
+    <!-- Pedestal -->
+    <rect x="-60" y="90" width="120" height="40" fill="#FDF6EC" opacity="0.2"/>
+  </g>
+  
+  <!-- Decorative triangles -->
+  <polygon points="100,100 200,300 0,300" fill="#FDF6EC" opacity="0.15"/>
+  <polygon points="1100,700 1200,500 1000,500" fill="#FDF6EC" opacity="0.1"/>
+  
+  <!-- Spiral elements -->
+  <circle cx="250" cy="600" r="40" fill="none" stroke="#FDF6EC" stroke-width="3" opacity="0.3"/>
+  <circle cx="250" cy="600" r="30" fill="none" stroke="#FDF6EC" stroke-width="2" opacity="0.4"/>
+  <circle cx="250" cy="600" r="20" fill="none" stroke="#FDF6EC" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Energy bursts -->
+  <line x1="950" y1="200" x2="1050" y2="150" stroke="#FDF6EC" stroke-width="3" opacity="0.3"/>
+  <line x1="950" y1="200" x2="1050" y2="250" stroke="#FDF6EC" stroke-width="3" opacity="0.3"/>
+  <line x1="950" y1="200" x2="900" y2="150" stroke="#FDF6EC" stroke-width="3" opacity="0.3"/>
+  <line x1="950" y1="200" x2="900" y2="250" stroke="#FDF6EC" stroke-width="3" opacity="0.3"/>
+  
+  <text x="600" y="750" font-size="28" font-weight="bold" text-anchor="middle" fill="#FDF6EC" opacity="0.7">Creativity Changes Lives</text>
+</svg>
