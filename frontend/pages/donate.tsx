@@ -39,8 +39,12 @@ export default function Donate() {
       const data = await res.json();
 
       if (res.ok) {
+        const momoAcct = process.env.NEXT_PUBLIC_MOMO_ACCOUNT || '';
         setMessage(
-          `✓ Donation recorded! Please complete the payment for ${parseInt(formData.amount).toLocaleString()} RWF on your MTN MoMo device.`
+          `✓ Donation recorded! Please complete the payment for ${parseInt(
+            formData.amount
+          ).toLocaleString()} RWF on your MTN MoMo device.` +
+            (momoAcct ? `\nMoMo Account: ${momoAcct}` : '')
         );
         setFormData({
           donor_name: '',
@@ -60,7 +64,10 @@ export default function Donate() {
   };
 
   const handleBankTransferClick = () => {
-    setMessage('✓ Bank Transfer Details:\nBank Account: [Contact us for details]\nPlease send a receipt to: donations@creativeroots.rw');
+    const bankAcc = process.env.NEXT_PUBLIC_BANK_ACCOUNT || '[contact admin]';
+    setMessage(
+      `✓ Bank Transfer Details:\nBank Account: ${bankAcc}\nPlease send a receipt to: donations@creativeroots.rw`
+    );
   };
 
   const handleContactClick = () => {
@@ -79,6 +86,12 @@ export default function Donate() {
       <section className="pt-32 pb-20 bg-cream min-h-screen">
         <div className="max-w-2xl mx-auto px-6">
           <h1 className="text-4xl font-bold text-warm-brown mb-6">Support Our Mission</h1>
+
+          {donationMethod === 'momo' && (
+            <p className="text-sm text-dark-charcoal mb-4">
+              MTN MoMo account: <strong>{process.env.NEXT_PUBLIC_MOMO_ACCOUNT || ''}</strong>
+            </p>
+          )}
 
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="flex gap-4 mb-8">

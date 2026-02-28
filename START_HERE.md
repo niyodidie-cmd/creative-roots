@@ -63,7 +63,7 @@ Server runs at: `http://localhost:3000`
 - **Homepage**: `http://localhost:3000/index.html`
 - **Donate**: `http://localhost:3000/donate.html`
 - **Admin Dashboard**: `http://localhost:3000/admin/dashboard.html`
-- **Admin Login**: `http://localhost:3000/admin/login.html` (use admin/admin123)
+- **Admin Login**: `http://localhost:3000/secure-admin-portal` (redirects to login page).  Default credentials are `admin`/`admin123` unless you set `ADMIN_USERNAME` and `ADMIN_PASSWORD` in the backend `.env` before seeding.
 
 ---
 

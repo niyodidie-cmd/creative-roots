@@ -76,9 +76,16 @@ Server will start at: **http://localhost:3000**
 ## 🔐 Admin Authentication
 
 ### Default Credentials (DEMO ONLY)
+
+When you seed the database a default admin user is created.  By default the
+username is `admin` and the password is `admin123`, but you can override those
+values by setting `ADMIN_USERNAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` in your
+backend `.env` file before running the seed script.  Always choose a secure
+password for production.
+
 ```
-Username: admin
-Password: admin123
+Username: admin          # or whatever ADMIN_USERNAME you set
+Password: admin123       # or ADMIN_PASSWORD
 ```
 
 ⚠️ **IMPORTANT**: Change these immediately in production!

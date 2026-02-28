@@ -22,18 +22,24 @@ const seedDatabase = async () => {
     // await SuccessStory.deleteMany({});
     // console.log('✓ Cleared existing data');
 
-    // Seed Admin User
-    const adminExists = await User.findOne({ username: 'admin' });
+    // Seed Admin User (credentials can be overridden with environment variables)
+    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@creativeroots.rw';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+
+    const adminExists = await User.findOne({ username: adminUsername });
     if (!adminExists) {
-      const hashedPassword = await bcrypt.hash('admin123', 10);
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
       const admin = new User({
-        username: 'admin',
+        username: adminUsername,
         password: hashedPassword,
-        email: 'admin@creativeroots.rw',
+        email: adminEmail,
         lastLogin: new Date(),
       });
       await admin.save();
-      console.log('✓ Admin user created (username: admin, password: admin123)');
+      console.log(
+        `✓ Admin user created (username: ${adminUsername}, password: ${adminPassword})`
+      );
     } else {
       console.log('✓ Admin user already exists');
     }
@@ -189,8 +195,8 @@ const seedDatabase = async () => {
 ╚════════════════════════════════════════╝
 
 Test Credentials:
-- Username: admin
-- Password: admin123
+- Username: ${adminUsername}
+- Password: ${adminPassword}
 
 Sample Events: 5
 Sample Gallery Items: 6
