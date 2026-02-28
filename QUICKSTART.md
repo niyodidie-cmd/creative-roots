@@ -1,0 +1,181 @@
+# Quick Start Guide
+
+## 🚀 Get Running in 5 Minutes
+
+### Prerequisites
+- Node.js 18+ installed
+- MongoDB Atlas account (free at mongodb.com)
+- Git
+
+### Step 1: Clone & Install
+
+```bash
+# Frontend
+cd frontend
+npm install
+
+# Backend  
+cd ../backend
+npm install
+```
+
+### Step 2: Environment Setup
+
+**Frontend** (`frontend/.env.local`):
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+**Backend** (`backend/.env`):
+```
+PORT=3001
+NODE_ENV=development
+MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/creative-roots
+JWT_SECRET=your-secret-key-min-32-chars
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+FRONTEND_URL=http://localhost:3000
+```
+
+### Step 3: Start Both Servers
+
+**Terminal 1 - Frontend**:
+```bash
+cd frontend
+npm run dev
+# Open http://localhost:3000
+```
+
+**Terminal 2 - Backend**:
+```bash
+cd backend
+npm run dev
+# Server on http://localhost:3001
+```
+
+### Step 4: Access Admin Panel
+
+1. Go to http://localhost:3000/secure-admin-login
+2. Default credentials:
+   - Username: `admin`
+   - Password: `admin123` (first login only)
+
+3. Change password immediately in Settings
+
+---
+
+## 📚 Key URLs
+
+| URL | Purpose |
+|-----|---------|
+| http://localhost:3000 | Public website |
+| http://localhost:3000/about | About page |
+| http://localhost:3000/events | Events listing |
+| http://localhost:3000/donate | Donation page |
+| http://localhost:3000/gallery | Gallery |
+| http://localhost:3000/contact | Contact form |
+| http://localhost:3000/secure-admin-login | Admin login |
+| http://localhost:3000/admin/dashboard | Admin dashboard |
+| http://localhost:3001/api | Backend API |
+| http://localhost:3001/health | Server health check |
+
+---
+
+## 🔧 Development Workflow
+
+### Frontend Development
+- Edit `.tsx` or `.css` files  
+- Browser auto-refreshes
+- Check browser console for errors
+- `Ctrl+K Ctrl+J` to open dev tools in VS Code
+
+### Backend Development
+- Edit `.ts` files in `src/`
+- Server auto-restarts with ts-node-dev
+- Check terminal for error logs
+- Add new routes to `src/routes/index.ts`
+- Add new models to `src/models/`
+
+---
+
+## 📝 Common Tasks
+
+### Add a New Event
+1. Go to Admin Dashboard
+2. Click "Events"
+3. Click "Add Event"
+4. Fill form, upload image
+5. Click "Create"
+
+### Manage Bookings
+1. Admin Dashboard → "Bookings"
+2. View all bookings
+3. Export to CSV
+4. Delete if needed
+
+### Add Gallery Item
+1. Admin Dashboard → "Gallery"
+2. Click "Upload"
+3. Select image, add title/description
+4. Click "Save"
+
+### View Donations
+1. Admin Dashboard → "Donations"
+2. See all donations with status
+3. View donation statistics
+
+### Check Contact Messages
+1. Admin Dashboard → "Messages"
+2. Read incoming messages
+3. Delete after reviewing
+
+---
+
+## 🆘 Troubleshooting
+
+### Frontend won't start
+```bash
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+npm run dev
+```
+
+### Backend crashes
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### Cannot connect to MongoDB
+- Verify connection string in `.env`
+- Check IP whitelist: MongoDB Atlas → Network Access
+- Verify password doesn't have special chars (or URL encode)
+
+### Emails not working
+- Gmail: Use App Password, not account password
+- Verify SMTP_USER and SMTP_PASS match
+- Check "Less secure app access" is enabled
+
+### Admin login not working
+- First run creates default admin: `admin`/`admin123`
+- Check backend is running on port 3001
+- Clear browser cache/localStorage
+- Check JWT_SECRET in `.env`
+
+---
+
+## 🎯 Next Steps
+
+1. ✅ Verify dev environment works
+2. ✅ Test booking & donation flows
+3. ✅ Configure email sending
+4. ✅ Set up WhatsApp (optional)
+5. ✅ Deploy to production
+
+---
+
+## 📖 Full Documentation
+
+See `ARCHITECTURE.md` for complete technical documentation.

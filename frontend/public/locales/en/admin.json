@@ -1,0 +1,15 @@
+{
+  "dashboard": "Dashboard",
+  "events": "Events",
+  "bookings": "Bookings",
+  "donations": "Donations",
+  "gallery": "Gallery",
+  "stories": "Success Stories",
+  "messages": "Messages",
+  "settings": "Settings",
+  "logout": "Logout",
+  "login": "Admin Login",
+  "username": "Username",
+  "password": "Password",
+  "sign_in": "Sign In"
+}

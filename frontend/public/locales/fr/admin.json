@@ -1,0 +1,15 @@
+{
+  "dashboard": "Tableau de Bord",
+  "events": "Événements",
+  "bookings": "Réservations",
+  "donations": "Dons",
+  "gallery": "Galerie",
+  "stories": "Histoires de Succès",
+  "messages": "Messages",
+  "settings": "Paramètres",
+  "logout": "Déconnexion",
+  "login": "Connexion Administrateur",
+  "username": "Nom d'Utilisateur",
+  "password": "Mot de Passe",
+  "sign_in": "Se Connecter"
+}
