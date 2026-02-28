@@ -63,6 +63,11 @@ export default function About() {
             </p>
           </div>
         </div>
+        <div className="mt-12 text-center">
+          <Link href="/contact" className="inline-block bg-warm-brown text-cream px-6 py-3 rounded-lg font-semibold hover:bg-orange-900 transition">
+            Get Involved / Contact Us
+          </Link>
+        </div>
       </Section>
 
       <Footer />
