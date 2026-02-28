@@ -19,12 +19,20 @@ export const getAllBookings = async (req: Request, res: Response): Promise<void>
 
 export const createBooking = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, phone, attendees, eventId } = req.body;
+    const { name, email, phone, attendees, eventId, amount, paymentMethod } = req.body;
 
     if (!name || !email || !attendees || !eventId) {
       res.status(400).json({ error: 'Missing required fields' });
       return;
     }
+
+    // amount & paymentMethod are optional; if amount provided, ensure positive
+    if (amount && amount <= 0) {
+      res.status(400).json({ error: 'Amount must be positive' });
+      return;
+    }
+
+    // Placeholder: can connect to Stripe or MoMo API here and record transactionId
 
     const event = await Event.findById(eventId);
     if (!event) {
@@ -51,6 +59,8 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
       attendees,
       eventId,
       eventTitle: event.title,
+      amount,
+      paymentMethod,
     });
 
     await booking.save();
@@ -89,6 +99,51 @@ export const deleteBooking = async (req: Request, res: Response): Promise<void> 
   } catch (error: any) {
     console.error('Booking deletion error:', error);
     res.status(500).json({ error: 'Failed to delete booking' });
+  }
+};
+
+export const updateBookingStatus = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!['pending', 'confirmed', 'completed'].includes(status)) {
+      res.status(400).json({ error: 'Invalid status' });
+      return;
+    }
+
+    const booking = await Booking.findByIdAndUpdate(id, { status }, { new: true });
+    if (!booking) {
+      res.status(404).json({ error: 'Booking not found' });
+      return;
+    }
+
+    res.json({ success: true, booking });
+  } catch (error: any) {
+    console.error('Booking status update error:', error);
+    res.status(500).json({ error: 'Failed to update status' });
+  }
+};
+
+export const getBookingStats = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const stats = await Booking.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalCount: { $sum: 1 },
+          totalRevenue: { $sum: '$amount' },
+          pending: { $sum: { $cond: [{ $eq: ['$status', 'pending'] }, 1, 0] } },
+          confirmed: { $sum: { $cond: [{ $eq: ['$status', 'confirmed'] }, 1, 0] } },
+          completed: { $sum: { $cond: [{ $eq: ['$status', 'completed'] }, 1, 0] } },
+        },
+      },
+    ]);
+
+    res.json(stats[0] || { totalCount: 0, totalRevenue: 0, pending: 0, confirmed: 0, completed: 0 });
+  } catch (error: any) {
+    console.error('Booking stats error:', error);
+    res.status(500).json({ error: 'Failed to fetch booking stats' });
   }
 };
 

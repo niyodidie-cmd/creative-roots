@@ -17,10 +17,13 @@ export const createMoMoDonation = async (req: Request, res: Response): Promise<v
   try {
     const { donor_name, donor_email, donor_phone, amount } = req.body;
 
-    if (!donor_phone || !amount) {
-      res.status(400).json({ error: 'Phone and amount required' });
+    if (!donor_phone || !amount || amount <= 0) {
+      res.status(400).json({ error: 'Valid phone and amount required' });
       return;
     }
+
+    // TODO: integrate Stripe or other payment provider here if using non-MoMo methods
+    // e.g. if request includes paymentMethod === 'stripe', create a charge session
 
     const donation = new Donation({
       donorName: donor_name || 'Anonymous',
