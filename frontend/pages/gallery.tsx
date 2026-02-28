@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Navbar from '@components/Navbar';
 import Footer from '@components/Footer';
+import Section from '@components/Section';
 
 interface GalleryItem {
   id: number;
@@ -40,9 +41,8 @@ export default function Gallery() {
 
       <Navbar />
 
-      <section className="pt-32 pb-20 bg-cream min-h-screen">
-        <div className="max-w-5xl mx-auto px-6">
-          <h1 className="text-4xl font-bold text-warm-brown mb-12">Our Gallery</h1>
+      <Section className="bg-cream min-h-screen">
+          <h1 className="text-4xl font-bold text-warm-brown mb-12 text-center">Our Gallery</h1>
 
           {loading ? (
             <div className="text-center text-lg text-dark-charcoal">Loading gallery...</div>

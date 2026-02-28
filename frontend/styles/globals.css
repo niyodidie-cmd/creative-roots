@@ -71,6 +71,16 @@ body {
   }
 }
 
+/* make images always scale responsively */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Section wrapper spacing and width reset */
+/* extra utilities may be added here */
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 10px;

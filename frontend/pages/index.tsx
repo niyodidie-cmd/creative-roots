@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Navbar from '@components/Navbar';
 import HeroSlideshow from '@components/HeroSlideshow';
 import Footer from '@components/Footer';
+import Section from '@components/Section';
 
 export default function Home() {
   return (
@@ -14,15 +15,13 @@ export default function Home() {
       <Navbar />
       <HeroSlideshow />
 
-      <section className="pt-20 pb-20 bg-cream">
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-4xl font-bold text-warm-brown mb-6">Our Mission</h2>
+      <Section className="bg-cream">
+          <h2 className="text-4xl font-bold text-warm-brown mb-6 text-center">Our Mission</h2>
           <p className="text-lg text-dark-charcoal mb-4">
             Art & Stories for All is empowering youth and out-of-school individuals to discover and express 
             their hidden talents through art, sculpture, and storytelling.
           </p>
-        </div>
-      </section>
+      </Section>
 
       <Footer />
     </>

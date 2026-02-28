@@ -20,7 +20,7 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full bg-cream/98 backdrop-blur-sm shadow-md z-50">
       <div className="max-w-6xl mx-auto px-6 h-nav-height flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 cursor-pointer">
           <img src="/logo.svg" alt="Creative Roots Rwanda" className="h-10 w-10" />
           <span className="font-bold text-xl text-warm-brown hidden sm:inline">Creative Roots</span>
         </Link>
@@ -67,6 +67,11 @@ export default function Navbar() {
           <li>
             <Link href="/donate" className="bg-warm-brown text-cream px-4 py-2 rounded-lg hover:bg-orange-900 transition">
               Donate
+            </Link>
+          </li>
+          <li>
+            <Link href="/secure-admin-login" className="text-sm text-dark-charcoal hover:text-warm-brown transition ml-4">
+              Admin
             </Link>
           </li>
           <li className="flex gap-2 border-l border-gray-300 pl-4">
