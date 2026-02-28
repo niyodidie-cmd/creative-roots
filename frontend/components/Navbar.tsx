@@ -87,9 +87,10 @@ export default function Navbar() {
               FR
             </button>
             <span className="text-gray-300 mx-1">•</span>
-            <Link href="/secure-admin-login" className="text-sm text-dark-charcoal hover:text-warm-brown transition font-medium flex items-center gap-1 bg-gray-200 hover:bg-gray-300 p-1 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A9 9 0 1118.879 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            <Link href="/secure-admin-login" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-300 hover:bg-yellow-400 text-dark-charcoal font-bold transition shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12a3 3 0 100-6 3 3 0 000 6z" />
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 2a8 8 0 100 16 8 8 0 000-16zm0 2a2 2 0 100 4 2 2 0 000-4zm0 8a5 5 0 00-4.546 2.664A5.99 5.99 0 0012 20a5.99 5.99 0 004.546-2.336A5 5 0 0012 14z" />
               </svg>
               Admin
             </Link>
@@ -103,15 +104,7 @@ export default function Navbar() {
         >
           ☰
         </button>
-        {/* Admin corner icon for desktop */}
-        <Link
-          href="/secure-admin-login"
-          className="hidden md:flex items-center gap-1 absolute right-6 top-3 text-sm text-dark-charcoal hover:text-warm-brown bg-gray-200 p-1 rounded-full"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A9 9 0 1118.879 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-        </Link>
+        {/* Admin corner icon for desktop - positioned right after donate button */}
       </div>
 
       {/* Mobile Menu */}
@@ -148,9 +141,10 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <Link href="/secure-admin-login" className="block px-6 py-3 hover:bg-cream text-sm text-dark-charcoal flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A9 9 0 1118.879 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            <Link href="/secure-admin-login" className="block px-6 py-3 bg-yellow-300 hover:bg-yellow-400 text-dark-charcoal font-bold flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline-block" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12a3 3 0 100-6 3 3 0 000 6z" />
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 2a8 8 0 100 16 8 8 0 000-16zm0 2a2 2 0 100 4 2 2 0 000-4zm0 8a5 5 0 00-4.546 2.664A5.99 5.99 0 0012 20a5.99 5.99 0 004.546-2.336A5 5 0 0012 14z" />
               </svg>
               Admin Login
             </Link>
