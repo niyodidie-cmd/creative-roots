@@ -87,7 +87,7 @@ export default function Navbar() {
               FR
             </button>
             <span className="text-gray-300 mx-1">•</span>
-            <Link href="/secure-admin-login" className="text-sm text-dark-charcoal hover:text-warm-brown transition font-medium flex items-center gap-1">
+            <Link href="/secure-admin-login" className="text-sm text-dark-charcoal hover:text-warm-brown transition font-medium flex items-center gap-1 bg-gray-200 hover:bg-gray-300 p-1 rounded-full">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A9 9 0 1118.879 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
