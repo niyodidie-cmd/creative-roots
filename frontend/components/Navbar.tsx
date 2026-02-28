@@ -103,6 +103,15 @@ export default function Navbar() {
         >
           ☰
         </button>
+        {/* Admin corner icon for desktop */}
+        <Link
+          href="/secure-admin-login"
+          className="hidden md:flex items-center gap-1 absolute right-6 top-3 text-sm text-dark-charcoal hover:text-warm-brown bg-gray-200 p-1 rounded-full"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A9 9 0 1118.879 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </Link>
       </div>
 
       {/* Mobile Menu */}
