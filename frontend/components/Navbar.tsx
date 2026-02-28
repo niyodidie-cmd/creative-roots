@@ -21,7 +21,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-nav-height flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 cursor-pointer">
-          <img src="/logo.svg" alt="Creative Roots Rwanda" className="h-10 w-10" />
+           <img src="/images/logo.svg" alt="Creative Roots Rwanda" className="h-10 w-10" />
           <span className="font-bold text-xl text-warm-brown hidden sm:inline">Creative Roots</span>
         </Link>
 

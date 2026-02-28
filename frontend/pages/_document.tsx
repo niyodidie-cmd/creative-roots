@@ -11,7 +11,7 @@ export default function Document() {
           content="Creative Roots Rwanda - Art & Stories for All. Empowering youth through art, sculpture, and storytelling."
         />
         <meta name="author" content="NIYOMUKIZA Didier" />
-        <link rel="shortcut icon" href="/logo.svg" type="image/svg+xml" />
+         <link rel="shortcut icon" href="/images/logo.svg" type="image/svg+xml" />
       </Head>
       <body className="bg-cream text-dark-charcoal">
         <Main />

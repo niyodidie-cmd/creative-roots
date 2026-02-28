@@ -82,10 +82,32 @@ export const getAdminStats = async (req: Request, res: Response): Promise<void> 
       status: 'success',
     });
 
+    // compute total booking revenue (amount field)
+    const revenueAgg = await Booking.aggregate([
+      { $match: { amount: { $exists: true } } },
+      { $group: { _id: null, total: { $sum: '$amount' } } },
+    ]);
+    const totalRevenue = revenueAgg[0]?.total || 0;
+
+    // recent bookings / donations
+    const recentBookings = await Booking.find()
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .lean();
+
+    const DonationModel = (await import('../models/Donation')).default;
+    const recentDonations = await DonationModel.find({ status: 'success' })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .lean();
+
     res.json({
       events: totalEvents,
       bookings: totalBookings,
       donations: totalDonations,
+      totalRevenue,
+      recentBookings,
+      recentDonations,
     });
   } catch (error: any) {
     console.error('Stats error:', error);
