@@ -95,13 +95,16 @@ export default function Donate() {
                 <li>✓ <strong>Bank Transfer</strong> - Direct bank deposit</li>
                 <li>✓ <strong>Contact Us</strong> - Other payment arrangements</li>
               </ul>
-              <p className="mt-3 text-sm">For card payments or other payment methods, please <a href="mailto:donations@creativeroots.rw" className="underline">email us</a> or contact us on WhatsApp at
-              <a href="https://wa.me/250792505680" className="underline ml-1">+250 792 505 680</a></p>
-                <li>✓ <strong>Bank Transfer</strong> - Direct bank deposit</li>
-                <li>✓ <strong>Contact Us</strong> - Other payment arrangements</li>
-              </ul>
-              <p className="mt-3 text-sm">For card payments or other payment methods, please <a href="mailto:donations@creativeroots.rw" className="underline">email us</a> or contact us on WhatsApp at
-              <a href="https://wa.me/250792505680" className="underline ml-1">+250 792 505 680</a></p>
+              <p className="mt-3 text-sm">
+                For card payments or other payment methods, please{' '}
+                <a href="mailto:donations@creativeroots.rw" className="underline">
+                  email us
+                </a>{' '}
+                or contact us on WhatsApp at{' '}
+                <a href="https://wa.me/250792505680" className="underline ml-1">
+                  +250 792 505 680
+                </a>
+              </p>
             </div>
           </div>
 

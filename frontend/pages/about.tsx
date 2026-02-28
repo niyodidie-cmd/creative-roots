@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import Navbar from '@components/Navbar';
 import Footer from '@components/Footer';
 import Section from '@components/Section';
@@ -28,7 +29,7 @@ export default function About() {
                   Founded by NIYOMUKIZA Didier, Creative Roots Rwanda is a grassroots creative
                   initiative born from the passion to unlock potential in Rwandan youth. We
                   operate as a 100% volunteer-led organization, demonstrating that transformative
-                  change doesn't require institutional overhead—it requires heart, dedication,
+                  change doesn&apos;t require institutional overhead—it requires heart, dedication,
                   and belief in people.
                 </p>
                 <p className="text-lg text-dark-charcoal">
@@ -44,7 +45,7 @@ export default function About() {
       </section>
 
       <Section className="bg-cream">
-        <div className="space-y-12">
+        <div className="max-w-7xl mx-auto space-y-12 px-6">
           <div>
             <h2 className="text-3xl font-bold text-warm-brown mb-4">Our Mission</h2>
             <p className="text-lg text-dark-charcoal">
