@@ -27,6 +27,7 @@ export const env = {
     apiHost: process.env.MTN_MOMO_API_HOST || 'https://api.mtn.com/collection',
     callbackUrl: process.env.MTN_MOMO_CALLBACK_URL || '',
   },
+  momoAccount: process.env.MOMO_ACCOUNT || '',
 
   // WhatsApp
   whatsapp: {

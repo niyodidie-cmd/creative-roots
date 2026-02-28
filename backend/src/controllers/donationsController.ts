@@ -34,10 +34,12 @@ export const createMoMoDonation = async (req: Request, res: Response): Promise<v
     await donation.save();
 
     // In production, call MTN MoMo API here
-    // For now, return instruction message
+    // For now, return instruction message (include account if configured)
+    const momoAcct = process.env.MOMO_ACCOUNT || '';
     res.status(201).json({
       success: true,
-      message: `Donation recorded. Please complete the MTN MoMo payment for ${amount.toLocaleString()} RWF.`,
+      message: `Donation recorded. Please complete the MTN MoMo payment for ${amount.toLocaleString()} RWF.` +
+        (momoAcct ? ` Account: ${momoAcct}` : ''),
       donationId: donation._id,
     });
   } catch (error: any) {
