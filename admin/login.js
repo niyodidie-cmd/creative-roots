@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     StorageManager.init();
     LanguageManager.init();
 
-    // Check if already logged in
-    if (StorageManager.checkAdminAuth()) {
+    // Check if already logged in via token
+    if (api.isLoggedIn()) {
         window.location.href = 'dashboard.html';
         return;
     }
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
 
     const username = document.getElementById('username')?.value;
@@ -35,13 +35,17 @@ function handleLogin(e) {
         return;
     }
 
-    if (StorageManager.loginAdmin(username, password)) {
-        // Login successful
-        window.location.href = 'dashboard.html';
-    } else {
-        // Login failed
+    try {
+        const resp = await api.login(username, password);
+        if (resp && resp.token) {
+            api.setToken(resp.token);
+            window.location.href = 'dashboard.html';
+        } else {
+            throw new Error('Invalid response from server');
+        }
+    } catch (err) {
         if (errorMsg) {
-            errorMsg.textContent = 'Invalid username or password';
+            errorMsg.textContent = err.message || 'Invalid username or password';
             errorMsg.style.display = 'block';
         }
         document.getElementById('password').value = '';

@@ -53,9 +53,21 @@ function setupEventListeners() {
             const tabName = btn.getAttribute('data-tab');
             if (tabName) {
                 switchTab(tabName);
+                // load additional data for certain tabs
+                if (tabName === 'contact') {
+                    loadContactMessages();
+                } else if (tabName === 'donations') {
+                    loadDonations();
+                }
             }
         });
     });
+
+    // Export bookings CSV
+    const exportBtn = document.getElementById('exportBookingsBtn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', exportBookings);
+    }
 
     // Logout button
     const logoutBtn = document.querySelector('.logout-btn');
@@ -593,6 +605,48 @@ async function loadDonations() {
     } catch (err) {
         console.error('Error loading donations:', err);
         showError('Failed to load donations');
+    }
+}
+
+// export bookings csv
+function exportBookings() {
+    const bookings = dashboardState.bookings || [];
+    let csv = 'Name,Email,Phone,Event,Attendees,Date\n';
+    bookings.forEach(b => {
+        csv += `"${b.name}","${b.email}","${b.phone || ''}","${b.event_title || ''}",${b.attendees},"${b.created_at}"\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'bookings.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+}
+
+// load contact messages
+async function loadContactMessages() {
+    try {
+        const msgs = await api.getContactMessages();
+        const container = document.getElementById('contactMessagesContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        msgs.forEach(m => {
+            const div = document.createElement('div');
+            div.className = 'contact-card';
+            div.innerHTML = `
+                <p><strong>${m.name || 'Anonymous'}</strong> <em>(${m.email || 'no email'})</em></p>
+                <p><strong>Subject:</strong> ${m.subject || ''}</p>
+                <p>${m.message}</p>
+                <small>${new Date(m.created_at).toLocaleString()}</small>
+                <hr>
+            `;
+            container.appendChild(div);
+        });
+    } catch (err) {
+        console.error('Error loading contact messages:', err);
+        showError('Failed to load messages');
     }
 }
 

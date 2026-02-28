@@ -64,6 +64,11 @@ app.use('/api/', limiter);
 // Serve static files
 app.use(express.static(path.join(__dirname)));
 
+// friendly secure admin portal route
+app.get('/secure-admin-portal', (req,res) => {
+    res.redirect('/admin/login.html');
+});
+
 // File upload configuration
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -168,6 +173,7 @@ function initializeDatabase() {
             description TEXT,
             date DATETIME NOT NULL,
             location TEXT,
+            capacity INTEGER DEFAULT 0,
             image_url TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -185,6 +191,33 @@ function initializeDatabase() {
             payment_method TEXT,
             transaction_id TEXT UNIQUE,
             status TEXT DEFAULT 'pending',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+    // Bookings table (stores each event booking request)
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS bookings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT,
+            attendees INTEGER NOT NULL,
+            event_id INTEGER NOT NULL,
+            event_title TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(event_id) REFERENCES events(id)
+        )
+    `);
+
+    // Contact messages table
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS contact_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            email TEXT,
+            subject TEXT,
+            message TEXT NOT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     `);
@@ -460,9 +493,17 @@ app.delete('/api/blog/:id', verifyToken, (req, res) => {
 
 app.get('/api/events', (req, res) => {
     try {
-        const events = db.prepare('SELECT * FROM events WHERE date >= DATE("now") ORDER BY date ASC').all();
+        // include computed booked count so frontend can prevent overbooking easily
+        const events = db.prepare(`
+            SELECT e.*,
+                   IFNULL((SELECT SUM(attendees) FROM bookings WHERE event_id = e.id), 0) as booked
+            FROM events e
+            WHERE date >= DATE("now")
+            ORDER BY date ASC
+        `).all();
         res.json(events);
     } catch (err) {
+        console.error('Events fetch error:', err);
         res.status(500).json({ error: 'Failed to fetch events' });
     }
 });
@@ -576,21 +617,150 @@ app.post('/api/donations/momo', (req, res) => {
         // Store MoMo donation as pending
         const result = db.prepare(`
             INSERT INTO donations (donor_name, donor_email, donor_phone, amount, payment_method, status)
-            VALUES (?, ?, ?, ?, 'MTN MoMo', 'momo_pending')
+            VALUES (?, ?, ?, ?, 'MTN MoMo', 'pending')
         `).run(donor_name || 'Anonymous', donor_email || '', donor_phone, amount);
 
-        // In production, integrate with MTN MoMo API
-        // For now, simulate a request
+        // Real integration would call MTN MoMo here and handle callbacks/webhooks
+        // For now we simply give clear instructions and mark pending
         res.json({ 
             success: true, 
-            message: 'Payment request sent to your MTN number',
-            donationId: result.lastInsertRowid,
-            phone: donor_phone,
-            amount: amount
+            message: `Donation recorded. Please send MTN MoMo to +250792505680 or contact creativeroots@gmail.com with transaction reference once paid.`,
+            donationId: result.lastInsertRowid
         });
     } catch (err) {
         console.error('MoMo error:', err);
         res.status(500).json({ error: 'Failed to process MoMo payment' });
+    }
+});
+
+
+// ============================================
+// BOOKINGS ROUTES
+// ============================================
+
+// List bookings (admin)
+app.get('/api/bookings', verifyToken, (req, res) => {
+    try {
+        const bookings = db.prepare('SELECT * FROM bookings ORDER BY created_at DESC').all();
+        res.json(bookings);
+    } catch (err) {
+        console.error('Bookings fetch error:', err);
+        res.status(500).json({ error: 'Failed to fetch bookings' });
+    }
+});
+
+// Create a new booking (public)
+app.post('/api/bookings', (req, res) => {
+    const { name, email, phone, attendees, eventId } = req.body;
+
+    if (!name || !email || !attendees || !eventId) {
+        return res.status(400).json({ error: 'Name, email, attendees and eventId are required' });
+    }
+
+    try {
+        const event = db.prepare('SELECT * FROM events WHERE id = ?').get(eventId);
+        if (!event) {
+            return res.status(400).json({ error: 'Event not found' });
+        }
+
+        const totalBookedRow = db.prepare('SELECT IFNULL(SUM(attendees),0) as booked FROM bookings WHERE event_id = ?').get(eventId);
+        const alreadyBooked = totalBookedRow.booked || 0;
+
+        if (alreadyBooked + Number(attendees) > event.capacity) {
+            return res.status(400).json({ error: 'Not enough spots available' });
+        }
+
+        const result = db.prepare(`
+            INSERT INTO bookings (name, email, phone, attendees, event_id, event_title)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `).run(name, email, phone || '', attendees, eventId, event.title);
+
+        // send notification emails
+        const adminMsg = `New booking for event '${event.title}':\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nAttendees: ${attendees}`;
+        emailTransporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER,
+            subject: `New booking received`,
+            text: adminMsg
+        }).catch(console.error);
+
+        if (email) {
+            emailTransporter.sendMail({
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: 'Booking confirmation - Creative Roots Rwanda',
+                text: `Thank you, ${name}. Your booking for '${event.title}' has been received. We will contact you shortly.`
+            }).catch(console.error);
+        }
+
+        res.json({ success: true, bookingId: result.lastInsertRowid });
+    } catch (err) {
+        console.error('Booking creation error:', err);
+        res.status(500).json({ error: 'Failed to create booking' });
+    }
+});
+
+// Delete a booking (admin)
+app.delete('/api/bookings/:id', verifyToken, (req, res) => {
+    const { id } = req.params;
+    try {
+        db.prepare('DELETE FROM bookings WHERE id = ?').run(id);
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Delete booking error:', err);
+        res.status(500).json({ error: 'Failed to delete booking' });
+    }
+});
+
+// ============================================
+// CONTACT ROUTES
+// ============================================
+
+app.post('/api/contact', (req, res) => {
+    const { name, email, subject, message } = req.body;
+
+    if (!message) {
+        return res.status(400).json({ error: 'Message is required' });
+    }
+
+    try {
+        const result = db.prepare(`
+            INSERT INTO contact_messages (name, email, subject, message)
+            VALUES (?, ?, ?, ?)
+        `).run(name || '', email || '', subject || '', message);
+
+        const adminText = `New contact message:\nName: ${name || 'N/A'}\nEmail: ${email || 'N/A'}\nSubject: ${subject || 'N/A'}\n\n${message}`;
+        emailTransporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER,
+            subject: 'New contact form submission',
+            text: adminText
+        }).catch(console.error);
+
+        if (email) {
+            emailTransporter.sendMail({
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: 'We received your message',
+                text: `Thank you for reaching out to Creative Roots Rwanda. We have received your message and will respond as soon as possible.`
+            }).catch(console.error);
+        }
+
+        res.json({ success: true, messageId: result.lastInsertRowid });
+    } catch (err) {
+        console.error('Contact save error:', err);
+        res.status(500).json({ error: 'Failed to save message' });
+    }
+});
+
+// allow admin to view messages
+app.get('/api/contact', verifyToken, (req, res) => {
+    try {
+        const msgs = db.prepare('SELECT * FROM contact_messages ORDER BY created_at DESC').all();
+        res.json(msgs);
+    } catch (err) {
+        console.error('Fetch contact messages error:', err);
+        res.status(500).json({ error: 'Failed to fetch messages' });
     }
 });
 

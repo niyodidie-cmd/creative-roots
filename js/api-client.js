@@ -248,6 +248,38 @@ class APIClient {
             body: JSON.stringify({ donor_name, donor_email, donor_phone, amount })
         });
     }
+
+    // ============================================
+    // BOOKINGS
+    // ============================================
+    async getBookings() {
+        return this.request('/bookings');
+    }
+
+    async createBooking(data) {
+        return this.request('/bookings', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async deleteBooking(id) {
+        return this.request(`/bookings/${id}`, { method: 'DELETE' });
+    }
+
+    // ============================================
+    // CONTACT
+    // ============================================
+    async submitContact(formData) {
+        return this.request('/contact', {
+            method: 'POST',
+            body: JSON.stringify(formData)
+        });
+    }
+
+    async getContactMessages() {
+        return this.request('/contact');
+    }
 }
 
 // Global API client instance

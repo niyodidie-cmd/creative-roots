@@ -255,44 +255,51 @@ function initModalBackdrop() {
 // 7. EVENTS DISPLAY
 // ============================================
 
-function initEvents() {
+async function initEvents() {
     const eventsGrid = document.getElementById('events-grid');
     if (!eventsGrid) return;
 
-    displayEvents();
+    await displayEvents();
     window.addEventListener('languageChanged', displayEvents);
 }
 
-function displayEvents() {
+async function displayEvents() {
     const eventsGrid = document.getElementById('events-grid');
     if (!eventsGrid) return;
 
-    const events = StorageManager.getEvents();
+    let events = [];
+    try {
+        const data = await api.getEvents();
+        events = data || [];
+    } catch (err) {
+        console.error('Failed to load events:', err);
+    }
+
     eventsGrid.innerHTML = '';
 
     events.forEach(event => {
-        const spotsLeft = event.capacity - event.booked;
+        const spotsLeft = event.capacity - (event.booked || 0);
         const isFull = spotsLeft <= 0;
 
         const eventCard = document.createElement('div');
         eventCard.className = 'event-card fade-on-scroll';
         eventCard.innerHTML = `
             <div class="event-image">
-                <img src="${event.image}" alt="${event.title}" onerror="this.src='images/Gemini_Generated_Image_9qcfyd9qcfyd9qcf.png';">
+                <img src="${event.image_url || event.image || ''}" alt="${event.title}" onerror="this.src='images/Gemini_Generated_Image_9qcfyd9qcfyd9qcf.png';" loading="lazy">
             </div>
             <div class="event-content">
                 <h3>${event.title}</h3>
-                <p>${event.description}</p>
+                <p>${event.description || ''}</p>
                 <div class="event-details">
                     <span>📅 ${event.date}</span>
-                    <span>⏰ ${event.time}</span>
-                    <span>📍 ${event.location}</span>
+                    <span>⏰ ${event.time || ''}</span>
+                    <span>📍 ${event.location || ''}</span>
                 </div>
                 <div class="event-capacity">
                     <div class="capacity-bar">
-                        <div class="capacity-fill" style="width: ${(event.booked / event.capacity) * 100}%"></div>
+                        <div class="capacity-fill" style="width: ${event.capacity ? ((event.booked || 0) / event.capacity) * 100 : 0}%"></div>
                     </div>
-                    <p>${event.booked}/${event.capacity} ${LanguageManager.t('events.capacity')}</p>
+                    <p>${event.booked || 0}/${event.capacity || 0} ${LanguageManager.t('events.capacity')}</p>
                 </div>
                 <button class="btn btn-primary event-book-btn" data-event-id="${event.id}" ${isFull ? 'disabled' : ''}>
                     ${isFull ? LanguageManager.t('events.full') : LanguageManager.t('events.book')}
@@ -374,46 +381,47 @@ function createBookingModal() {
     return modal;
 }
 
-function submitBooking(e) {
+async function submitBooking(e) {
     e.preventDefault();
 
     if (!selectedEventForBooking) return;
 
-    const name = document.getElementById('bookingName').value;
-    const email = document.getElementById('bookingEmail').value;
-    const phone = document.getElementById('bookingPhone').value;
-    const attendees = parseInt(document.getElementById('bookingAttendees').value);
+    const name = document.getElementById('bookingName').value.trim();
+    const email = document.getElementById('bookingEmail').value.trim();
+    const phone = document.getElementById('bookingPhone').value.trim();
+    const attendees = parseInt(document.getElementById('bookingAttendees').value, 10);
 
     const event = selectedEventForBooking;
-    const spotsLeft = event.capacity - event.booked;
+    const spotsLeft = event.capacity - (event.booked || 0);
 
     if (attendees > spotsLeft) {
         alert(`Only ${spotsLeft} spots available`);
         return;
     }
 
-    const booking = {
-        name,
-        email,
-        phone,
-        attendees,
-        eventId: event.id,
-        eventTitle: event.title
-    };
+    try {
+        const resp = await api.createBooking({
+            name,
+            email,
+            phone,
+            attendees,
+            eventId: event.id
+        });
 
-    StorageManager.addBooking(booking);
-
-    const modal = document.getElementById('bookingModal');
-    modal.style.display = 'none';
-
-    document.getElementById('bookingForm').reset();
-
-    showNotification(
-        LanguageManager.t('booking.success'),
-        LanguageManager.t('booking.message')
-    );
-
-    displayEvents();
+        if (resp && resp.success) {
+            showNotification(
+                LanguageManager.t('booking.success'),
+                LanguageManager.t('booking.message')
+            );
+            const modal = document.getElementById('bookingModal');
+            modal.style.display = 'none';
+            document.getElementById('bookingForm').reset();
+            await displayEvents();
+        }
+    } catch (err) {
+        console.error('Booking failed:', err);
+        alert(err.message || 'Booking could not be completed');
+    }
 }
 
 // ============================================

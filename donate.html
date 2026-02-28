@@ -316,7 +316,7 @@
                 <li><a href="index.html#impact" class="nav-link" data-i18n="nav.impact">Impact</a></li>
                 <li><a href="index.html#gallery" class="nav-link" data-i18n="nav.gallery">Gallery</a></li>
                 <li><a href="donate.html" class="nav-link donate-btn" data-i18n="nav.donate">Donate</a></li>
-                <li><a href="admin/login.html" class="nav-link admin-link" data-i18n="nav.admin">Admin</a></li>
+                <!-- admin link removed, use /secure-admin-portal -->
             </ul>
 
             <div class="hamburger">
@@ -383,6 +383,12 @@
                     <div class="form-group">
                         <label for="email" data-i18n="booking.email">Email Address *</label>
                         <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+
+                    <!-- Phone (for mobile money) -->
+                    <div class="form-group" id="phoneGroup" style="display:none;">
+                        <label for="phone">Phone Number (required for mobile money)</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+250XXXXXXXXX">
                     </div>
 
                     <!-- Donation Amount - Quick Select -->
