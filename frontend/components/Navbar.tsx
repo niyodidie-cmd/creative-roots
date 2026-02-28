@@ -68,12 +68,7 @@ export default function Navbar() {
               Donate
             </Link>
           </li>
-          <li>
-            <Link href="/secure-admin-login" className="text-sm text-dark-charcoal hover:text-warm-brown transition ml-4">
-              Admin
-            </Link>
-          </li>
-          <li className="flex gap-2 border-l border-gray-300 pl-4">
+          <li className="flex gap-2 border-l border-gray-300 pl-4 items-center">
             <button
               onClick={() => handleLanguageChange('en')}
               className={`font-semibold ${
@@ -91,6 +86,10 @@ export default function Navbar() {
             >
               FR
             </button>
+            <span className="text-gray-300 mx-1">•</span>
+            <Link href="/secure-admin-login" className="text-xs text-gray-500 hover:text-warm-brown transition font-medium">
+              Admin
+            </Link>
           </li>
         </ul>
 
@@ -134,6 +133,11 @@ export default function Navbar() {
           <li>
             <Link href="/donate" className="block px-6 py-3 bg-warm-brown text-cream font-semibold">
               Donate
+            </Link>
+          </li>
+          <li>
+            <Link href="/secure-admin-login" className="block px-6 py-3 hover:bg-cream text-sm text-gray-600">
+              Admin Login
             </Link>
           </li>
         </ul>
