@@ -74,11 +74,21 @@ export default function Footer() {
                 info@creativeroots.rw
               </a>
             </p>
-            <p className="text-sm">
+            <p className="text-sm mb-2">
               Phone:{' '}
               <a href="tel:+250792505680" className="hover:text-soft-gold transition">
                 +250 792 505 680
               </a>
+            </p>
+            <p className="text-sm">
+              Follow us on{' '}
+              <a href="https://instagram.com/creativerootsRW" target="_blank" className="underline hover:text-soft-gold">
+                Instagram (@creativerootsRW)
+              </a>{' '}
+              and{' '}
+              <a href="https://facebook.com/creativerootsRW" target="_blank" className="underline hover:text-soft-gold">
+                Facebook
+              </a>.
             </p>
           </div>
         </div>

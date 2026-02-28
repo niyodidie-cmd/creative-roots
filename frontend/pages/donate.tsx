@@ -87,6 +87,14 @@ export default function Donate() {
       <Section className="bg-cream min-h-screen">
           <h1 className="text-4xl font-bold text-warm-brown mb-6 text-center">Support Our Mission</h1>
 
+          <div className="mb-6 max-w-3xl mx-auto text-center">
+            <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded">
+              <strong>Note:</strong> Stripe and Flutterwave are not configured on this site.
+              If you prefer card payments, please <a href="mailto:donations@creativeroots.rw" className="underline">email us</a> or contact us on WhatsApp at
+              <a href="https://wa.me/250792505680" className="underline ml-1">+250 792 505 680</a> so we can arrange a payment method.
+            </div>
+          </div>
+
           {donationMethod === 'momo' && (
             <p className="text-sm text-dark-charcoal mb-4">
               MTN MoMo account: <strong>{process.env.NEXT_PUBLIC_MOMO_ACCOUNT || ''}</strong>

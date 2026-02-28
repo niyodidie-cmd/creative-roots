@@ -121,6 +121,19 @@ export default function Contact() {
                 Send Message
               </button>
             </form>
+
+            <div className="mt-8 text-center text-sm text-gray-700">
+              <p>Or connect with us on social media:</p>
+              <p>
+                <a href="https://instagram.com/creativerootsRW" target="_blank" className="underline">
+                  Instagram (@creativerootsRW)
+                </a>{' '}
+                |{' '}
+                <a href="https://facebook.com/creativerootsRW" target="_blank" className="underline">
+                  Facebook
+                </a>
+              </p>
+            </div>
           </div>
       </Section>
 
