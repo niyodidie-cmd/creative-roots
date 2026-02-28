@@ -134,8 +134,7 @@ export default function Events() {
               ))}
             </div>
           )}
-        </div>
-      </section>
+      </Section>
 
       {/* Booking Modal */}
       {selectedEvent && (

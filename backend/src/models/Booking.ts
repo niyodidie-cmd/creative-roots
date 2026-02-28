@@ -7,6 +7,10 @@ export interface IBooking extends Document {
   attendees: number;
   eventId: mongoose.Types.ObjectId;
   eventTitle: string;
+  status: 'pending' | 'confirmed' | 'completed';
+  amount?: number;
+  paymentMethod?: string;
+  transactionId?: string;
   createdAt: Date;
 }
 
@@ -40,6 +44,21 @@ const bookingSchema = new Schema<IBooking>(
     eventTitle: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'confirmed', 'completed'],
+      default: 'pending',
+      index: true,
+    },
+    amount: {
+      type: Number,
+    },
+    paymentMethod: {
+      type: String,
+    },
+    transactionId: {
+      type: String,
     },
   },
   { timestamps: true }

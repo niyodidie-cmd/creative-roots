@@ -73,8 +73,7 @@ export default function Gallery() {
               ))}
             </div>
           )}
-        </div>
-      </section>
+      </Section>
 
       <Footer />
     </>

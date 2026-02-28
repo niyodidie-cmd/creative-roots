@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Navbar from '@components/Navbar';
 import Footer from '@components/Footer';
+import Section from '@components/Section';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -46,9 +47,8 @@ export default function Contact() {
 
       <Navbar />
 
-      <section className="pt-32 pb-20 bg-cream min-h-screen">
-        <div className="max-w-2xl mx-auto px-6">
-          <h1 className="text-4xl font-bold text-warm-brown mb-12">Get In Touch</h1>
+      <Section className="bg-cream min-h-screen">
+          <h1 className="text-4xl font-bold text-warm-brown mb-12 text-center">Contact Us</h1>
 
           {submitted && (
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
@@ -122,8 +122,7 @@ export default function Contact() {
               </button>
             </form>
           </div>
-        </div>
-      </section>
+      </Section>
 
       <Footer />
     </>

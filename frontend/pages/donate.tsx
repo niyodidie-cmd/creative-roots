@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Navbar from '@components/Navbar';
 import Footer from '@components/Footer';
+import Section from '@components/Section';
 
 export default function Donate() {
   const [donationMethod, setDonationMethod] = useState<'momo' | 'bank' | 'contact'>('momo');
@@ -83,9 +84,8 @@ export default function Donate() {
 
       <Navbar />
 
-      <section className="pt-32 pb-20 bg-cream min-h-screen">
-        <div className="max-w-2xl mx-auto px-6">
-          <h1 className="text-4xl font-bold text-warm-brown mb-6">Support Our Mission</h1>
+      <Section className="bg-cream min-h-screen">
+          <h1 className="text-4xl font-bold text-warm-brown mb-6 text-center">Support Our Mission</h1>
 
           {donationMethod === 'momo' && (
             <p className="text-sm text-dark-charcoal mb-4">
@@ -225,8 +225,7 @@ export default function Donate() {
               empowering creative talents across Rwanda.
             </p>
           </div>
-        </div>
-      </section>
+      </Section>
 
       <Footer />
     </>

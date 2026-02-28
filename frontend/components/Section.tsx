@@ -8,7 +8,7 @@ interface SectionProps {
 export default function Section({ children, className = '' }: SectionProps) {
   return (
     <section
-      className={`w-full px-6 py-14 ${className}`}
+      className={`w-full px-5 py-[60px] ${className}`}
       style={{ maxWidth: '100%' }}
     >
       <div className="max-w-[1200px] mx-auto">{children}</div>

@@ -57,6 +57,8 @@ router.get('/admin/stats', verifyToken, eventsController.getAdminStats);
 router.get('/bookings', verifyToken, bookingsController.getAllBookings);
 router.post('/bookings', bookingsController.createBooking);
 router.delete('/bookings/:id', verifyToken, bookingsController.deleteBooking);
+router.put('/bookings/:id/status', verifyToken, bookingsController.updateBookingStatus);
+router.get('/bookings/stats', verifyToken, bookingsController.getBookingStats);
 router.get('/bookings/export/csv', verifyToken, bookingsController.exportBookingsCSV);
 
 // ============================================

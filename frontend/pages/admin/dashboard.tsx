@@ -5,10 +5,12 @@ import AdminSidebar from '@components/AdminSidebar';
 import AdminStats from '@components/AdminStats';
 
 interface DashboardStats {
-  donations: { count: number; total: number };
-  gallery: number;
-  videos: number;
-  blogPosts: number;
+  events: number;
+  bookings: number;
+  donations: number;
+  totalRevenue: number;
+  recentBookings: Array<{ _id: string; name: string; email: string; attendees: number; eventTitle: string; status?: string; amount?: number; createdAt: string }>;
+  recentDonations: Array<{ _id: string; donorName: string; donorEmail?: string; donorPhone?: string; amount: number; status: string; createdAt: string }>;
 }
 
 export default function AdminDashboard() {
