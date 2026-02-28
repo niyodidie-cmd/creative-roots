@@ -21,7 +21,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-nav-height flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 cursor-pointer">
-          <img src="/images/logo.png" alt="Creative Roots" className="h-10 w-10" />
+          <img src="/images/logo.png" alt="Creative Roots" className="h-14 w-14" />
         </Link>
 
         {/* Desktop Menu */}

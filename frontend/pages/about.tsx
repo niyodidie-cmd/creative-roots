@@ -17,21 +17,28 @@ export default function About() {
         <div className="w-full px-6">
           <h1 className="text-4xl font-bold text-warm-brown mb-8 text-center">About Creative Roots Rwanda</h1>
 
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-warm-brown mb-4">Who We Are</h2>
-            <p className="text-lg text-dark-charcoal mb-4">
-              Founded by NIYOMUKIZA Didier, Creative Roots Rwanda is a grassroots creative
-              initiative born from the passion to unlock potential in Rwandan youth. We
-              operate as a 100% volunteer-led organization, demonstrating that transformative
-              change doesn’t require institutional overhead—it requires heart, dedication,
-              and belief in people.
-            </p>
-            <p className="text-lg text-dark-charcoal">
-              We work with young people aged 10–30, in and out of school, creating safe
-              spaces where art becomes a tool for self-discovery, confidence building, and
-              community engagement. Whether through sculpture, painting, or personal
-              storytelling, we help young people find their voice.
-            </p>
+          <div className="mb-12 bg-white rounded-lg shadow-md overflow-hidden">
+            <h2 className="text-3xl font-bold text-warm-brown mb-6 p-6 text-center">Who We Are</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+              <div className="flex items-center justify-center">
+                <img src="/images/hero/about-who-we-are.jpg" alt="Creative Roots Team" className="w-full h-auto rounded-lg object-cover" />
+              </div>
+              <div className="flex flex-col justify-center space-y-4">
+                <p className="text-lg text-dark-charcoal">
+                  Founded by NIYOMUKIZA Didier, Creative Roots Rwanda is a grassroots creative
+                  initiative born from the passion to unlock potential in Rwandan youth. We
+                  operate as a 100% volunteer-led organization, demonstrating that transformative
+                  change doesn't require institutional overhead—it requires heart, dedication,
+                  and belief in people.
+                </p>
+                <p className="text-lg text-dark-charcoal">
+                  We work with young people aged 10–30, in and out of school, creating safe
+                  spaces where art becomes a tool for self-discovery, confidence building, and
+                  community engagement. Whether through sculpture, painting, or personal
+                  storytelling, we help young people find their voice.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

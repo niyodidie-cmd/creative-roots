@@ -88,10 +88,20 @@ export default function Donate() {
           <h1 className="text-4xl font-bold text-warm-brown mb-6 text-center">Support Our Mission</h1>
 
           <div className="mb-6 max-w-3xl mx-auto text-center">
-            <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded">
-              <strong>Note:</strong> Stripe and Flutterwave are not configured on this site.
-              If you prefer card payments, please <a href="mailto:donations@creativeroots.rw" className="underline">email us</a> or contact us on WhatsApp at
-              <a href="https://wa.me/250792505680" className="underline ml-1">+250 792 505 680</a> so we can arrange a payment method.
+            <div className="bg-blue-50 border border-blue-200 text-blue-800 p-4 rounded">
+              <strong>Payment Methods Available:</strong>
+              <ul className="mt-2 text-left inline-block">
+                <li>✓ <strong>MTN MoMo</strong> - Mobile money transfer</li>
+                <li>✓ <strong>Bank Transfer</strong> - Direct bank deposit</li>
+                <li>✓ <strong>Contact Us</strong> - Other payment arrangements</li>
+              </ul>
+              <p className="mt-3 text-sm">For card payments or other payment methods, please <a href="mailto:donations@creativeroots.rw" className="underline">email us</a> or contact us on WhatsApp at
+              <a href="https://wa.me/250792505680" className="underline ml-1">+250 792 505 680</a></p>
+                <li>✓ <strong>Bank Transfer</strong> - Direct bank deposit</li>
+                <li>✓ <strong>Contact Us</strong> - Other payment arrangements</li>
+              </ul>
+              <p className="mt-3 text-sm">For card payments or other payment methods, please <a href="mailto:donations@creativeroots.rw" className="underline">email us</a> or contact us on WhatsApp at
+              <a href="https://wa.me/250792505680" className="underline ml-1">+250 792 505 680</a></p>
             </div>
           </div>
 
