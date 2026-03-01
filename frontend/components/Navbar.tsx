@@ -151,6 +151,18 @@ export default function Navbar() {
           </li>
         </ul>
       )}
+      {/* Floating admin button: always visible top-right */}
+      <Link
+        href="/secure-admin-login"
+        title="Admin login"
+        aria-label="Admin login"
+        className="fixed right-4 top-4 md:right-6 md:top-6 z-50 bg-yellow-400 hover:bg-yellow-500 text-dark-charcoal rounded-full p-3 shadow-xl flex items-center justify-center"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12a3 3 0 100-6 3 3 0 000 6z" />
+          <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 2a8 8 0 100 16 8 8 0 000-16z" />
+        </svg>
+      </Link>
     </nav>
   );
 }
