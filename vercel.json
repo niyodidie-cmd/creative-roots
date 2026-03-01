@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "buildCommand": "npm run vercel-build",
+  "engines": {
+    "node": "24.x"
+  }
+}
