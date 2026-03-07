@@ -5,6 +5,7 @@ export interface IContactMessage extends Document {
   email?: string;
   subject?: string;
   message: string;
+  read: boolean;
   createdAt: Date;
 }
 
@@ -26,6 +27,10 @@ const contactMessageSchema = new Schema<IContactMessage>(
     message: {
       type: String,
       required: true,
+    },
+    read: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

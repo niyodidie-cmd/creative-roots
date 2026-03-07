@@ -1,12 +1,18 @@
 import { Request, Response } from 'express';
 import Booking from '../models/Booking';
 import Event from '../models/Event';
+import ActivityLog from '../models/ActivityLog';
 import { sendBookingConfirmation } from '../utils/mailer';
 import whatsappService from '../utils/whatsapp';
 
 export const getAllBookings = async (req: Request, res: Response): Promise<void> => {
   try {
-    const bookings = await Booking.find()
+    const { status } = req.query;
+    const filter: any = {};
+
+    if (status) filter.status = status;
+
+    const bookings = await Booking.find(filter)
       .populate('eventId', 'title date location')
       .sort({ createdAt: -1 });
 
@@ -14,6 +20,23 @@ export const getAllBookings = async (req: Request, res: Response): Promise<void>
   } catch (error: any) {
     console.error('Bookings fetch error:', error);
     res.status(500).json({ error: 'Failed to fetch bookings' });
+  }
+};
+
+export const getBookingById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const booking = await Booking.findById(id).populate('eventId', 'title date location');
+
+    if (!booking) {
+      res.status(404).json({ error: 'Booking not found' });
+      return;
+    }
+
+    res.json(booking);
+  } catch (error: any) {
+    console.error('Booking fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch booking' });
   }
 };
 
@@ -31,8 +54,6 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
       res.status(400).json({ error: 'Amount must be positive' });
       return;
     }
-
-    // Placeholder: can connect to Stripe or MoMo API here and record transactionId
 
     const event = await Event.findById(eventId);
     if (!event) {
@@ -65,6 +86,14 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
 
     await booking.save();
 
+    // Log activity
+    await ActivityLog.create({
+      action: 'booking_created',
+      description: `New booking for ${event.title} by ${name}`,
+      entityType: 'booking',
+      entityId: booking._id,
+    });
+
     // Send confirmation email
     try {
       await sendBookingConfirmation(email, name, event.title);
@@ -89,15 +118,75 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
   }
 };
 
+export const updateBookingStatus = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!['pending', 'confirmed', 'completed', 'cancelled'].includes(status)) {
+      res.status(400).json({ error: 'Invalid status' });
+      return;
+    }
+
+    const booking = await Booking.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    ).populate('eventId', 'title');
+
+    if (!booking) {
+      res.status(404).json({ error: 'Booking not found' });
+      return;
+    }
+
+    // Log activity
+    await ActivityLog.create({
+      action: 'booking_status_update',
+      description: `Updated booking status to ${status}: ${booking.eventTitle} - ${booking.name}`,
+      adminId: req.admin?.id,
+      adminUsername: req.admin?.username,
+      entityType: 'booking',
+      entityId: booking._id,
+    });
+
+    res.json({
+      success: true,
+      booking,
+    });
+  } catch (error: any) {
+    console.error('Booking update error:', error);
+    res.status(500).json({ error: 'Failed to update booking' });
+  }
+};
+
 export const deleteBooking = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
 
+    const booking = await Booking.findById(id);
+    if (!booking) {
+      res.status(404).json({ error: 'Booking not found' });
+      return;
+    }
+
     await Booking.findByIdAndDelete(id);
+
+    // Log activity
+    await ActivityLog.create({
+      action: 'delete',
+      description: `Deleted booking: ${booking.eventTitle} - ${booking.name}`,
+      adminId: req.admin?.id,
+      adminUsername: req.admin?.username,
+      entityType: 'booking',
+      entityId: id,
+    });
 
     res.json({ success: true });
   } catch (error: any) {
     console.error('Booking deletion error:', error);
+    res.status(500).json({ error: 'Failed to delete booking' });
+  }
+};
     res.status(500).json({ error: 'Failed to delete booking' });
   }
 };

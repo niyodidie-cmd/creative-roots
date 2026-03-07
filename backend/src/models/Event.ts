@@ -4,9 +4,12 @@ export interface IEvent extends Document {
   title: string;
   description: string;
   date: Date;
+  time?: string;
   location: string;
   capacity: number;
   imageUrl?: string;
+  published: boolean;
+  status: 'upcoming' | 'past';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,6 +30,10 @@ const eventSchema = new Schema<IEvent>(
       required: true,
       index: true,
     },
+    time: {
+      type: String,
+      trim: true,
+    },
     location: {
       type: String,
       trim: true,
@@ -37,6 +44,15 @@ const eventSchema = new Schema<IEvent>(
       min: 0,
     },
     imageUrl: String,
+    published: {
+      type: Boolean,
+      default: true,
+    },
+    status: {
+      type: String,
+      enum: ['upcoming', 'past'],
+      default: 'upcoming',
+    },
   },
   { timestamps: true }
 );

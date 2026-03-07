@@ -4,7 +4,9 @@ export interface IGalleryItem extends Document {
   title: string;
   description?: string;
   imageUrl: string;
+  mediaType: 'image' | 'video';
   category?: string;
+  featured: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,10 +26,19 @@ const galleryItemSchema = new Schema<IGalleryItem>(
       type: String,
       required: true,
     },
+    mediaType: {
+      type: String,
+      enum: ['image', 'video'],
+      default: 'image',
+    },
     category: {
       type: String,
       default: 'Artwork',
       index: true,
+    },
+    featured: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

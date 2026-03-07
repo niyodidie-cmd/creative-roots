@@ -5,12 +5,17 @@ import AdminSidebar from '@components/AdminSidebar';
 import AdminStats from '@components/AdminStats';
 
 interface DashboardStats {
-  events: number;
-  bookings: number;
-  donations: number;
-  totalRevenue: number;
-  recentBookings: Array<{ _id: string; name: string; email: string; attendees: number; eventTitle: string; status?: string; amount?: number; createdAt: string }>;
-  recentDonations: Array<{ _id: string; donorName: string; donorEmail?: string; donorPhone?: string; amount: number; status: string; createdAt: string }>;
+  totalEvents: number;
+  totalGalleryItems: number;
+  totalMessages: number;
+  totalVisitors: number;
+  recentActivity: Array<{
+    _id: string;
+    action: string;
+    description: string;
+    adminUsername?: string;
+    createdAt: string;
+  }>;
 }
 
 export default function AdminDashboard() {
@@ -20,7 +25,7 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchDashboardData = async () => {
       try {
         const token = localStorage.getItem('adminToken');
         if (!token) {
@@ -28,24 +33,48 @@ export default function AdminDashboard() {
           return;
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/stats`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        // Fetch counts from different endpoints
+        const [eventsRes, galleryRes, messagesRes, visitorsRes, activityRes] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/events`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gallery`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/visitors/stats?period=30`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/activity-logs/recent`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-        if (res.ok) {
-          const data = await res.json();
-          setStats(data);
+        if (eventsRes.ok && galleryRes.ok && messagesRes.ok && visitorsRes.ok && activityRes.ok) {
+          const [events, gallery, messages, visitors, activity] = await Promise.all([
+            eventsRes.json(),
+            galleryRes.json(),
+            messagesRes.json(),
+            visitorsRes.json(),
+            activityRes.json(),
+          ]);
+
+          setStats({
+            totalEvents: events.length,
+            totalGalleryItems: gallery.length,
+            totalMessages: messages.length,
+            totalVisitors: visitors.totalVisitors,
+            recentActivity: activity,
+          });
         } else {
           router.push('/admin/login');
         }
       } catch (error) {
-        console.error('Failed to fetch stats:', error);
+        console.error('Failed to fetch dashboard data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStats();
+    fetchDashboardData();
   }, [router]);
 
   return (
@@ -76,6 +105,32 @@ export default function AdminDashboard() {
             ) : (
               <>
                 <h2 className="text-3xl font-bold text-dark-charcoal mb-8">Welcome Back</h2>
+
+                {/* Quick Action Buttons */}
+                <div className="grid md:grid-cols-3 gap-4 mb-8">
+                  <button
+                    onClick={() => router.push('/admin/events')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition flex items-center justify-center gap-3"
+                  >
+                    <span className="text-2xl">➕</span>
+                    Add Event
+                  </button>
+                  <button
+                    onClick={() => router.push('/admin/gallery')}
+                    className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition flex items-center justify-center gap-3"
+                  >
+                    <span className="text-2xl">➕</span>
+                    Add Gallery Item
+                  </button>
+                  <button
+                    onClick={() => router.push('/admin/stories')}
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition flex items-center justify-center gap-3"
+                  >
+                    <span className="text-2xl">➕</span>
+                    Add Testimonial
+                  </button>
+                </div>
+
                 {stats && <AdminStats stats={stats} />}
               </>
             )}

@@ -37,13 +37,23 @@ export default function Navbar() {
             </button>
             <ul className="absolute left-0 mt-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
               <li>
-                <Link href="/about" className="block px-4 py-2 hover:bg-cream">
+                <Link href="/about/who-we-are" className="block px-4 py-2 hover:bg-cream">
                   Who We Are
                 </Link>
               </li>
               <li>
-                <Link href="/about#mission" className="block px-4 py-2 hover:bg-cream">
-                  Mission & Vision
+                <Link href="/about/mission" className="block px-4 py-2 hover:bg-cream">
+                  Our Mission
+                </Link>
+              </li>
+              <li>
+                <Link href="/about/vision" className="block px-4 py-2 hover:bg-cream">
+                  Our Vision
+                </Link>
+              </li>
+              <li>
+                <Link href="/about/founder" className="block px-4 py-2 hover:bg-cream">
+                  Our Founder
                 </Link>
               </li>
             </ul>
@@ -87,7 +97,7 @@ export default function Navbar() {
               FR
             </button>
             <span className="text-gray-300 mx-1">•</span>
-            <Link href="/secure-admin-login" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-300 hover:bg-yellow-400 text-dark-charcoal font-bold transition shadow-md">
+            <Link href="/secure-admin-login" className="flex items-center gap-2 px-3 py-1 rounded-lg bg-yellow-300 hover:bg-yellow-400 text-dark-charcoal font-semibold text-sm transition shadow-md">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 12a3 3 0 100-6 3 3 0 000 6z" />
                 <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 2a8 8 0 100 16 8 8 0 000-16zm0 2a2 2 0 100 4 2 2 0 000-4zm0 8a5 5 0 00-4.546 2.664A5.99 5.99 0 0012 20a5.99 5.99 0 004.546-2.336A5 5 0 0012 14z" />

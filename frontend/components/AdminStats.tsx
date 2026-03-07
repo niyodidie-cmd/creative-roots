@@ -1,31 +1,17 @@
-interface Booking {
+interface Activity {
   _id: string;
-  name: string;
-  email: string;
-  attendees: number;
-  eventTitle: string;
-  status?: string;
-  amount?: number;
-  createdAt: string;
-}
-
-interface Donation {
-  _id: string;
-  donorName: string;
-  donorEmail?: string;
-  donorPhone?: string;
-  amount: number;
-  status: string;
+  action: string;
+  description: string;
+  adminUsername?: string;
   createdAt: string;
 }
 
 interface Stats {
-  events: number;
-  bookings: number;
-  donations: number;
-  totalRevenue: number;
-  recentBookings: Booking[];
-  recentDonations: Donation[];
+  totalEvents: number;
+  totalGalleryItems: number;
+  totalMessages: number;
+  totalVisitors: number;
+  recentActivity: Activity[];
 }
 
 interface AdminStatsProps {
@@ -35,25 +21,32 @@ interface AdminStatsProps {
 export default function AdminStats({ stats }: AdminStatsProps) {
   const cards = [
     {
-      title: 'Total Bookings',
-      value: stats.bookings,
-      subtext: '',
+      title: 'Total Events',
+      value: stats.totalEvents,
+      subtext: 'Active events',
       icon: '📅',
-      color: 'from-indigo-500 to-indigo-600',
+      color: 'from-blue-500 to-blue-600',
     },
     {
-      title: 'Total Donations',
-      value: stats.donations,
-      subtext: `${stats.totalRevenue.toLocaleString()} RWF`,
-      icon: '💰',
+      title: 'Gallery Items',
+      value: stats.totalGalleryItems,
+      subtext: 'Photos & videos',
+      icon: '🖼',
+      color: 'from-purple-500 to-purple-600',
+    },
+    {
+      title: 'Messages',
+      value: stats.totalMessages,
+      subtext: 'Contact inquiries',
+      icon: '📩',
       color: 'from-green-500 to-green-600',
     },
     {
-      title: 'Revenue',
-      value: stats.totalRevenue.toLocaleString(),
-      subtext: 'RWF',
-      icon: '💵',
-      color: 'from-yellow-500 to-yellow-600',
+      title: 'Visitors',
+      value: stats.totalVisitors,
+      subtext: 'This month',
+      icon: '👥',
+      color: 'from-orange-500 to-orange-600',
     },
   ];
 
@@ -75,38 +68,34 @@ export default function AdminStats({ stats }: AdminStatsProps) {
         ))}
       </div>
 
-      {/* recent activity lists */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-xl font-semibold mb-4">Recent Bookings</h3>
-          {stats.recentBookings.length === 0 ? (
-            <p className="text-sm text-gray-600">No recent bookings.</p>
-          ) : (
-            <ul className="space-y-2">
-              {stats.recentBookings.map((b) => (
-                <li key={b._id} className="flex justify-between text-sm">
-                  <span>{b.name} ({b.attendees})</span>
-                  <span className="text-gray-500">{new Date(b.createdAt).toLocaleDateString()}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-xl font-semibold mb-4">Recent Donations</h3>
-          {stats.recentDonations.length === 0 ? (
-            <p className="text-sm text-gray-600">No recent donations.</p>
-          ) : (
-            <ul className="space-y-2">
-              {stats.recentDonations.map((d) => (
-                <li key={d._id} className="flex justify-between text-sm">
-                  <span>{d.donorName} ({d.amount})</span>
-                  <span className="text-gray-500">{new Date(d.createdAt).toLocaleDateString()}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+      {/* Recent Activity */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h3 className="text-xl font-semibold mb-4">Recent Activity</h3>
+        {stats.recentActivity.length === 0 ? (
+          <p className="text-sm text-gray-600">No recent activity.</p>
+        ) : (
+          <ul className="space-y-3">
+            {stats.recentActivity.map((activity) => (
+              <li key={activity._id} className="flex justify-between items-start text-sm border-b pb-2">
+                <div className="flex-1">
+                  <p className="font-medium">{activity.description}</p>
+                  <p className="text-gray-500 text-xs">
+                    {activity.adminUsername && `by ${activity.adminUsername} • `}
+                    {new Date(activity.createdAt).toLocaleString()}
+                  </p>
+                </div>
+                <span className={`px-2 py-1 rounded text-xs ${
+                  activity.action === 'create' ? 'bg-green-100 text-green-800' :
+                  activity.action === 'update' ? 'bg-blue-100 text-blue-800' :
+                  activity.action === 'delete' ? 'bg-red-100 text-red-800' :
+                  'bg-gray-100 text-gray-800'
+                }`}>
+                  {activity.action}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );

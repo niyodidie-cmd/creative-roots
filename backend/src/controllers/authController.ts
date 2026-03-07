@@ -45,25 +45,31 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const getProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, password, email } = req.body;
-
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
-    if (existingUser) {
-      res.status(400).json({ error: 'Username or email already exists' });
+    if (!req.admin?.id) {
+      res.status(401).json({ error: 'Not authenticated' });
       return;
     }
 
-    const user = new User({ username, password, email });
-    await user.save();
+    const user = await User.findById(req.admin.id).select('-password');
 
-    res.status(201).json({
-      success: true,
-      message: 'User created successfully',
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json({
+      admin: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        lastLogin: user.lastLogin,
+        createdAt: user.createdAt,
+      },
     });
   } catch (error: any) {
-    console.error('Register error:', error);
-    res.status(500).json({ error: 'Registration failed' });
+    console.error('Profile fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch profile' });
   }
 };

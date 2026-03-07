@@ -81,15 +81,37 @@ export default function Footer() {
               </a>
             </p>
             <p className="text-sm">
-              Follow us on{' '}
-              <a href="https://instagram.com/creativerootsRW" target="_blank" className="underline hover:text-soft-gold">
-                Instagram (@creativerootsRW)
-              </a>{' '}
-              and{' '}
-              <a href="https://facebook.com/creativerootsRW" target="_blank" className="underline hover:text-soft-gold">
-                Facebook
-              </a>.
+              Follow us on social media:
             </p>
+            <div className="flex space-x-4 mt-3">
+              <a
+                href="https://facebook.com/creativerootsRW"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-blue-500 transition-colors duration-300 text-xl"
+                aria-label="Facebook"
+              >
+                <i className="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="https://instagram.com/creativerootsRW"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-pink-500 transition-colors duration-300 text-xl"
+                aria-label="Instagram"
+              >
+                <i className="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://wa.me/250792505680"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-green-500 transition-colors duration-300 text-xl"
+                aria-label="WhatsApp"
+              >
+                <i className="fab fa-whatsapp"></i>
+              </a>
+            </div>
           </div>
         </div>
 
