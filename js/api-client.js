@@ -80,6 +80,10 @@ class APIClient {
         return this.request('/gallery');
     }
 
+    async getAdminGallery() {
+        return this.request('/admin/gallery');
+    }
+
     async addGalleryItem(formData) {
         const url = `${this.baseURL}/api/gallery`;
         const headers = {};
@@ -124,12 +128,23 @@ class APIClient {
         return this.request(`/gallery/${id}`, { method: 'DELETE' });
     }
 
+    async applaudGalleryItem(id, applauded) {
+        return this.request(`/gallery/${id}/applaud`, { 
+            method: 'PUT', 
+            body: JSON.stringify({ applauded }) 
+        });
+    }
+
     // ============================================
     // VIDEOS
     // ============================================
 
     async getVideos() {
         return this.request('/videos');
+    }
+
+    async getAdminVideos() {
+        return this.request('/admin/videos');
     }
 
     async addVideo(formData) {
@@ -156,12 +171,23 @@ class APIClient {
         return this.request(`/videos/${id}`, { method: 'DELETE' });
     }
 
+    async applaudVideo(id, applauded) {
+        return this.request(`/videos/${id}/applaud`, { 
+            method: 'PUT', 
+            body: JSON.stringify({ applauded }) 
+        });
+    }
+
     // ============================================
     // BLOG
     // ============================================
 
     async getBlog() {
         return this.request('/blog');
+    }
+
+    async getAdminBlog() {
+        return this.request('/admin/blog');
     }
 
     async addBlogPost(formData) {
@@ -188,12 +214,23 @@ class APIClient {
         return this.request(`/blog/${id}`, { method: 'DELETE' });
     }
 
+    async applaudBlogPost(id, applauded) {
+        return this.request(`/blog/${id}/applaud`, { 
+            method: 'PUT', 
+            body: JSON.stringify({ applauded }) 
+        });
+    }
+
     // ============================================
     // EVENTS
     // ============================================
 
     async getEvents() {
         return this.request('/events');
+    }
+
+    async getAdminEvents() {
+        return this.request('/admin/events');
     }
 
     async addEvent(formData) {
@@ -218,6 +255,13 @@ class APIClient {
 
     async deleteEvent(id) {
         return this.request(`/events/${id}`, { method: 'DELETE' });
+    }
+
+    async applaudEvent(id, applauded) {
+        return this.request(`/events/${id}/applaud`, { 
+            method: 'PUT', 
+            body: JSON.stringify({ applauded }) 
+        });
     }
 
     // ============================================

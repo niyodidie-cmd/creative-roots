@@ -41,6 +41,23 @@ function initNavigation() {
             });
         });
     }
+
+    // Update admin link based on login status
+    updateAdminLink();
+}
+
+function updateAdminLink() {
+    const adminLink = document.getElementById('admin-link');
+    if (!adminLink) return;
+
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+        adminLink.textContent = 'Dashboard';
+        adminLink.href = 'admin/dashboard.html';
+    } else {
+        adminLink.textContent = 'Admin Login';
+        adminLink.href = 'secure-admin-portal';
+    }
 }
 
 // ============================================
@@ -48,6 +65,77 @@ function initNavigation() {
 // ============================================
 
 function initHeroSection() {
+    // Fetch landscape applauded images for slider
+    fetch('/api/gallery')
+        .then(response => response.json())
+        .then(items => {
+            const landscapeItems = items.filter(item => item.orientation === 'landscape');
+            if (landscapeItems.length > 0) {
+                createHeroSlides(landscapeItems);
+            } else {
+                // Fallback to text if no images
+                initHeroText();
+            }
+        })
+        .catch(err => {
+            console.error('Failed to load hero images:', err);
+            initHeroText();
+        });
+}
+
+function createHeroSlides(items) {
+    const heroSection = document.querySelector('.hero');
+    if (!heroSection) return;
+
+    // Clear existing slides
+    const existingSlides = heroSection.querySelectorAll('.hero-slide');
+    existingSlides.forEach(slide => slide.remove());
+
+    // Create new slides
+    items.forEach((item, index) => {
+        const slide = document.createElement('div');
+        slide.className = `hero-slide ${index === 0 ? 'active' : ''}`;
+        slide.style.backgroundImage = `url(${item.image_url})`;
+        slide.innerHTML = `
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h1 class="hero-title">${item.title}</h1>
+                    <p class="hero-subtitle">${item.description || ''}</p>
+                </div>
+            </div>
+        `;
+        heroSection.appendChild(slide);
+    });
+
+    // Create indicators
+    const indicatorsContainer = heroSection.querySelector('.slideshow-indicators') || document.createElement('div');
+    indicatorsContainer.className = 'slideshow-indicators';
+    indicatorsContainer.innerHTML = '';
+    items.forEach((_, index) => {
+        const indicator = document.createElement('div');
+        indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
+        indicator.addEventListener('click', () => showSlide(index));
+        indicatorsContainer.appendChild(indicator);
+    });
+    heroSection.appendChild(indicatorsContainer);
+
+    // Auto-advance
+    let currentSlide = 0;
+    setInterval(() => {
+        showSlide((currentSlide + 1) % items.length);
+    }, 6000);
+}
+
+function showSlide(index) {
+    const slides = document.querySelectorAll('.hero-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    slides.forEach(s => s.classList.remove('active'));
+    indicators.forEach(i => i.classList.remove('active'));
+    slides[index].classList.add('active');
+    indicators[index].classList.add('active');
+}
+
+function initHeroText() {
     const heroTexts = [
         'Everyone Has Hidden Power.',
         'Art Gives It a Voice.',
@@ -69,34 +157,6 @@ function initHeroSection() {
     }
 
     setInterval(changeHeroText, 4000);
-
-    // Auto-advance hero slides
-    const indicators = document.querySelectorAll('.indicator');
-    let currentSlide = 0;
-
-    function advanceSlide() {
-        const slides = document.querySelectorAll('.hero-slide');
-        slides.forEach(s => s.classList.remove('active'));
-        indicators.forEach(i => i.classList.remove('active'));
-
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-        indicators[currentSlide].classList.add('active');
-    }
-
-    setInterval(advanceSlide, 5000);
-
-    // Allow manual slide control
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            const slides = document.querySelectorAll('.hero-slide');
-            slides.forEach(s => s.classList.remove('active'));
-            indicators.forEach(i => i.classList.remove('active'));
-            slides[index].classList.add('active');
-            indicator.classList.add('active');
-            currentSlide = index;
-        });
-    });
 }
 
 // ============================================
@@ -178,29 +238,35 @@ function initGallery() {
     const galleryGrid = document.getElementById('gallery-grid');
     if (!galleryGrid) return;
 
-    const gallery = StorageManager.getGallery();
-    galleryGrid.innerHTML = '';
+    fetch('/api/gallery')
+        .then(response => response.json())
+        .then(items => {
+            galleryGrid.innerHTML = '';
 
-    gallery.forEach(item => {
-        const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item fade-on-scroll';
-        galleryItem.innerHTML = `
-            <img src="${item.image}" alt="${item.title}" onerror="this.src='images/Gemini_Generated_Image_9qcfyd9qcfyd9qcf.png';">
-            <div class="gallery-overlay">
-                <p class="gallery-title">${item.title}</p>
-                <p class="gallery-artist">${item.artist}</p>
-            </div>
-        `;
+            items.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = `gallery-item fade-on-scroll ${item.orientation}`;
+                galleryItem.innerHTML = `
+                    <img src="${item.image_url}" alt="${item.title}" onerror="this.src='images/Gemini_Generated_Image_9qcfyd9qcfyd9qcf.png';">
+                    <div class="gallery-overlay">
+                        <p class="gallery-title">${item.title}</p>
+                        <p class="gallery-artist">${item.category}</p>
+                    </div>
+                `;
 
-        galleryItem.addEventListener('click', () => {
-            openGalleryModal(item);
+                galleryItem.addEventListener('click', () => {
+                    openGalleryModal(item);
+                });
+
+                galleryGrid.appendChild(galleryItem);
+            });
+
+            // Re-apply scroll animations
+            initScrollAnimations();
+        })
+        .catch(err => {
+            console.error('Failed to load gallery:', err);
         });
-
-        galleryGrid.appendChild(galleryItem);
-    });
-
-    // Re-apply scroll animations
-    initScrollAnimations();
 }
 
 function openGalleryModal(item) {

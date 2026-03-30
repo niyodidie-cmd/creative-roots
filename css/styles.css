@@ -860,9 +860,17 @@ a {
     font-size: 1.1rem;
 }
 
-.gallery-artist {
-    color: #FDF6EC;
-    font-size: 0.9rem;
+.gallery-item.landscape {
+    aspect-ratio: 16/9;
+    grid-column: span 2;
+}
+
+.gallery-item.portrait {
+    aspect-ratio: 3/4;
+}
+
+.gallery-item.square {
+    aspect-ratio: 1;
 }
 
 /* ============================================

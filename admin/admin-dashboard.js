@@ -180,7 +180,7 @@ async function loadStats() {
 
 async function loadGallery() {
     try {
-        const items = await api.getGallery();
+        const items = await api.getAdminGallery();
         dashboardState.gallery = items;
 
         const galleryHtml = `
@@ -201,6 +201,8 @@ async function loadGallery() {
                             <img src="${item.image_url}" alt="${item.title}" style="max-width: 200px; height: auto;">
                             <h4>${item.title}</h4>
                             <p>${item.category}</p>
+                            <p>Applauded: ${item.applauded ? 'Yes' : 'No'}</p>
+                            <button onclick="applaudGalleryItem(${item.id}, ${!item.applauded})" class="btn ${item.applauded ? 'btn-warning' : 'btn-success'} btn-small">${item.applauded ? 'Unapplaud' : 'Applaud'}</button>
                             <button onclick="deleteGalleryItem(${item.id})" class="btn btn-danger btn-small">Delete</button>
                         </div>
                     `).join('')}
@@ -271,13 +273,23 @@ async function deleteGalleryItem(id) {
     }
 }
 
+async function applaudGalleryItem(id, applauded) {
+    try {
+        await api.applaudGalleryItem(id, applauded);
+        showSuccess(`Gallery item ${applauded ? 'applauded' : 'unapplauded'}`);
+        await loadGallery();
+    } catch (err) {
+        showError('Failed to update applauded status');
+    }
+}
+
 // ============================================
 // VIDEOS MANAGEMENT
 // ============================================
 
 async function loadVideos() {
     try {
-        const videos = await api.getVideos();
+        const videos = await api.getAdminVideos();
         dashboardState.videos = videos;
 
         const videosHtml = `
@@ -297,7 +309,9 @@ async function loadVideos() {
                         <div class="video-item-card">
                             <h4>${video.title}</h4>
                             <p>${video.category}</p>
+                            <p>Applauded: ${video.applauded ? 'Yes' : 'No'}</p>
                             <a href="${video.video_url}" target="_blank" class="btn btn-secondary btn-small">View Video</a>
+                            <button onclick="applaudVideo(${video.id}, ${!video.applauded})" class="btn ${video.applauded ? 'btn-warning' : 'btn-success'} btn-small">${video.applauded ? 'Unapplaud' : 'Applaud'}</button>
                             <button onclick="deleteVideo(${video.id})" class="btn btn-danger btn-small">Delete</button>
                         </div>
                     `).join('')}
@@ -361,13 +375,23 @@ async function deleteVideo(id) {
     }
 }
 
+async function applaudVideo(id, applauded) {
+    try {
+        await api.applaudVideo(id, applauded);
+        showSuccess(`Video ${applauded ? 'applauded' : 'unapplauded'}`);
+        await loadVideos();
+    } catch (err) {
+        showError('Failed to update applauded status');
+    }
+}
+
 // ============================================
 // BLOG MANAGEMENT
 // ============================================
 
 async function loadBlog() {
     try {
-        const posts = await api.getBlog();
+        const posts = await api.getAdminBlog();
         dashboardState.blog = posts;
 
         const blogHtml = `
@@ -389,6 +413,8 @@ async function loadBlog() {
                             <h4>${post.title}</h4>
                             <p><strong>By:</strong> ${post.author || 'Anonymous'}</p>
                             <p>${post.content.substring(0, 100)}...</p>
+                            <p>Applauded: ${post.applauded ? 'Yes' : 'No'}</p>
+                            <button onclick="applaudBlogPost(${post.id}, ${!post.applauded})" class="btn ${post.applauded ? 'btn-warning' : 'btn-success'} btn-small">${post.applauded ? 'Unapplaud' : 'Applaud'}</button>
                             <button onclick="deleteBlogPost(${post.id})" class="btn btn-danger btn-small">Delete</button>
                         </div>
                     `).join('')}
@@ -456,13 +482,23 @@ async function deleteBlogPost(id) {
     }
 }
 
+async function applaudBlogPost(id, applauded) {
+    try {
+        await api.applaudBlogPost(id, applauded);
+        showSuccess(`Blog post ${applauded ? 'applauded' : 'unapplauded'}`);
+        await loadBlog();
+    } catch (err) {
+        showError('Failed to update applauded status');
+    }
+}
+
 // ============================================
 // EVENTS MANAGEMENT
 // ============================================
 
 async function loadEvents() {
     try {
-        const events = await api.getEvents();
+        const events = await api.getAdminEvents();
         dashboardState.events = events;
 
         const eventsHtml = `
@@ -484,6 +520,8 @@ async function loadEvents() {
                             <h4>${event.title}</h4>
                             <p><strong>Date:</strong> ${new Date(event.date).toLocaleDateString()}</p>
                             <p><strong>Location:</strong> ${event.location || 'TBD'}</p>
+                            <p>Applauded: ${event.applauded ? 'Yes' : 'No'}</p>
+                            <button onclick="applaudEvent(${event.id}, ${!event.applauded})" class="btn ${event.applauded ? 'btn-warning' : 'btn-success'} btn-small">${event.applauded ? 'Unapplaud' : 'Applaud'}</button>
                             <button onclick="deleteEvent(${event.id})" class="btn btn-danger btn-small">Delete</button>
                         </div>
                     `).join('')}
@@ -548,6 +586,16 @@ async function deleteEvent(id) {
         await loadEvents();
     } catch (err) {
         showError('Failed to delete event');
+    }
+}
+
+async function applaudEvent(id, applauded) {
+    try {
+        await api.applaudEvent(id, applauded);
+        showSuccess(`Event ${applauded ? 'applauded' : 'unapplauded'}`);
+        await loadEvents();
+    } catch (err) {
+        showError('Failed to update applauded status');
     }
 }
 

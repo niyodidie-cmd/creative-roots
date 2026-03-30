@@ -13,7 +13,8 @@ const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Database = require('better-sqlite3');
+const Database = require('sqlite3').verbose();
+const sizeOf = require('image-size');
 const rateLimit = require('express-rate-limit');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_demo');
 const nodemailer = require('nodemailer');
@@ -132,6 +133,8 @@ function initializeDatabase() {
             description TEXT,
             image_url TEXT NOT NULL,
             category TEXT,
+            orientation TEXT DEFAULT 'landscape',
+            applauded INTEGER DEFAULT 0,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
@@ -146,6 +149,7 @@ function initializeDatabase() {
             video_url TEXT NOT NULL,
             thumbnail_url TEXT,
             category TEXT,
+            applauded INTEGER DEFAULT 0,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
@@ -160,6 +164,7 @@ function initializeDatabase() {
             author TEXT,
             image_url TEXT,
             category TEXT,
+            applauded INTEGER DEFAULT 0,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
@@ -175,6 +180,7 @@ function initializeDatabase() {
             location TEXT,
             capacity INTEGER DEFAULT 0,
             image_url TEXT,
+            applauded INTEGER DEFAULT 0,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
@@ -326,7 +332,7 @@ app.get('/api/admin/stats', verifyToken, (req, res) => {
 // Get all gallery items
 app.get('/api/gallery', (req, res) => {
     try {
-        const items = db.prepare('SELECT * FROM gallery_items ORDER BY created_at DESC').all();
+        const items = db.prepare('SELECT * FROM gallery_items WHERE applauded = 1 ORDER BY created_at DESC').all();
         res.json(items);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch gallery' });
@@ -343,10 +349,20 @@ app.post('/api/gallery', verifyToken, upload.single('image'), (req, res) => {
 
     try {
         const imageUrl = `/uploads/${req.file.filename}`;
+        
+        // Detect orientation
+        const dimensions = sizeOf(path.join(__dirname, 'public', 'uploads', req.file.filename));
+        let orientation = 'landscape';
+        if (dimensions.width < dimensions.height) {
+            orientation = 'portrait';
+        } else if (dimensions.width === dimensions.height) {
+            orientation = 'square';
+        }
+        
         const result = db.prepare(`
-            INSERT INTO gallery_items (title, description, image_url, category)
-            VALUES (?, ?, ?, ?)
-        `).run(title, description || '', imageUrl, category || 'Artwork');
+            INSERT INTO gallery_items (title, description, image_url, category, orientation)
+            VALUES (?, ?, ?, ?, ?)
+        `).run(title, description || '', imageUrl, category || 'Artwork', orientation);
 
         res.json({ 
             success: true, 
@@ -355,12 +371,23 @@ app.post('/api/gallery', verifyToken, upload.single('image'), (req, res) => {
                 title, 
                 description, 
                 image_url: imageUrl, 
-                category 
+                category,
+                orientation
             }
         });
     } catch (err) {
         console.error('Gallery add error:', err);
         res.status(500).json({ error: 'Failed to add gallery item' });
+    }
+});
+
+// Admin get all gallery items
+app.get('/api/admin/gallery', verifyToken, (req, res) => {
+    try {
+        const items = db.prepare('SELECT * FROM gallery_items ORDER BY created_at DESC').all();
+        res.json(items);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch gallery' });
     }
 });
 
@@ -401,13 +428,26 @@ app.delete('/api/gallery/:id', verifyToken, (req, res) => {
     }
 });
 
+// Applaud gallery item
+app.put('/api/gallery/:id/applaud', verifyToken, (req, res) => {
+    const { id } = req.params;
+    const { applauded } = req.body;
+
+    try {
+        db.prepare('UPDATE gallery_items SET applauded = ? WHERE id = ?').run(!!applauded ? 1 : 0, id);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update applauded status' });
+    }
+});
+
 // ============================================
 // VIDEOS ROUTES
 // ============================================
 
 app.get('/api/videos', (req, res) => {
     try {
-        const videos = db.prepare('SELECT * FROM videos ORDER BY created_at DESC').all();
+        const videos = db.prepare('SELECT * FROM videos WHERE applauded = 1 ORDER BY created_at DESC').all();
         res.json(videos);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch videos' });
@@ -434,6 +474,29 @@ app.post('/api/videos', verifyToken, upload.single('video'), (req, res) => {
     }
 });
 
+// Admin get all videos
+app.get('/api/admin/videos', verifyToken, (req, res) => {
+    try {
+        const videos = db.prepare('SELECT * FROM videos ORDER BY created_at DESC').all();
+        res.json(videos);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch videos' });
+    }
+});
+
+// Applaud video
+app.put('/api/videos/:id/applaud', verifyToken, (req, res) => {
+    const { id } = req.params;
+    const { applauded } = req.body;
+
+    try {
+        db.prepare('UPDATE videos SET applauded = ? WHERE id = ?').run(!!applauded ? 1 : 0, id);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update applauded status' });
+    }
+});
+
 app.delete('/api/videos/:id', verifyToken, (req, res) => {
     const { id } = req.params;
     try {
@@ -450,7 +513,7 @@ app.delete('/api/videos/:id', verifyToken, (req, res) => {
 
 app.get('/api/blog', (req, res) => {
     try {
-        const posts = db.prepare('SELECT * FROM blog_posts ORDER BY created_at DESC').all();
+        const posts = db.prepare('SELECT * FROM blog_posts WHERE applauded = 1 ORDER BY created_at DESC').all();
         res.json(posts);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch blog posts' });
@@ -477,6 +540,29 @@ app.post('/api/blog', verifyToken, upload.single('image'), (req, res) => {
     }
 });
 
+// Admin get all blog posts
+app.get('/api/admin/blog', verifyToken, (req, res) => {
+    try {
+        const posts = db.prepare('SELECT * FROM blog_posts ORDER BY created_at DESC').all();
+        res.json(posts);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch blog posts' });
+    }
+});
+
+// Applaud blog post
+app.put('/api/blog/:id/applaud', verifyToken, (req, res) => {
+    const { id } = req.params;
+    const { applauded } = req.body;
+
+    try {
+        db.prepare('UPDATE blog_posts SET applauded = ? WHERE id = ?').run(!!applauded ? 1 : 0, id);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update applauded status' });
+    }
+});
+
 app.delete('/api/blog/:id', verifyToken, (req, res) => {
     const { id } = req.params;
     try {
@@ -498,7 +584,7 @@ app.get('/api/events', (req, res) => {
             SELECT e.*,
                    IFNULL((SELECT SUM(attendees) FROM bookings WHERE event_id = e.id), 0) as booked
             FROM events e
-            WHERE date >= DATE("now")
+            WHERE date >= DATE("now") AND applauded = 1
             ORDER BY date ASC
         `).all();
         res.json(events);
@@ -525,6 +611,34 @@ app.post('/api/events', verifyToken, upload.single('image'), (req, res) => {
         res.json({ success: true, event: { id: result.lastInsertRowid, title, date } });
     } catch (err) {
         res.status(500).json({ error: 'Failed to add event' });
+    }
+});
+
+// Admin get all events
+app.get('/api/admin/events', verifyToken, (req, res) => {
+    try {
+        const events = db.prepare(`
+            SELECT e.*,
+                   IFNULL((SELECT SUM(attendees) FROM bookings WHERE event_id = e.id), 0) as booked
+            FROM events e
+            ORDER BY date ASC
+        `).all();
+        res.json(events);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch events' });
+    }
+});
+
+// Applaud event
+app.put('/api/events/:id/applaud', verifyToken, (req, res) => {
+    const { id } = req.params;
+    const { applauded } = req.body;
+
+    try {
+        db.prepare('UPDATE events SET applauded = ? WHERE id = ?').run(!!applauded ? 1 : 0, id);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update applauded status' });
     }
 });
 
