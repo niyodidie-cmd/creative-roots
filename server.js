@@ -13,7 +13,7 @@ const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Database = require('sqlite3').verbose();
+const sqlite3 = require('sqlite3').verbose();
 const sizeOf = require('image-size');
 const rateLimit = require('express-rate-limit');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_demo');
@@ -34,8 +34,9 @@ if (!fs.existsSync(path.join(__dirname, 'data'))) {
 }
 
 // Initialize database
-const db = new Database(DB_PATH);
-db.pragma('journal_mode = WAL');
+const db = new sqlite3.Database(DB_PATH);
+
+initializeDatabase();
 
 // ============================================
 // MIDDLEWARE
@@ -114,7 +115,7 @@ const emailTransporter = nodemailer.createTransport({
 
 function initializeDatabase() {
     // Admin users table
-    db.exec(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS admins (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
@@ -126,7 +127,7 @@ function initializeDatabase() {
     `);
 
     // Gallery/Content table
-    db.exec(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS gallery_items (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -141,7 +142,7 @@ function initializeDatabase() {
     `);
 
     // Videos table
-    db.exec(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS videos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -156,7 +157,7 @@ function initializeDatabase() {
     `);
 
     // Blog posts table
-    db.exec(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS blog_posts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -171,7 +172,7 @@ function initializeDatabase() {
     `);
 
     // Events table
-    db.exec(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -187,7 +188,7 @@ function initializeDatabase() {
     `);
 
     // Donations table
-    db.exec(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS donations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             donor_name TEXT NOT NULL,
@@ -202,7 +203,7 @@ function initializeDatabase() {
     `);
 
     // Bookings table (stores each event booking request)
-    db.exec(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS bookings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
@@ -217,7 +218,7 @@ function initializeDatabase() {
     `);
 
     // Contact messages table
-    db.exec(`
+    db.run(`
         CREATE TABLE IF NOT EXISTS contact_messages (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
@@ -331,12 +332,13 @@ app.get('/api/admin/stats', verifyToken, (req, res) => {
 
 // Get all gallery items
 app.get('/api/gallery', (req, res) => {
-    try {
-        const items = db.prepare('SELECT * FROM gallery_items WHERE applauded = 1 ORDER BY created_at DESC').all();
-        res.json(items);
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch gallery' });
-    }
+    db.all('SELECT * FROM gallery_items WHERE applauded = 1 ORDER BY created_at DESC', (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: 'Failed to fetch gallery' });
+        } else {
+            res.json(rows);
+        }
+    });
 });
 
 // Add gallery item
@@ -347,48 +349,49 @@ app.post('/api/gallery', verifyToken, upload.single('image'), (req, res) => {
         return res.status(400).json({ error: 'Title and image required' });
     }
 
-    try {
-        const imageUrl = `/uploads/${req.file.filename}`;
-        
-        // Detect orientation
-        const dimensions = sizeOf(path.join(__dirname, 'public', 'uploads', req.file.filename));
-        let orientation = 'landscape';
-        if (dimensions.width < dimensions.height) {
-            orientation = 'portrait';
-        } else if (dimensions.width === dimensions.height) {
-            orientation = 'square';
-        }
-        
-        const result = db.prepare(`
-            INSERT INTO gallery_items (title, description, image_url, category, orientation)
-            VALUES (?, ?, ?, ?, ?)
-        `).run(title, description || '', imageUrl, category || 'Artwork', orientation);
-
-        res.json({ 
-            success: true, 
-            item: { 
-                id: result.lastInsertRowid, 
-                title, 
-                description, 
-                image_url: imageUrl, 
-                category,
-                orientation
-            }
-        });
-    } catch (err) {
-        console.error('Gallery add error:', err);
-        res.status(500).json({ error: 'Failed to add gallery item' });
+    const imageUrl = `/uploads/${req.file.filename}`;
+    
+    // Detect orientation
+    const dimensions = sizeOf(path.join(__dirname, 'uploads', req.file.filename));
+    let orientation = 'landscape';
+    if (dimensions.width < dimensions.height) {
+        orientation = 'portrait';
+    } else if (dimensions.width === dimensions.height) {
+        orientation = 'square';
     }
+    
+    db.run(`
+        INSERT INTO gallery_items (title, description, image_url, category, orientation)
+        VALUES (?, ?, ?, ?, ?)
+    `, [title, description || '', imageUrl, category || 'Artwork', orientation], function(err) {
+        if (err) {
+            console.error('Gallery add error:', err);
+            res.status(500).json({ error: 'Failed to add gallery item' });
+        } else {
+            res.json({ 
+                success: true, 
+                item: { 
+                    id: this.lastID, 
+                    title, 
+                    description, 
+                    image_url: imageUrl, 
+                    category,
+                    orientation
+                }
+            });
+        }
+    });
 });
 
 // Admin get all gallery items
 app.get('/api/admin/gallery', verifyToken, (req, res) => {
-    try {
-        const items = db.prepare('SELECT * FROM gallery_items ORDER BY created_at DESC').all();
-        res.json(items);
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch gallery' });
-    }
+    db.all('SELECT * FROM gallery_items ORDER BY created_at DESC', (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: 'Failed to fetch gallery' });
+        } else {
+            res.json(rows);
+        }
+    });
 });
 
 // Update gallery item
