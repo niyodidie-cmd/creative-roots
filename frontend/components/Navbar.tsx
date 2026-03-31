@@ -1,20 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [language, setLanguage] = useState('en');
-
-  useEffect(() => {
-    // Persist language preference
-    const savedLang = localStorage.getItem('language') || 'en';
-    setLanguage(savedLang);
-  }, []);
-
-  const handleLanguageChange = (lang: string) => {
-    setLanguage(lang);
-    localStorage.setItem('language', lang);
-  };
 
   return (
     <nav className="fixed top-0 w-full bg-cream/98 backdrop-blur-sm shadow-md z-50">

@@ -9,7 +9,6 @@ export default function AdminVolunteers() {
   const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [statusUpdate, setStatusUpdate] = useState('');
   const router = useRouter();
 
   const loadVolunteers = async () => {

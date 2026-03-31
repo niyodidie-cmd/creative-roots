@@ -37,7 +37,7 @@ export default function VoiceOfImpact() {
 
   const getYouTubeEmbedUrl = (url: string) => {
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
-    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+    return match ? `https://www.youtube.com/embed/${match[1]}` : undefined;
   };
 
   return (

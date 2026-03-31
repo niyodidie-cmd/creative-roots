@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import AdminSidebar from '@components/AdminSidebar';
 
 interface Story {
@@ -24,7 +23,6 @@ export default function AdminStories() {
     author: '',
     videoUrl: '',
   });
-  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -40,12 +38,6 @@ export default function AdminStories() {
       : `${process.env.NEXT_PUBLIC_API_URL}/api/stories`;
 
     try {
-      const res = await fetch(url, {
-        method,
-        headers: { Authorization: `Bearer ${token}` },
-        body: new FormData(),
-      });
-
       // For simplicity, assuming no file upload for now
       const formDataObj = new FormData();
       formDataObj.append('title', formData.title);
