@@ -28,6 +28,7 @@
                 <li><a href="#gallery" class="nav-link" data-i18n="nav.gallery">Gallery</a></li>
                 <li><a href="#blog" class="nav-link">Blog/Video</a></li>
                 <li><a href="donate.html" class="nav-link donate-btn">Donate</a></li>
+                <li><a href="#join" class="nav-link">Join</a></li>
                 <li><a href="#" id="admin-link" class="nav-link">Admin Login</a></li>
                 <li class="language-switch">
                     <a href="#" data-lang="en" class="lang-link active">EN</a>
@@ -354,10 +355,38 @@
                     <div id="contactSuccess" class="success-message" style="display:none; margin-top:1rem;">Thank you, we will be in touch soon.</div>
                 </div>
 
-                <div class="contact-cta fade-on-scroll">
-                    <h3>Ready to Join Us?</h3>
-                    <p>Reach out to learn more about volunteering, partnerships, or participating in our workshops.</p>
-                    <a href="mailto:niyodidie@gmail.com" class="btn btn-secondary">Send Email</a>
+                <div class="volunteer-section fade-on-scroll" id="join">
+                    <h3>Join as a Volunteer</h3>
+                    <p>Become part of INKINGI CREATIVE HUB and help empower youth through creativity.</p>
+                    <form id="volunteerForm" class="volunteer-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="volunteerName">Name</label>
+                                <input type="text" id="volunteerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="volunteerEmail">Email</label>
+                                <input type="email" id="volunteerEmail" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="volunteerPhone">Phone</label>
+                                <input type="tel" id="volunteerPhone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="volunteerSkills">Skills</label>
+                                <input type="text" id="volunteerSkills" placeholder="e.g., Art instruction, project coordination" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteerInterests">Interests</label>
+                            <textarea id="volunteerInterests" rows="3" placeholder="Tell us your interest areas..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Volunteer Application</button>
+                        <div id="volunteerSuccess" class="success-message" style="display:none; margin-top:1rem;">Thanks! Your application is submitted.</div>
+                        <div id="volunteerError" class="error-message" style="display:none; margin-top:1rem;">Something went wrong. Please try again.</div>
+                    </form>
                 </div>
             </div>
         </div>

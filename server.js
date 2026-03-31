@@ -13,7 +13,7 @@ const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3');
 const sizeOf = require('image-size');
 const rateLimit = require('express-rate-limit');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_demo');
@@ -34,7 +34,8 @@ if (!fs.existsSync(path.join(__dirname, 'data'))) {
 }
 
 // Initialize database
-const db = new sqlite3.Database(DB_PATH);
+const db = new Database(DB_PATH);
+db.pragma('journal_mode = WAL');
 
 initializeDatabase();
 
@@ -216,7 +217,19 @@ function initializeDatabase() {
             FOREIGN KEY(event_id) REFERENCES events(id)
         )
     `);
-
+    // Volunteers table
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS volunteers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT,
+            skills TEXT,
+            interests TEXT,
+            approved INTEGER DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
     // Contact messages table
     db.run(`
         CREATE TABLE IF NOT EXISTS contact_messages (

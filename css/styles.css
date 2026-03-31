@@ -2250,6 +2250,61 @@ picture img {
 }
 
 /* ============================================
+   VOLUNTEER SECTION STYLES
+   ============================================ */
+
+.volunteer-section {
+    background: #fff;
+    border: 1px solid #E8E0D0;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    margin-top: 2rem;
+}
+
+.volunteer-form .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.volunteer-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.volunteer-form label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #2C2C2C;
+}
+
+.volunteer-form input,
+.volunteer-form textarea {
+    border: 1px solid #dcd9ce;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.volunteer-form textarea {
+    resize: vertical;
+}
+
+.volunteer-form .success-message,
+.volunteer-form .error-message {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .volunteer-form .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
    ADMIN DASHBOARD ADDITIONAL STYLES
    ============================================ */
 

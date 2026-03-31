@@ -10,6 +10,8 @@ interface Stats {
   totalEvents: number;
   totalGalleryItems: number;
   totalMessages: number;
+  totalVolunteers: number;
+  totalDonations: number;
   totalVisitors: number;
   recentActivity: Activity[];
 }
@@ -40,6 +42,20 @@ export default function AdminStats({ stats }: AdminStatsProps) {
       subtext: 'Contact inquiries',
       icon: '📩',
       color: 'from-green-500 to-green-600',
+    },
+    {
+      title: 'Volunteers',
+      value: stats.totalVolunteers,
+      subtext: 'Volunteer signups',
+      icon: '🤝',
+      color: 'from-indigo-500 to-indigo-600',
+    },
+    {
+      title: 'Donations',
+      value: stats.totalDonations,
+      subtext: 'Donation records',
+      icon: '💰',
+      color: 'from-fuchsia-500 to-fuchsia-600',
     },
     {
       title: 'Visitors',

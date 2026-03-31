@@ -47,94 +47,20 @@ export default function Contact() {
 
       <Navbar />
 
-      <Section className="bg-cream min-h-screen">
-          <h1 className="text-4xl font-bold text-warm-brown mb-12 text-center">Contact Us</h1>
-
-          {submitted && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-              Thank you for contacting us. We will respond soon!
-            </div>
-          )}
-
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-semibold text-dark-charcoal mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-brown"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-dark-charcoal mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-brown"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-dark-charcoal mb-2">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-brown"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-dark-charcoal mb-2">
-                  Message
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows={6}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-brown"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-warm-brown text-cream py-3 rounded-lg font-semibold hover:bg-orange-900 transition"
-              >
-                Send Message
-              </button>
-            </form>
-
-            <div className="mt-8 text-center text-sm text-gray-700">
-              <p>Or connect with us on social media:</p>
-              <p>
-                <a href="https://instagram.com/creativerootsRW" target="_blank" className="underline">
-                  Instagram (@creativerootsRW)
-                </a>{' '}
-                |{' '}
-                <a href="https://facebook.com/creativerootsRW" target="_blank" className="underline">
-                  Facebook
-                </a>
-              </p>
-            </div>
+      <Section className="bg-cream min-h-screen py-16">
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold text-warm-brown mb-6">Contact Us</h1>
+          <p className="text-lg text-dark-charcoal mb-8">
+            For inquiries, volunteer follow-up, and donation confirmation, please use the dedicated pages:
+          </p>
+          <div className="space-y-3">
+            <p>Volunteer: fill the “Ready to Join Us?” form on the homepage</p>
+            <p>Donate: visit the Donate page</p>
+            <p>
+              General support: <a href="mailto:info@creativeroots.rw" className="underline">info@creativeroots.rw</a> | WhatsApp: +250 792 505 680
+            </p>
           </div>
+        </div>
       </Section>
 
       <Footer />

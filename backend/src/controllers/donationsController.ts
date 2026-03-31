@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Donation from '../models/Donation';
+import ActivityLog from '../models/ActivityLog';
 import { sendDonationReceipt } from '../utils/mailer';
 import whatsappService from '../utils/whatsapp';
 
@@ -101,6 +102,41 @@ export const confirmDonation = async (req: Request, res: Response): Promise<void
   } catch (error: any) {
     console.error('Donation confirmation error:', error);
     res.status(500).json({ error: 'Failed to confirm donation' });
+  }
+};
+
+export const createDonation = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { donor_name, donor_email, donor_phone, amount } = req.body;
+
+    if (!donor_name || !donor_phone || !amount || amount <= 0) {
+      res.status(400).json({ error: 'Name, phone and amount are required' });
+      return;
+    }
+
+    const donation = new Donation({
+      donorName: donor_name,
+      donorEmail: donor_email,
+      donorPhone: donor_phone,
+      amount,
+      paymentMethod: 'offline',
+      status: 'pending',
+    });
+
+    await donation.save();
+
+    await ActivityLog.create({
+      action: 'create',
+      description: `New offline donation: ${donor_name} (${amount})`,
+      entityType: 'donation',
+      entityId: donation._id,
+      adminUsername: req.admin?.username,
+    });
+
+    res.status(201).json({ success: true, donation });
+  } catch (error: any) {
+    console.error('Donation creation error:', error);
+    res.status(500).json({ error: 'Failed to save donation' });
   }
 };
 

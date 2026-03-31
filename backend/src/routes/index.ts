@@ -12,6 +12,7 @@ import * as homepageController from '../controllers/homepageController';
 import * as visitorController from '../controllers/visitorController';
 import * as activityLogController from '../controllers/activityLogController';
 import * as settingsController from '../controllers/settingsController';
+import * as volunteersController from '../controllers/volunteersController';
 import { verifyToken } from '../middleware/auth';
 import { env } from '../config/env';
 
@@ -70,6 +71,7 @@ router.delete('/bookings/:id', verifyToken, bookingsController.deleteBooking);
 // DONATIONS ROUTES
 // ============================================
 router.get('/donations', verifyToken, donationsController.getAllDonations);
+router.post('/donations', donationsController.createDonation);
 router.post('/donations/momo', donationsController.createMoMoDonation);
 router.post('/donations/confirm', donationsController.confirmDonation);
 router.get('/donations/stats', verifyToken, donationsController.getDonationStats);
@@ -82,6 +84,15 @@ router.get('/contact/:id', verifyToken, contactController.getMessageById);
 router.post('/contact', contactController.createMessage);
 router.put('/contact/:id/read', verifyToken, contactController.markMessageAsRead);
 router.delete('/contact/:id', verifyToken, contactController.deleteMessage);
+
+// ============================================
+// VOLUNTEER ROUTES
+// ============================================
+router.get('/volunteers', verifyToken, volunteersController.getAllVolunteers);
+router.get('/volunteers/:id', verifyToken, volunteersController.getVolunteerById);
+router.post('/volunteers', volunteersController.createVolunteer);
+router.put('/volunteers/:id', verifyToken, volunteersController.updateVolunteer);
+router.delete('/volunteers/:id', verifyToken, volunteersController.deleteVolunteer);
 
 // ============================================
 // GALLERY ROUTES

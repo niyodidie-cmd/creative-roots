@@ -8,6 +8,8 @@ interface DashboardStats {
   totalEvents: number;
   totalGalleryItems: number;
   totalMessages: number;
+  totalVolunteers: number;
+  totalDonations: number;
   totalVisitors: number;
   recentActivity: Array<{
     _id: string;
@@ -34,10 +36,16 @@ export default function AdminDashboard() {
         }
 
         // Fetch counts from different endpoints
-        const [eventsRes, galleryRes, messagesRes, visitorsRes, activityRes] = await Promise.all([
+        const [eventsRes, galleryRes, messagesRes, volunteersRes, donationsRes, visitorsRes, activityRes] = await Promise.all([
           fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/events`),
           fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gallery`),
           fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/volunteers`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/donations`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
           fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/visitors/stats?period=30`, {
@@ -48,11 +56,13 @@ export default function AdminDashboard() {
           }),
         ]);
 
-        if (eventsRes.ok && galleryRes.ok && messagesRes.ok && visitorsRes.ok && activityRes.ok) {
-          const [events, gallery, messages, visitors, activity] = await Promise.all([
+        if (eventsRes.ok && galleryRes.ok && messagesRes.ok && volunteersRes.ok && donationsRes.ok && visitorsRes.ok && activityRes.ok) {
+          const [events, gallery, messages, volunteers, donations, visitors, activity] = await Promise.all([
             eventsRes.json(),
             galleryRes.json(),
             messagesRes.json(),
+            volunteersRes.json(),
+            donationsRes.json(),
             visitorsRes.json(),
             activityRes.json(),
           ]);
@@ -61,6 +71,8 @@ export default function AdminDashboard() {
             totalEvents: events.length,
             totalGalleryItems: gallery.length,
             totalMessages: messages.length,
+            totalVolunteers: volunteers.length,
+            totalDonations: donations.length,
             totalVisitors: visitors.totalVisitors,
             recentActivity: activity,
           });

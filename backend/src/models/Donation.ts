@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export type DonationStatus = 'pending' | 'processing' | 'success' | 'failed';
-export type PaymentMethod = 'momo' | 'bank' | 'card';
+export type PaymentMethod = 'momo' | 'bank' | 'card' | 'offline';
 
 export interface IDonation extends Document {
   donorName: string;
@@ -38,7 +38,7 @@ const donationSchema = new Schema<IDonation>(
     },
     paymentMethod: {
       type: String,
-      enum: ['momo', 'bank', 'card'],
+      enum: ['momo', 'bank', 'card', 'offline'],
       required: true,
     },
     transactionId: {

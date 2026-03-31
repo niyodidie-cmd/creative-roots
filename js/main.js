@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initGallery();
     initEvents();
     initStories();
+    initVolunteerSection();
     initModalBackdrop();
 });
 
@@ -267,6 +268,49 @@ function initGallery() {
         .catch(err => {
             console.error('Failed to load gallery:', err);
         });
+}
+
+function initVolunteerSection() {
+    const volunteerForm = document.getElementById('volunteerForm');
+    if (!volunteerForm) return;
+
+    volunteerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const name = document.getElementById('volunteerName').value.trim();
+        const email = document.getElementById('volunteerEmail').value.trim();
+        const phone = document.getElementById('volunteerPhone').value.trim();
+        const skills = document.getElementById('volunteerSkills').value.trim();
+        const interests = document.getElementById('volunteerInterests').value.trim();
+
+        const successEl = document.getElementById('volunteerSuccess');
+        const errorEl = document.getElementById('volunteerError');
+        errorEl.style.display = 'none';
+        successEl.style.display = 'none';
+
+        if (!name || !email || !phone || !skills || !interests) {
+            errorEl.textContent = 'Please fill all fields.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/volunteers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, phone, skills, interests })
+            });
+
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || 'Unable to submit volunteer form');
+
+            successEl.style.display = 'block';
+            volunteerForm.reset();
+        } catch (err) {
+            errorEl.textContent = err.message || 'Unable to submit. Please try again.';
+            errorEl.style.display = 'block';
+        }
+    });
 }
 
 function openGalleryModal(item) {

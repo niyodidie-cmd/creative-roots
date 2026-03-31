@@ -8,6 +8,7 @@ interface GalleryItem {
   description: string;
   imageUrl: string;
   category: string;
+  featured?: boolean;
 }
 
 export default function AdminGallery() {
@@ -149,9 +150,24 @@ export default function AdminGallery() {
                           {item.description}
                         </p>
                         <div className="flex gap-2">
-                          <button className="text-blue-600 hover:underline text-sm">
-                            Edit
+                          <button
+                            onClick={async () => {
+                              const token = localStorage.getItem('adminToken');
+                              const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gallery/${item._id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                                body: JSON.stringify({ featured: !item.featured }),
+                              });
+                              if (resp.ok) {
+                                const updated = await resp.json();
+                                setItems(items.map((x) => (x._id === item._id ? updated.item : x)));
+                              }
+                            }}
+                            className="text-green-600 hover:underline text-sm"
+                          >
+                            {item.featured ? 'Unapplaud' : 'Applaud'}
                           </button>
+                          <button className="text-blue-600 hover:underline text-sm">Edit</button>
                           <button
                             onClick={() => handleDeleteItem(item._id)}
                             className="text-red-600 hover:underline text-sm"
