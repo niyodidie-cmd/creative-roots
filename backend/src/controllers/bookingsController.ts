@@ -187,32 +187,6 @@ export const deleteBooking = async (req: Request, res: Response): Promise<void> 
     res.status(500).json({ error: 'Failed to delete booking' });
   }
 };
-    res.status(500).json({ error: 'Failed to delete booking' });
-  }
-};
-
-export const updateBookingStatus = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    if (!['pending', 'confirmed', 'completed'].includes(status)) {
-      res.status(400).json({ error: 'Invalid status' });
-      return;
-    }
-
-    const booking = await Booking.findByIdAndUpdate(id, { status }, { new: true });
-    if (!booking) {
-      res.status(404).json({ error: 'Booking not found' });
-      return;
-    }
-
-    res.json({ success: true, booking });
-  } catch (error: any) {
-    console.error('Booking status update error:', error);
-    res.status(500).json({ error: 'Failed to update status' });
-  }
-};
 
 export const getBookingStats = async (req: Request, res: Response): Promise<void> => {
   try {

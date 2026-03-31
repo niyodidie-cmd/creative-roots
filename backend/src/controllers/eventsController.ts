@@ -184,37 +184,6 @@ export const deleteEvent = async (req: Request, res: Response): Promise<void> =>
     res.status(500).json({ error: 'Failed to delete event' });
   }
 };
-};
-
-export const updateEvent = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { id } = req.params;
-    const { title, description, date, location, capacity } = req.body;
-
-    const event = await Event.findById(id);
-    if (!event) {
-      res.status(404).json({ error: 'Event not found' });
-      return;
-    }
-
-    if (title) event.title = title;
-    if (description) event.description = description;
-    if (date) event.date = new Date(date);
-    if (location) event.location = location;
-    if (capacity) event.capacity = capacity;
-    if (req.file) event.imageUrl = `/uploads/${req.file.filename}`;
-
-    await event.save();
-
-    res.json({
-      success: true,
-      event,
-    });
-  } catch (error: any) {
-    console.error('Event update error:', error);
-    res.status(500).json({ error: 'Failed to update event' });
-  }
-};
 
 export const getAdminStats = async (req: Request, res: Response): Promise<void> => {
   try {

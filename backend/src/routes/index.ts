@@ -46,7 +46,6 @@ const upload = multer({
 // AUTHENTICATION ROUTES
 // ============================================
 router.post('/auth/login', authController.login);
-router.post('/auth/register', authController.register);
 router.get('/auth/profile', verifyToken, authController.getProfile);
 
 // ============================================

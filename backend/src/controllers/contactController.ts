@@ -143,16 +143,3 @@ export const deleteMessage = async (req: Request, res: Response): Promise<void> 
     res.status(500).json({ error: 'Failed to delete message' });
   }
 };
-
-export const deleteMessage = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { id } = req.params;
-
-    await ContactMessage.findByIdAndDelete(id);
-
-    res.json({ success: true });
-  } catch (error: any) {
-    console.error('Message deletion error:', error);
-    res.status(500).json({ error: 'Failed to delete message' });
-  }
-};
