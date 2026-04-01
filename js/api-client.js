@@ -312,17 +312,209 @@ class APIClient {
     }
 
     // ============================================
-    // CONTACT
+    // TESTIMONIALS
     // ============================================
-    async submitContact(formData) {
-        return this.request('/contact', {
+
+    async getTestimonials() {
+        return this.request('/testimonials');
+    }
+
+    async getApplaudedTestimonials() {
+        return this.request('/testimonials/applauded');
+    }
+
+    async getAdminTestimonials() {
+        return this.request('/admin/testimonials');
+    }
+
+    async addTestimonial(formData) {
+        const url = `${this.baseURL}/api/testimonials`;
+        const headers = {};
+        if (this.token) {
+            headers['Authorization'] = `Bearer ${this.token}`;
+        }
+
+        const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify(formData)
+            headers,
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add testimonial');
+        }
+
+        return response.json();
+    }
+
+    async updateTestimonial(id, formData) {
+        const url = `${this.baseURL}/api/testimonials/${id}`;
+        const headers = {};
+        if (this.token) {
+            headers['Authorization'] = `Bearer ${this.token}`;
+        }
+
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers,
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update testimonial');
+        }
+
+        return response.json();
+    }
+
+    async deleteTestimonial(id) {
+        return this.request(`/testimonials/${id}`, { method: 'DELETE' });
+    }
+
+    async applaudTestimonial(id, applauded) {
+        return this.request(`/testimonials/${id}/applaud`, {
+            method: 'PUT',
+            body: JSON.stringify({ applauded })
         });
     }
 
-    async getContactMessages() {
-        return this.request('/contact');
+    // ============================================
+    // SOCIAL MEDIA
+    // ============================================
+
+    async getSocialMedia() {
+        return this.request('/social-media');
+    }
+
+    async getAdminSocialMedia() {
+        return this.request('/admin/social-media');
+    }
+
+    async addSocialMedia(data) {
+        return this.request('/social-media', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async updateSocialMedia(id, data) {
+        return this.request(`/social-media/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async deleteSocialMedia(id) {
+        return this.request(`/social-media/${id}`, { method: 'DELETE' });
+    }
+
+    // ============================================
+    // IMPACT STATS
+    // ============================================
+
+    async getImpactStats() {
+        return this.request('/impact-stats');
+    }
+
+    async updateImpactStats(data) {
+        return this.request('/impact-stats', {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    }
+
+    // ============================================
+    // CONTENT SECTIONS
+    // ============================================
+
+    async getContentSection(key) {
+        return this.request(`/content-sections/${key}`);
+    }
+
+    async updateContentSection(key, formData) {
+        const url = `${this.baseURL}/api/content-sections/${key}`;
+        const headers = {};
+        if (this.token) {
+            headers['Authorization'] = `Bearer ${this.token}`;
+        }
+
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers,
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update content section');
+        }
+
+        return response.json();
+    }
+
+    // ============================================
+    // LOGOS
+    // ============================================
+
+    async getLogos() {
+        return this.request('/logos');
+    }
+
+    async getApplaudedLogos() {
+        return this.request('/logos/applauded');
+    }
+
+    async getAdminLogos() {
+        return this.request('/admin/logos');
+    }
+
+    async addLogo(formData) {
+        const url = `${this.baseURL}/api/logos`;
+        const headers = {};
+        if (this.token) {
+            headers['Authorization'] = `Bearer ${this.token}`;
+        }
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add logo');
+        }
+
+        return response.json();
+    }
+
+    async applaudLogo(id, applauded) {
+        return this.request(`/logos/${id}/applaud`, {
+            method: 'PUT',
+            body: JSON.stringify({ applauded })
+        });
+    }
+
+    async deleteLogo(id) {
+        return this.request(`/logos/${id}`, { method: 'DELETE' });
+    }
+
+    // ============================================
+    // VOLUNTEERS
+    // ============================================
+
+    async submitVolunteerApplication(data) {
+        return this.request('/volunteers', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async getVolunteers() {
+        return this.request('/volunteers');
+    }
+
+    async approveVolunteer(id) {
+        return this.request(`/volunteers/${id}/approve`, { method: 'PUT' });
     }
 }
 

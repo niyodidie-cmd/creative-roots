@@ -8,6 +8,7 @@
     <title>INKINGI CREATIVE HUB | Art & Stories for All</title>
     <link rel="shortcut icon" href="images/logo.png" type="image/png">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- ============================================
@@ -18,24 +19,35 @@
             <!-- Logo -->
             <div class="nav-logo">
                 <a href="#home" class="logo-link">
-                    <img src="images/logo.png" alt="Creative Roots" class="logo-image">
+                    <img src="images/logo.png" alt="INKINGI CREATIVE HUB" class="logo-image" onerror="this.style.display='none'">
+                    <span class="logo-text">INKINGI CREATIVE HUB</span>
                 </a>
             </div>
 
             <!-- Desktop Navigation Menu -->
             <ul class="nav-menu">
-                <li><a href="#home" class="nav-link" data-i18n="nav.home">Home</a></li>
-                <li><a href="#gallery" class="nav-link" data-i18n="nav.gallery">Gallery</a></li>
-                <li><a href="#blog" class="nav-link">Blog/Video</a></li>
-                <li><a href="donate.html" class="nav-link donate-btn">Donate</a></li>
-                <li><a href="#join" class="nav-link">Join</a></li>
-                <li><a href="#" id="admin-link" class="nav-link">Admin Login</a></li>
-                <li class="language-switch">
-                    <a href="#" data-lang="en" class="lang-link active">EN</a>
-                    <span>|</span>
-                    <a href="#" data-lang="fr" class="lang-link">FR</a>
+                <li><a href="#home" class="nav-link">Home</a></li>
+
+                <!-- About Us Dropdown -->
+                <li class="dropdown">
+                    <a href="#about" class="nav-link dropdown-toggle">About Us <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#who-we-are">Who We Are</a></li>
+                        <li><a href="#mission">Mission</a></li>
+                        <li><a href="#vision">Vision</a></li>
+                    </ul>
                 </li>
+
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="donate.html" class="nav-link donate-btn">Donate</a></li>
+                <li><a href="#join" class="nav-link">Join Us</a></li>
+                <li><a href="admin/login.html" id="admin-link" class="nav-link">Login</a></li>
             </ul>
+
+            <!-- Social Media Icons -->
+            <div class="social-media-nav" id="social-media-nav">
+                <!-- Social media links loaded dynamically -->
+            </div>
 
             <!-- Hamburger Menu for Mobile -->
             <div class="hamburger">
@@ -47,34 +59,28 @@
     </nav>
 
     <!-- ============================================
-         HERO SECTION - Full Screen Slideshow with Landscape Images
+         HERO SECTION - Automatic Image Slider
          ============================================ -->
     <section id="home" class="hero">
-        <!-- Hero Slideshow Container -->
-        <div class="hero-slideshow">
-            <!-- Slides will be loaded dynamically -->
+        <div class="hero-slider" id="hero-slider">
+            <!-- Slides loaded dynamically -->
         </div>
 
-        <!-- Warm Gradient Overlay for Text Readability -->
+        <!-- Hero Overlay -->
         <div class="hero-overlay"></div>
 
         <!-- Hero Content -->
         <div class="hero-content">
-            <h1 class="hero-title fade-text animate-slide-in" data-i18n="hero.title">INKINGI CREATIVE HUB</h1>
-            <p class="hero-subtitle animate-fade-in-delayed" data-i18n="hero.subtitle">Discover Your Creative Voice</p>
+            <h1 class="hero-title">INKINGI CREATIVE HUB</h1>
+            <p class="hero-subtitle">Art & Stories for All</p>
             <div class="hero-buttons">
-                <a href="#projects" class="btn btn-primary animate-glow-hover" data-i18n="hero.join">Join the Movement</a>
-                <a href="donate.html" class="btn btn-secondary animate-glow-hover" data-i18n="hero.donate_cta">Donate Now</a>
+                <a href="#about" class="btn btn-primary">Learn More</a>
+                <a href="donate.html" class="btn btn-secondary">Support Us</a>
             </div>
         </div>
 
-        <!-- Slideshow Indicators -->
-        <div class="slideshow-indicators">
-            <!-- Indicators will be loaded dynamically -->
-        </div>
-            <span class="indicator" data-slide="2"></span>
-            <span class="indicator" data-slide="3"></span>
-        </div>
+        <!-- Slider Indicators -->
+        <div class="slider-indicators" id="slider-indicators"></div>
 
         <!-- Scroll Indicator -->
         <div class="scroll-indicator">
@@ -83,310 +89,154 @@
     </section>
 
     <!-- ============================================
-         ABOUT PREVIEW SECTION
+         ABOUT US SECTION
          ============================================ -->
-    <section id="about" class="about-preview">
+    <section id="about" class="about-section">
         <div class="container">
-            <div class="about-content">
-                <h2 class="section-title" data-i18n="about.mission">Our Mission</h2>
-                <p class="about-text">
-                    Art & Stories for All is empowering youth and out-of-school individuals to discover and express 
-                    their hidden talents through art, sculpture, and storytelling. We believe that every person has a creative voice, 
-                    and when given the space and tools to express it, transformation happens. Our volunteer-led initiative promotes 
-                    cultural preservation, confidence building, and community engagement—creating pathways for young people to see 
-                    themselves as creators, not just consumers.
-                </p>
-                <div class="about-highlights">
-                    <div class="highlight-item">
-                        <svg class="highlight-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#D4A373"><circle cx="12" cy="8" r="4"/><path d="M 12 14 C 8 14 5 16 5 20 L 19 20 C 19 16 16 14 12 14"/></svg>
-                        <p><strong>Youth Empowerment</strong> Through creative expression</p>
-                    </div>
-                    <div class="highlight-item">
-                        <svg class="highlight-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#D4A373"><path d="M 12 2 L 15 10 L 23 10 L 17 15 L 19 23 L 12 18 L 5 23 L 7 15 L 1 10 L 9 10 Z"/></svg>
-                        <p><strong>Cultural Preservation</strong> Through art & tradition</p>
-                    </div>
-                    <div class="highlight-item">
-                        <svg class="highlight-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#D4A373"><circle cx="6" cy="8" r="3"/><circle cx="18" cy="8" r="3"/><path d="M 18 12 C 16 12 14 13 14 16 L 22 16 C 22 13 20 12 18 12 Z M 6 12 C 4 12 2 13 2 16 L 10 16 C 10 13 8 12 6 12 Z M 12 2 C 9 2 7 4 7 7 C 7 10 9 12 12 12 C 15 12 17 10 17 7 C 17 4 15 2 12 2 Z M 12 6 C 13 6 14 7 14 8 C 14 9 13 10 12 10 C 11 10 10 9 10 8 C 10 7 11 6 12 6 Z\"/></svg>
-                        <p><strong>Community Building</strong> Through storytelling</p>
-                    </div>
+            <!-- Who We Are -->
+            <div id="who-we-are" class="about-item">
+                <div class="about-content">
+                    <h2 class="section-title">Who We Are</h2>
+                    <p id="who-we-are-content">INKINGI CREATIVE HUB is a vibrant community dedicated to empowering youth through art, creativity, and storytelling. We believe every young person has hidden potential waiting to be unlocked through creative expression.</p>
+                </div>
+                <div class="about-image">
+                    <img id="who-we-are-image" src="images/Gemini_Generated_Image_9qcfyd9qcfyd9qcf.png" alt="Who We Are" onerror="this.style.display='none'">
+                </div>
+            </div>
+
+            <!-- Mission -->
+            <div id="mission" class="about-item reverse">
+                <div class="about-content">
+                    <h2 class="section-title">Our Mission</h2>
+                    <p id="mission-content">To create a safe space where youth can explore their creativity, build confidence, and develop skills that will shape their future. Through art and community, we foster positive change and personal growth.</p>
+                </div>
+                <div class="about-image">
+                    <img id="mission-image" src="images/Gemini_Generated_Image_c3y70fc3y70fc3y7.png" alt="Our Mission" onerror="this.style.display='none'">
+                </div>
+            </div>
+
+            <!-- Vision -->
+            <div id="vision" class="about-item">
+                <div class="about-content">
+                    <h2 class="section-title">Our Vision</h2>
+                    <p id="vision-content">A Rwanda where every young person has access to creative opportunities, where art drives social change, and where communities thrive through cultural expression and mutual support.</p>
+                </div>
+                <div class="about-image">
+                    <img id="vision-image" src="images/Gemini_Generated_Image_x0csqhx0csqhx0cs.png" alt="Our Vision" onerror="this.style.display='none'">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ============================================
-         SECTION: WHO WE ARE
-         ============================================ -->
-    <section id="who-we-are" class="image-text-section">
-        <div class="container">
-            <div class="image-text-grid">
-                <!-- Left: Image, Right: Text -->
-                <div class="image-text-item">
-                    <div class="text-content fade-on-scroll">
-                        <h2>Who We Are</h2>
-                        <p>
-                            Founded by NIYOMUKIZA Didier, INKINGI CREATIVE HUB is a grassroots creative initiative 
-                            born from the passion to unlock potential in Rwandan youth. We operate as a 100% volunteer-led 
-                            organization, demonstrating that transformative change doesn't require institutional overhead—
-                            it requires heart, dedication, and belief in people.
-                        </p>
-                        <p>
-                            We work with young people aged 10-30, in and out of school, creating safe spaces where art 
-                            becomes a tool for self-discovery, confidence building, and community engagement. Whether through 
-                            sculpture, painting, or personal storytelling, we help young people find their voice.
-                        </p>
-                    </div>
-                    <div class="image-wrapper fade-on-scroll">
-                        <img src="images/Gemini_Generated_Image_9qcfyd9qcfyd9qcf.png" alt="Youth Creators" loading="lazy" class="responsive-image">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         SECTION: MISSION & VISION
-         ============================================ -->
-    <section id="mission" class="image-text-section alternate">
-        <div class="container">
-            <div class="image-text-grid reverse">
-                <!-- Right: Image, Left: Text (Reversed) -->
-                <div class="image-text-item">
-                    <div class="image-wrapper fade-on-scroll">
-                        <img src="images/Gemini_Generated_Image_c3y70fc3y70fc3y7.png" alt="Expression & Mission" loading="lazy" class="responsive-image">
-                    </div>
-                    <div class="text-content fade-on-scroll">
-                        <h2>Mission & Vision</h2>
-                        <h3>Our Mission</h3>
-                        <p>
-                            To empower youth in Rwanda to discover, develop, and express their creative talents through 
-                            accessible art and storytelling, fostering confidence, cultural pride, and community belonging.
-                        </p>
-                        <h3>Our Vision</h3>
-                        <p>
-                            A Rwanda where every young person—regardless of background or schooling status—sees themselves 
-                            as a creative force capable of shaping their community and future through art.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         IMPACT NUMBERS SECTION
+         IMPACT STATISTICS
          ============================================ -->
     <section id="impact" class="impact-section">
         <div class="container">
-            <h2 class="section-title white-text" data-i18n="impact.title">Our Impact</h2>
-            <div class="impact-grid">
-                <!-- Counter 1 -->
-                <div class="impact-card fade-on-scroll">
-                    <div class="impact-number counter" data-target="15">0</div>
-                    <p class="impact-label">Youth Directly Empowered</p>
-                </div>
-
-                <!-- Counter 2 -->
-                <div class="impact-card fade-on-scroll">
-                    <div class="impact-number counter" data-target="100">0</div>
-                    <span class="impact-symbol">%</span>
-                    <p class="impact-label">Volunteer-Led Organization</p>
-                </div>
-
-                <!-- Counter 3 -->
-                <div class="impact-card fade-on-scroll">
-                    <div class="impact-number counter" data-target="50">0</div>
-                    <span class="impact-symbol">+</span>
-                    <p class="impact-label">Community Engagements</p>
-                </div>
+            <h2 class="section-title white-text">Our Impact</h2>
+            <div class="impact-grid" id="impact-grid">
+                <!-- Impact stats loaded dynamically -->
             </div>
         </div>
     </section>
 
     <!-- ============================================
-         PROJECTS SECTION
+         TESTIMONIALS
          ============================================ -->
-    <section id="projects" class="projects-section">
+    <section id="testimonials" class="testimonials-section">
         <div class="container">
-            <h2 class="section-title" data-i18n="projects.title">Our Projects</h2>
-            <div class="projects-grid">
-                <!-- Project Card 1 -->
-                <div class="project-card fade-on-scroll">
-                    <div class="project-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 3 3 L 3 21 L 21 21 L 21 3 L 3 3 Z M 7 7 L 10 7 L 10 10 L 7 10 L 7 7 Z M 14 7 L 17 7 L 17 10 L 14 10 L 14 7 Z M 7 14 L 10 14 L 10 17 L 7 17 L 7 14 Z M 14 14 L 17 14 L 17 17 L 14 17 L 14 14 Z"/></svg>
-                    </div>
-                    <h3>Youth Art Workshops</h3>
-                    <p>
-                        Interactive sessions where young people learn painting, sculpture, and mixed media techniques 
-                        while building confidence and creative skills.
-                    </p>
-                </div>
-
-                <!-- Project Card 2 -->
-                <div class="project-card fade-on-scroll">
-                    <div class="project-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 4 6 L 4 20 C 4 21.1 4.9 22 6 22 L 18 22 C 19.1 22 20 21.1 20 20 L 20 6 L 4 6 Z M 6 8 L 18 8 L 18 20 L 6 20 L 6 8 Z M 2 6 L 2 4 C 2 2.9 2.9 2 4 2 L 20 2 C 21.1 2 22 2.9 22 4 L 22 6 L 2 6 Z"/></svg>
-                    </div>
-                    <h3>Storytelling Circles</h3>
-                    <p>
-                        Safe spaces for youth to share their personal stories, cultural narratives, and community histories, 
-                        preserving cultural heritage while building unity.
-                    </p>
-                </div>
-
-                <!-- Project Card 3 -->
-                <div class="project-card fade-on-scroll">
-                    <div class="project-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><circle cx="12" cy="12" r="10" stroke="#8B5E3C" stroke-width="1.5" fill="none"/><path d="M 12 2 L 14 10 L 22 10 L 16 15 L 18 23 L 12 18 L 6 23 L 8 15 L 2 10 L 10 10 Z" fill="none" stroke="#8B5E3C" stroke-width="1.5"/></svg>
-                    </div>
-                    <h3>Community Art Exhibitions</h3>
-                    <p>
-                        Public showcases of young people's artwork and creative projects, celebrating their talent and 
-                        inspiring broader community engagement.
-                    </p>
-                </div>
+            <h2 class="section-title">Voices of Impact</h2>
+            <div class="testimonials-slider" id="testimonials-slider">
+                <!-- Testimonials loaded dynamically -->
             </div>
         </div>
     </section>
 
     <!-- ============================================
-         SUCCESS STORIES SECTION - "Voices of Impact" (Admin Editable)
-         ============================================ -->
-    <section id="impact-voices" class="testimonials-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="stories.title">Voices of Impact</h2>
-            <div class="testimonials-grid" id="testimonials-grid">
-                <!-- Testimonials loaded dynamically from localStorage -->
-                <!-- Fallback testimonials will be loaded via JavaScript -->
-            </div>
-        </div>
-    </section>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-         SECTION: EVENTS
+         EVENTS SECTION
          ============================================ -->
     <section id="events" class="events-section">
         <div class="container">
-            <h2 class="section-title" data-i18n="events.title">Upcoming Events</h2>
-            <p class="events-subtitle">Join our upcoming workshops and community events</p>
+            <h2 class="section-title">Upcoming Events</h2>
+            <p class="section-subtitle">Join our upcoming workshops and community events</p>
             <div class="events-grid" id="events-grid">
-                <!-- Events loaded dynamically from localStorage -->
+                <!-- Events loaded dynamically -->
             </div>
         </div>
     </section>
 
     <!-- ============================================
-         GALLERY SECTION - Image Grid with Modal
+         GALLERY SECTION
          ============================================ -->
     <section id="gallery" class="gallery-section">
         <div class="container">
-            <h2 class="section-title" data-i18n="gallery.title">Gallery of Creativity</h2>
-            <p class="gallery-subtitle">Art created by our young talented creators</p>
+            <h2 class="section-title">Gallery of Creativity</h2>
+            <p class="section-subtitle">Art created by our young talented creators</p>
             <div class="gallery-grid" id="gallery-grid">
-                <!-- Gallery items loaded dynamically from localStorage -->
+                <!-- Gallery items loaded dynamically -->
             </div>
         </div>
     </section>
 
     <!-- ============================================
-         CALL TO ACTION SECTION
+         JOIN US SECTION
          ============================================ -->
-    <section class="cta-section">
+    <section id="join" class="join-section">
         <div class="container">
-            <h2 class="cta-title">Support Hidden Talent. Support the Future.</h2>
-            <p class="cta-subtitle">
-                Your support helps us continue empowering youth through art, sculpture, and storytelling.
-            </p>
-            <a href="donate.html" class="btn btn-large">Donate Now</a>
-        </div>
-    </section>
+            <div class="join-content">
+                <h2 class="section-title">Ready to Join Us?</h2>
+                <p>Become part of INKINGI CREATIVE HUB and help empower youth through creativity.</p>
+                <div class="join-forms">
+                    <!-- Volunteer Form -->
+                    <div class="join-form">
+                        <h3>Join as a Volunteer</h3>
+                        <form id="volunteerForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" id="volunteerName" placeholder="Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" id="volunteerEmail" placeholder="Email" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="tel" id="volunteerPhone" placeholder="Phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="volunteerSkills" placeholder="Skills/Interests" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="volunteerMessage" placeholder="Tell us about yourself..." rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Application</button>
+                        </form>
+                        <div id="volunteerSuccess" class="form-success" style="display: none;">Thank you! We'll be in touch soon.</div>
+                        <div id="volunteerError" class="form-error" style="display: none;">Something went wrong. Please try again.</div>
+                    </div>
 
-    <!-- ============================================
-         CONTACT SECTION
-         ============================================ -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="contact.title">Get in Touch</h2>
-            <div class="contact-grid">
-                <div class="contact-info fade-on-scroll">
-                    <h3>Contact Information</h3>
-                    <div class="contact-item">
-                        <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 17 2 L 7 2 C 5.9 2 5 2.9 5 4 L 5 20 C 5 21.1 5.9 22 7 22 L 17 22 C 18.1 22 19 21.1 19 20 L 19 4 C 19 2.9 18.1 2 17 2 Z M 12 20 C 10.9 20 10 19.1 10 18 C 10 16.9 10.9 16 12 16 C 13.1 16 14 16.9 14 18 C 14 19.1 13.1 20 12 20 Z M 17 16 L 7 16 L 7 4 L 17 4 L 17 16 Z"/></svg>
-                        <p><strong>Phone:</strong> +250 792 505 680</p>
-                    </div>
-                    <div class="contact-item">
-                        <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 20 4 L 4 4 C 2.9 4 2 4.9 2 6 L 2 18 C 2 19.1 2.9 20 4 20 L 20 20 C 21.1 20 22 19.1 22 18 L 22 6 C 22 4.9 21.1 4 20 4 Z M 20 6 L 12 12 L 4 6 L 20 6 Z M 20 18 L 4 18 L 4 8 L 12 14 L 20 8 L 20 18 Z"/></svg>
-                        <p><strong>Email:</strong> <a href="mailto:niyodidie@gmail.com">niyodidie@gmail.com</a></p>
-                    </div>
-                    <div class="contact-item">
-                        <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 12 2 C 8.1 2 5 5.1 5 9 C 5 14 12 22 12 22 S 19 14 19 9 C 19 5.1 15.9 2 12 2 Z M 12 12 C 10.3 12 9 10.7 9 9 C 9 7.3 10.3 6 12 6 C 13.7 6 15 7.3 15 9 C 15 10.7 13.7 12 12 12 Z"/></svg>
-                        <p><strong>Location:</strong> Rwanda</p>
-                    </div>
-                    <div class="contact-item">
-                        <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8B5E3C"><path d="M 3 2 L 3 22 L 21 22 L 21 2 L 3 2 Z M 7 4 L 9 4 L 9 6 L 7 6 L 7 4 Z M 7 8 L 9 8 L 9 10 L 7 10 L 7 8 Z M 7 12 L 9 12 L 9 14 L 7 14 L 7 12 Z M 12 4 L 14 4 L 14 6 L 12 6 L 12 4 Z M 12 8 L 14 8 L 14 10 L 12 10 L 12 8 Z M 12 12 L 14 12 L 14 14 L 12 14 L 12 12 Z M 17 4 L 19 4 L 19 6 L 17 6 L 17 4 Z M 17 8 L 19 8 L 19 10 L 17 10 L 17 8 Z M 17 12 L 19 12 L 19 14 L 17 14 L 17 12 Z"/></svg>
-                        <p><strong>Organization:</strong> INKINGI CREATIVE HUB</p>
-                    </div>
-                </div>
-                <!-- contact form added -->
-                <div class="contact-form fade-on-scroll" style="margin-top:2rem;">
-                    <h3>Send a Message</h3>
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="contactName">Name</label>
-                            <input type="text" id="contactName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contactEmail">Email</label>
-                            <input type="email" id="contactEmail" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contactSubject">Subject</label>
-                            <input type="text" id="contactSubject">
-                        </div>
-                        <div class="form-group">
-                            <label for="contactMessage">Message</label>
-                            <textarea id="contactMessage" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
-                    <div id="contactSuccess" class="success-message" style="display:none; margin-top:1rem;">Thank you, we will be in touch soon.</div>
-                </div>
-
-                <div class="volunteer-section fade-on-scroll" id="join">
-                    <h3>Join as a Volunteer</h3>
-                    <p>Become part of INKINGI CREATIVE HUB and help empower youth through creativity.</p>
-                    <form id="volunteerForm" class="volunteer-form">
-                        <div class="form-row">
+                    <!-- Contact Form -->
+                    <div class="join-form">
+                        <h3>Contact Us</h3>
+                        <form id="contactForm">
                             <div class="form-group">
-                                <label for="volunteerName">Name</label>
-                                <input type="text" id="volunteerName" required>
+                                <input type="text" id="contactName" placeholder="Name" required>
                             </div>
                             <div class="form-group">
-                                <label for="volunteerEmail">Email</label>
-                                <input type="email" id="volunteerEmail" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="volunteerPhone">Phone</label>
-                                <input type="tel" id="volunteerPhone" required>
+                                <input type="email" id="contactEmail" placeholder="Email" required>
                             </div>
                             <div class="form-group">
-                                <label for="volunteerSkills">Skills</label>
-                                <input type="text" id="volunteerSkills" placeholder="e.g., Art instruction, project coordination" required>
+                                <input type="text" id="contactSubject" placeholder="Subject">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="volunteerInterests">Interests</label>
-                            <textarea id="volunteerInterests" rows="3" placeholder="Tell us your interest areas..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit Volunteer Application</button>
-                        <div id="volunteerSuccess" class="success-message" style="display:none; margin-top:1rem;">Thanks! Your application is submitted.</div>
-                        <div id="volunteerError" class="error-message" style="display:none; margin-top:1rem;">Something went wrong. Please try again.</div>
-                    </form>
+                            <div class="form-group">
+                                <textarea id="contactMessage" placeholder="Message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                        <div id="contactSuccess" class="form-success" style="display: none;">Message sent successfully!</div>
+                        <div id="contactError" class="form-error" style="display: none;">Failed to send message. Please try again.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -401,10 +251,8 @@
                 <div class="footer-section">
                     <h4>INKINGI CREATIVE HUB</h4>
                     <p>Empowering youth through art, sculpture, and storytelling.</p>
-                    <div class="social-icons">
-                        <a href="https://facebook.com/creativerootsRW" target="_blank" class="social-icon" title="Facebook">Facebook</a>
-                        <a href="https://instagram.com/creativerootsRW" target="_blank" class="social-icon" title="Instagram">Instagram</a>
-                        <a href="https://wa.me/250792505680" target="_blank" class="social-icon" title="WhatsApp">WhatsApp</a>
+                    <div class="social-icons" id="footer-social-icons">
+                        <!-- Social media icons loaded dynamically -->
                     </div>
                 </div>
 
@@ -413,8 +261,9 @@
                     <ul>
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About Us</a></li>
-                        <li><a href="#projects">Projects</a></li>
                         <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="donate.html">Donate</a></li>
+                        <li><a href="#join">Join Us</a></li>
                     </ul>
                 </div>
 
@@ -433,9 +282,9 @@
     </footer>
 
     <!-- ============================================
-         MODAL POPUP FOR GALLERY
+         GALLERY MODAL
          ============================================ -->
-    <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-backdrop" id="galleryModal">
         <div class="modal-content">
             <button class="modal-close">&times;</button>
             <img id="modalImage" src="" alt="Gallery Image">
@@ -447,13 +296,37 @@
     </div>
 
     <!-- ============================================
-         JAVASCRIPT LINKS
+         EVENT BOOKING MODAL
          ============================================ -->
-    <script src="js/storage.js"></script>
+    <div class="modal-backdrop" id="eventModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h3 id="eventModalTitle">Book Event</h3>
+            <form id="eventBookingForm">
+                <div class="form-group">
+                    <input type="text" id="bookingName" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="bookingEmail" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="bookingPhone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="bookingAttendees" placeholder="Number of Attendees" min="1" required>
+                </div>
+                <input type="hidden" id="bookingEventId">
+                <button type="submit" class="btn btn-primary">Book Now</button>
+            </form>
+            <div id="bookingSuccess" class="form-success" style="display: none;">Booking submitted! We'll contact you soon.</div>
+            <div id="bookingError" class="form-error" style="display: none;">Failed to submit booking. Please try again.</div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
     <script src="js/api-client.js"></script>
-    <script src="js/translations.js"></script>
-    <script src="js/contact.js"></script>
-    <script src="js/testimonials.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
 </body>

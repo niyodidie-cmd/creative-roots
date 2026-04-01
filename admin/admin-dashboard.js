@@ -1,176 +1,230 @@
 /* ============================================
-   ADMIN DASHBOARD - FULL FUNCTIONALITY
-   Handles: Auth, Gallery, Videos, Blog, Events, Donations
+   INKINGI CREATIVE HUB - ADMIN DASHBOARD
+   Complete CRUD functionality for all content types
    ============================================ */
 
-let dashboardState = {
-    currentTab: 'overview',
-    authToken: localStorage.getItem('admin_token'),
-    donations: [],
-    gallery: [],
-    videos: [],
-    blog: [],
-    events: []
-};
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize
     checkAuthentication();
     setupEventListeners();
-    loadDashboardData();
-    console.log('✓ Admin Dashboard Initialized');
+    loadAllData();
 });
 
 // ============================================
-// AUTHENTICATION CHECK
+// AUTHENTICATION
 // ============================================
 
 function checkAuthentication() {
     const token = localStorage.getItem('admin_token');
-    
-    if (!token && !window.location.pathname.includes('login')) {
-        // Redirect to login if not authenticated
+    if (!token) {
         window.location.href = 'login.html';
         return;
     }
-
-    if (token) {
-        dashboardState.authToken = token;
-        api.setToken(token);
+    // Set token for API calls
+    if (window.apiClient) {
+        window.apiClient.setToken(token);
     }
 }
 
+function logoutAdmin() {
+    localStorage.removeItem('admin_token');
+    window.location.href = 'login.html';
+}
+
 // ============================================
-// TAB SWITCHING
+// NAVIGATION & TABS
 // ============================================
 
 function setupEventListeners() {
-    // Tab buttons
-    const tabButtons = document.querySelectorAll('.menu-link');
-    tabButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+    // Tab switching
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-            const tabName = btn.getAttribute('data-tab');
-            if (tabName) {
-                switchTab(tabName);
-                // load additional data for certain tabs
-                if (tabName === 'contact') {
-                    loadContactMessages();
-                } else if (tabName === 'donations') {
-                    loadDonations();
-                }
-            }
+            const tabId = link.getAttribute('data-tab');
+            switchTab(tabId);
         });
     });
 
-    // Export bookings CSV
-    const exportBtn = document.getElementById('exportBookingsBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', exportBookings);
-    }
+    // Form submissions
+    setupFormHandlers();
 
-    // Logout button
-    const logoutBtn = document.querySelector('.logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', logout);
-    }
-
-    // Back to website button
-    const backBtn = document.querySelector('.back-to-website-btn');
-    if (backBtn) {
-        backBtn.addEventListener('click', () => {
-            window.location.href = '../index.html';
-        });
-    }
+    // Image previews
+    setupImagePreviews();
 }
 
-function switchTab(tabName) {
-    // Remove active class from all tabs
+function switchTab(tabId) {
+    // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
     });
-    document.querySelectorAll('.menu-link').forEach(btn => {
-        btn.classList.remove('active');
+
+    // Remove active class from all menu links
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.classList.remove('active');
     });
 
-    // Add active class to selected tab
-    const selectedTab = document.getElementById(`tab-${tabName}`);
+    // Show selected tab
+    const selectedTab = document.getElementById(tabId);
     if (selectedTab) {
         selectedTab.classList.add('active');
     }
 
-    const selectedBtn = document.querySelector(`[data-tab="${tabName}"]`);
-    if (selectedBtn) {
-        selectedBtn.classList.add('active');
+    // Add active class to selected menu link
+    const selectedLink = document.querySelector(`[data-tab="${tabId}"]`);
+    if (selectedLink) {
+        selectedLink.classList.add('active');
     }
-
-    dashboardState.currentTab = tabName;
 
     // Load data for the tab
-    if (tabName === 'overview') {
-        loadStats();
-    } else if (tabName === 'gallery') {
-        loadGallery();
-    } else if (tabName === 'videos') {
-        loadVideos();
-    } else if (tabName === 'blog') {
-        loadBlog();
-    } else if (tabName === 'events') {
-        loadEvents();
-    } else if (tabName === 'donations') {
-        loadDonations();
+    loadTabData(tabId);
+}
+
+function loadTabData(tabId) {
+    switch(tabId) {
+        case 'gallery':
+            loadGallery();
+            break;
+        case 'events':
+            loadEvents();
+            break;
+        case 'testimonials':
+            loadTestimonials();
+            break;
+        case 'content':
+            loadContentSections();
+            break;
+        case 'social':
+            loadSocialMedia();
+            break;
+        case 'impact':
+            loadImpactStats();
+            break;
+        case 'logo':
+            loadLogo();
+            break;
+        case 'contact':
+            loadContactMessages();
+            break;
+        case 'bookings':
+            loadBookings();
+            break;
+    }
+}
+
+function loadAllData() {
+    loadGallery();
+    loadEvents();
+    loadTestimonials();
+    loadContentSections();
+    loadSocialMedia();
+    loadImpactStats();
+    loadLogo();
+    loadContactMessages();
+    loadBookings();
+}
+
+// ============================================
+// FORM HANDLERS
+// ============================================
+
+function setupFormHandlers() {
+    // Gallery form
+    const galleryForm = document.getElementById('galleryUploadForm');
+    if (galleryForm) {
+        galleryForm.addEventListener('submit', handleGallerySubmit);
+    }
+
+    // Event form
+    const eventForm = document.getElementById('eventForm');
+    if (eventForm) {
+        eventForm.addEventListener('submit', handleEventSubmit);
+    }
+
+    // Testimonial form
+    const testimonialForm = document.getElementById('testimonialForm');
+    if (testimonialForm) {
+        testimonialForm.addEventListener('submit', handleTestimonialSubmit);
+    }
+
+    // Social media form
+    const socialForm = document.getElementById('socialForm');
+    if (socialForm) {
+        socialForm.addEventListener('submit', handleSocialSubmit);
+    }
+
+    // Impact stats form
+    const impactForm = document.getElementById('impactForm');
+    if (impactForm) {
+        impactForm.addEventListener('submit', handleImpactSubmit);
+    }
+
+    // Logo form
+    const logoForm = document.getElementById('logoForm');
+    if (logoForm) {
+        logoForm.addEventListener('submit', handleLogoSubmit);
     }
 }
 
 // ============================================
-// LOAD DASHBOARD DATA
+// IMAGE PREVIEWS
 // ============================================
 
-async function loadDashboardData() {
-    try {
-        // Load initial stats
-        await loadStats();
-    } catch (err) {
-        console.error('Error loading dashboard data:', err);
+function setupImagePreviews() {
+    // Gallery image preview
+    const galleryImageInput = document.getElementById('galleryImageInput');
+    if (galleryImageInput) {
+        galleryImageInput.addEventListener('change', (e) => {
+            previewImage(e.target, 'imagePreview');
+        });
     }
-}
 
-async function loadStats() {
-    try {
-        const stats = await api.getStats();
-        
-        // Update stats display
-        const statsHtml = `
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">${stats.donations.count}</div>
-                    <div class="stat-label">Total Donations</div>
-                    <div class="stat-value">$${stats.donations.total.toFixed(2)}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${stats.gallery}</div>
-                    <div class="stat-label">Gallery Items</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${stats.videos}</div>
-                    <div class="stat-label">Videos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${stats.blogPosts}</div>
-                    <div class="stat-label">Blog Posts</div>
-                </div>
-            </div>
-        `;
+    // Event image preview
+    const eventImageInput = document.getElementById('eventImageInput');
+    if (eventImageInput) {
+        eventImageInput.addEventListener('change', (e) => {
+            previewImage(e.target, 'eventImagePreview');
+        });
+    }
 
-        const overviewContent = document.querySelector('[data-content="overview"]');
-        if (overviewContent) {
-            overviewContent.innerHTML = statsHtml;
+    // Testimonial image preview
+    const testimonialImageInput = document.getElementById('testimonialImageInput');
+    if (testimonialImageInput) {
+        testimonialImageInput.addEventListener('change', (e) => {
+            previewImage(e.target, 'storyImagePreview');
+        });
+    }
+
+    // Logo preview
+    const logoImageInput = document.getElementById('logoImageInput');
+    if (logoImageInput) {
+        logoImageInput.addEventListener('change', (e) => {
+            previewImage(e.target, 'logoPreview');
+        });
+    }
+
+    // Content section image previews
+    const contentImageInputs = ['whoWeAreImageInput', 'missionImageInput', 'visionImageInput'];
+    contentImageInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            const previewId = inputId.replace('Input', 'Preview');
+            input.addEventListener('change', (e) => {
+                previewImage(e.target, previewId);
+            });
         }
+    });
+}
 
-        console.log('✓ Dashboard stats loaded');
-    } catch (err) {
-        console.error('Error loading stats:', err);
-        showError('Failed to load dashboard statistics');
+function previewImage(input, previewId) {
+    const file = input.files[0];
+    const preview = document.getElementById(previewId);
+
+    if (file && preview) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
     }
 }
 
@@ -180,315 +234,67 @@ async function loadStats() {
 
 async function loadGallery() {
     try {
-        const items = await api.getAdminGallery();
-        dashboardState.gallery = items;
+        const response = await fetch('/api/gallery');
+        const items = await response.json();
 
-        const galleryHtml = `
-            <div class="gallery-management">
-                <h3>Upload New Gallery Item</h3>
-                <form id="galleryUploadForm" class="upload-form">
-                    <input type="text" id="galleryTitle" placeholder="Title" required>
-                    <textarea id="galleryDescription" placeholder="Description (optional)"></textarea>
-                    <input type="file" id="galleryImage" accept="image/*" required>
-                    <input type="text" id="galleryCategory" placeholder="Category (e.g., Artwork, Sculpture)" required>
-                    <button type="submit" class="btn btn-primary">Upload</button>
-                </form>
+        const container = document.getElementById('galleryPreview');
+        if (!container) return;
 
-                <h3 style="margin-top: 2rem;">Current Gallery Items</h3>
-                <div class="gallery-list">
-                    ${items.map(item => `
-                        <div class="gallery-item-card">
-                            <img src="${item.image_url}" alt="${item.title}" style="max-width: 200px; height: auto;">
-                            <h4>${item.title}</h4>
-                            <p>${item.category}</p>
-                            <p>Applauded: ${item.applauded ? 'Yes' : 'No'}</p>
-                            <button onclick="applaudGalleryItem(${item.id}, ${!item.applauded})" class="btn ${item.applauded ? 'btn-warning' : 'btn-success'} btn-small">${item.applauded ? 'Unapplaud' : 'Applaud'}</button>
-                            <button onclick="deleteGalleryItem(${item.id})" class="btn btn-danger btn-small">Delete</button>
-                        </div>
-                    `).join('')}
+        container.innerHTML = '';
+
+        items.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'gallery-preview-item';
+            itemDiv.innerHTML = `
+                <img src="${item.image_url}" alt="${item.title}">
+                <div class="item-info">
+                    <div>${item.title}</div>
+                    <div>Artist: ${item.artist || 'Unknown'}</div>
+                    <div>Applauded: ${item.applauded ? 'Yes' : 'No'}</div>
                 </div>
-            </div>
-        `;
-
-        const galleryContent = document.querySelector('[data-content="gallery"]');
-        if (galleryContent) {
-            galleryContent.innerHTML = galleryHtml;
-        }
-
-        // Setup form handler
-        const form = document.getElementById('galleryUploadForm');
-        if (form) {
-            form.addEventListener('submit', handleGalleryUpload);
-        }
-
-        console.log('✓ Gallery items loaded');
-    } catch (err) {
-        console.error('Error loading gallery:', err);
-        showError('Failed to load gallery');
+                <div class="delete-overlay">
+                    <button class="edit-btn" onclick="editGalleryItem(${item.id})">Edit</button>
+                    <button class="applaud-btn" onclick="toggleApplaud(${item.id}, 'gallery', ${!item.applauded})">
+                        ${item.applauded ? 'Unapplaud' : 'Applaud'}
+                    </button>
+                    <button class="delete-btn" onclick="deleteItem(${item.id}, 'gallery')">Delete</button>
+                </div>
+            `;
+            container.appendChild(itemDiv);
+        });
+    } catch (error) {
+        console.error('Failed to load gallery:', error);
+        showNotification('Failed to load gallery items', 'error');
     }
 }
 
-async function handleGalleryUpload(e) {
+async function handleGallerySubmit(e) {
     e.preventDefault();
 
-    const title = document.getElementById('galleryTitle').value;
-    const description = document.getElementById('galleryDescription').value;
-    const image = document.getElementById('galleryImage').files[0];
-    const category = document.getElementById('galleryCategory').value;
-
-    if (!title || !image || !category) {
-        showError('Please fill in all required fields');
-        return;
-    }
+    const formData = new FormData();
+    formData.append('title', document.getElementById('galleryTitle').value);
+    formData.append('artist', document.getElementById('galleryArtist').value);
+    formData.append('description', document.getElementById('galleryDescription').value);
+    formData.append('orientation', document.getElementById('galleryOrientation').value);
+    formData.append('image', document.getElementById('galleryImageInput').files[0]);
 
     try {
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('image', image);
-        formData.append('category', category);
+        const response = await fetch('/api/gallery', {
+            method: 'POST',
+            body: formData
+        });
 
-        await api.addGalleryItem(formData);
-        showSuccess('Gallery item uploaded successfully!');
-        
-        // Reload gallery
-        await loadGallery();
-    } catch (err) {
-        console.error('Upload error:', err);
-        showError('Failed to upload gallery item');
-    }
-}
-
-async function deleteGalleryItem(id) {
-    if (!confirm('Are you sure you want to delete this item?')) {
-        return;
-    }
-
-    try {
-        await api.deleteGalleryItem(id);
-        showSuccess('Gallery item deleted');
-        await loadGallery();
-    } catch (err) {
-        showError('Failed to delete gallery item');
-    }
-}
-
-async function applaudGalleryItem(id, applauded) {
-    try {
-        await api.applaudGalleryItem(id, applauded);
-        showSuccess(`Gallery item ${applauded ? 'applauded' : 'unapplauded'}`);
-        await loadGallery();
-    } catch (err) {
-        showError('Failed to update applauded status');
-    }
-}
-
-// ============================================
-// VIDEOS MANAGEMENT
-// ============================================
-
-async function loadVideos() {
-    try {
-        const videos = await api.getAdminVideos();
-        dashboardState.videos = videos;
-
-        const videosHtml = `
-            <div class="videos-management">
-                <h3>Upload New Video</h3>
-                <form id="videoUploadForm" class="upload-form">
-                    <input type="text" id="videoTitle" placeholder="Title" required>
-                    <textarea id="videoDescription" placeholder="Description (optional)"></textarea>
-                    <input type="file" id="videoFile" accept="video/*" required>
-                    <input type="text" id="videoCategory" placeholder="Category (e.g., Showcase, Tutorial)" required>
-                    <button type="submit" class="btn btn-primary">Upload</button>
-                </form>
-
-                <h3 style="margin-top: 2rem;">Current Videos</h3>
-                <div class="videos-list">
-                    ${videos.map(video => `
-                        <div class="video-item-card">
-                            <h4>${video.title}</h4>
-                            <p>${video.category}</p>
-                            <p>Applauded: ${video.applauded ? 'Yes' : 'No'}</p>
-                            <a href="${video.video_url}" target="_blank" class="btn btn-secondary btn-small">View Video</a>
-                            <button onclick="applaudVideo(${video.id}, ${!video.applauded})" class="btn ${video.applauded ? 'btn-warning' : 'btn-success'} btn-small">${video.applauded ? 'Unapplaud' : 'Applaud'}</button>
-                            <button onclick="deleteVideo(${video.id})" class="btn btn-danger btn-small">Delete</button>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-
-        const videosContent = document.querySelector('[data-content="videos"]');
-        if (videosContent) {
-            videosContent.innerHTML = videosHtml;
+        if (response.ok) {
+            showNotification('Gallery item added successfully!', 'success');
+            e.target.reset();
+            document.getElementById('imagePreview').style.display = 'none';
+            loadGallery();
+        } else {
+            throw new Error('Failed to add gallery item');
         }
-
-        const form = document.getElementById('videoUploadForm');
-        if (form) {
-            form.addEventListener('submit', handleVideoUpload);
-        }
-
-        console.log('✓ Videos loaded');
-    } catch (err) {
-        console.error('Error loading videos:', err);
-        showError('Failed to load videos');
-    }
-}
-
-async function handleVideoUpload(e) {
-    e.preventDefault();
-
-    const title = document.getElementById('videoTitle').value;
-    const description = document.getElementById('videoDescription').value;
-    const file = document.getElementById('videoFile').files[0];
-    const category = document.getElementById('videoCategory').value;
-
-    if (!title || !file || !category) {
-        showError('Please fill in all required fields');
-        return;
-    }
-
-    try {
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('video', file);
-        formData.append('category', category);
-
-        await api.addVideo(formData);
-        showSuccess('Video uploaded successfully!');
-        await loadVideos();
-    } catch (err) {
-        showError('Failed to upload video');
-    }
-}
-
-async function deleteVideo(id) {
-    if (!confirm('Are you sure?')) return;
-    try {
-        await api.deleteVideo(id);
-        showSuccess('Video deleted');
-        await loadVideos();
-    } catch (err) {
-        showError('Failed to delete video');
-    }
-}
-
-async function applaudVideo(id, applauded) {
-    try {
-        await api.applaudVideo(id, applauded);
-        showSuccess(`Video ${applauded ? 'applauded' : 'unapplauded'}`);
-        await loadVideos();
-    } catch (err) {
-        showError('Failed to update applauded status');
-    }
-}
-
-// ============================================
-// BLOG MANAGEMENT
-// ============================================
-
-async function loadBlog() {
-    try {
-        const posts = await api.getAdminBlog();
-        dashboardState.blog = posts;
-
-        const blogHtml = `
-            <div class="blog-management">
-                <h3>Create New Blog Post</h3>
-                <form id="blogForm" class="upload-form">
-                    <input type="text" id="blogTitle" placeholder="Title" required>
-                    <textarea id="blogContent" placeholder="Post content" required style="min-height: 200px;"></textarea>
-                    <input type="text" id="blogAuthor" placeholder="Author">
-                    <input type="file" id="blogImage" accept="image/*">
-                    <input type="text" id="blogCategory" placeholder="Category (e.g., Story, Update)">
-                    <button type="submit" class="btn btn-primary">Publish</button>
-                </form>
-
-                <h3 style="margin-top: 2rem;">Published Posts</h3>
-                <div class="blog-list">
-                    ${posts.map(post => `
-                        <div class="blog-post-card">
-                            <h4>${post.title}</h4>
-                            <p><strong>By:</strong> ${post.author || 'Anonymous'}</p>
-                            <p>${post.content.substring(0, 100)}...</p>
-                            <p>Applauded: ${post.applauded ? 'Yes' : 'No'}</p>
-                            <button onclick="applaudBlogPost(${post.id}, ${!post.applauded})" class="btn ${post.applauded ? 'btn-warning' : 'btn-success'} btn-small">${post.applauded ? 'Unapplaud' : 'Applaud'}</button>
-                            <button onclick="deleteBlogPost(${post.id})" class="btn btn-danger btn-small">Delete</button>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-
-        const blogContent = document.querySelector('[data-content="blog"]');
-        if (blogContent) {
-            blogContent.innerHTML = blogHtml;
-        }
-
-        const form = document.getElementById('blogForm');
-        if (form) {
-            form.addEventListener('submit', handleBlogSubmit);
-        }
-
-        console.log('✓ Blog posts loaded');
-    } catch (err) {
-        console.error('Error loading blog:', err);
-        showError('Failed to load blog posts');
-    }
-}
-
-async function handleBlogSubmit(e) {
-    e.preventDefault();
-
-    const title = document.getElementById('blogTitle').value;
-    const content = document.getElementById('blogContent').value;
-    const author = document.getElementById('blogAuthor').value || 'Creative Roots';
-    const image = document.getElementById('blogImage').files[0];
-    const category = document.getElementById('blogCategory').value || 'Update';
-
-    if (!title || !content) {
-        showError('Title and content are required');
-        return;
-    }
-
-    try {
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('author', author);
-        formData.append('category', category);
-        if (image) {
-            formData.append('image', image);
-        }
-
-        await api.addBlogPost(formData);
-        showSuccess('Blog post published!');
-        await loadBlog();
-    } catch (err) {
-        showError('Failed to publish blog post');
-    }
-}
-
-async function deleteBlogPost(id) {
-    if (!confirm('Are you sure?')) return;
-    try {
-        await api.deleteBlogPost(id);
-        showSuccess('Blog post deleted');
-        await loadBlog();
-    } catch (err) {
-        showError('Failed to delete blog post');
-    }
-}
-
-async function applaudBlogPost(id, applauded) {
-    try {
-        await api.applaudBlogPost(id, applauded);
-        showSuccess(`Blog post ${applauded ? 'applauded' : 'unapplauded'}`);
-        await loadBlog();
-    } catch (err) {
-        showError('Failed to update applauded status');
+    } catch (error) {
+        console.error('Gallery submit error:', error);
+        showNotification('Failed to add gallery item', 'error');
     }
 }
 
@@ -498,261 +304,565 @@ async function applaudBlogPost(id, applauded) {
 
 async function loadEvents() {
     try {
-        const events = await api.getAdminEvents();
-        dashboardState.events = events;
+        const response = await fetch('/api/events');
+        const events = await response.json();
 
-        const eventsHtml = `
-            <div class="events-management">
-                <h3>Create New Event</h3>
-                <form id="eventForm" class="upload-form">
-                    <input type="text" id="eventTitle" placeholder="Event Title" required>
-                    <textarea id="eventDescription" placeholder="Description (optional)"></textarea>
-                    <input type="datetime-local" id="eventDate" required>
-                    <input type="text" id="eventLocation" placeholder="Location">
-                    <input type="file" id="eventImage" accept="image/*">
-                    <button type="submit" class="btn btn-primary">Create Event</button>
-                </form>
+        const container = document.getElementById('eventsPreview');
+        if (!container) return;
 
-                <h3 style="margin-top:2rem;">Upcoming Events</h3>
-                <div class="events-list">
-                    ${events.map(event => `
-                        <div class="event-card">
-                            <h4>${event.title}</h4>
-                            <p><strong>Date:</strong> ${new Date(event.date).toLocaleDateString()}</p>
-                            <p><strong>Location:</strong> ${event.location || 'TBD'}</p>
-                            <p>Applauded: ${event.applauded ? 'Yes' : 'No'}</p>
-                            <button onclick="applaudEvent(${event.id}, ${!event.applauded})" class="btn ${event.applauded ? 'btn-warning' : 'btn-success'} btn-small">${event.applauded ? 'Unapplaud' : 'Applaud'}</button>
-                            <button onclick="deleteEvent(${event.id})" class="btn btn-danger btn-small">Delete</button>
-                        </div>
-                    `).join('')}
+        container.innerHTML = '';
+
+        events.forEach(event => {
+            const eventDiv = document.createElement('div');
+            eventDiv.className = 'event-preview-item';
+            eventDiv.innerHTML = `
+                <img src="${event.image_url || '/images/default-event.jpg'}" alt="${event.title}">
+                <div class="event-info">
+                    <div>${event.title}</div>
+                    <div>${new Date(event.date).toLocaleDateString()}</div>
+                    <div>${event.location || 'TBD'}</div>
                 </div>
-            </div>
-        `;
-
-        const eventsContent = document.querySelector('[data-content="events"]');
-        if (eventsContent) {
-            eventsContent.innerHTML = eventsHtml;
-        }
-
-        const form = document.getElementById('eventForm');
-        if (form) {
-            form.addEventListener('submit', handleEventSubmit);
-        }
-
-        console.log('✓ Events loaded');
-    } catch (err) {
-        console.error('Error loading events:', err);
-        showError('Failed to load events');
+                <div class="delete-overlay">
+                    <button class="edit-btn" onclick="editEvent(${event.id})">Edit</button>
+                    <button class="delete-btn" onclick="deleteItem(${event.id}, 'events')">Delete</button>
+                </div>
+            `;
+            container.appendChild(eventDiv);
+        });
+    } catch (error) {
+        console.error('Failed to load events:', error);
+        showNotification('Failed to load events', 'error');
     }
 }
 
 async function handleEventSubmit(e) {
     e.preventDefault();
 
-    const title = document.getElementById('eventTitle').value;
-    const description = document.getElementById('eventDescription').value;
-    const date = document.getElementById('eventDate').value;
-    const location = document.getElementById('eventLocation').value;
-    const image = document.getElementById('eventImage').files[0];
+    const formData = new FormData();
+    formData.append('title', document.getElementById('eventTitle').value);
+    formData.append('description', document.getElementById('eventDescription').value);
+    formData.append('date', document.getElementById('eventDate').value);
+    formData.append('time', document.getElementById('eventTime').value);
+    formData.append('location', document.getElementById('eventLocation').value);
+    formData.append('capacity', document.getElementById('eventCapacity').value);
 
-    if (!title || !date) {
-        showError('Title and date are required');
-        return;
+    const imageFile = document.getElementById('eventImageInput').files[0];
+    if (imageFile) {
+        formData.append('image', imageFile);
     }
 
     try {
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('date', new Date(date).toISOString());
-        formData.append('location', location);
-        if (image) {
-            formData.append('image', image);
+        const response = await fetch('/api/events', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            showNotification('Event created successfully!', 'success');
+            e.target.reset();
+            document.getElementById('eventImagePreview').style.display = 'none';
+            loadEvents();
+        } else {
+            throw new Error('Failed to create event');
         }
-
-        await api.addEvent(formData);
-        showSuccess('Event created!');
-        await loadEvents();
-    } catch (err) {
-        showError('Failed to create event');
-    }
-}
-
-async function deleteEvent(id) {
-    if (!confirm('Are you sure?')) return;
-    try {
-        await api.deleteEvent(id);
-        showSuccess('Event deleted');
-        await loadEvents();
-    } catch (err) {
-        showError('Failed to delete event');
-    }
-}
-
-async function applaudEvent(id, applauded) {
-    try {
-        await api.applaudEvent(id, applauded);
-        showSuccess(`Event ${applauded ? 'applauded' : 'unapplauded'}`);
-        await loadEvents();
-    } catch (err) {
-        showError('Failed to update applauded status');
+    } catch (error) {
+        console.error('Event submit error:', error);
+        showNotification('Failed to create event', 'error');
     }
 }
 
 // ============================================
-// DONATIONS MANAGEMENT
+// TESTIMONIALS MANAGEMENT
 // ============================================
 
-async function loadDonations() {
+async function loadTestimonials() {
     try {
-        const donations = await api.getDonations();
-        dashboardState.donations = donations;
+        const response = await fetch('/api/testimonials');
+        const testimonials = await response.json();
 
-        const donationsHtml = `
-            <div class="donations-management">
-                <h3>Donation Records</h3>
-                <div class="table-container">
-                    <table class="donations-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Donor Name</th>
-                                <th>Email</th>
-                                <th>Amount</th>
-                                <th>Method</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${donations.map(d => `
-                                <tr>
-                                    <td>${new Date(d.created_at).toLocaleDateString()}</td>
-                                    <td>${d.donor_name || 'Anonymous'}</td>
-                                    <td>${d.donor_email}</td>
-                                    <td>$${d.amount}</td>
-                                    <td>${d.payment_method}</td>
-                                    <td><span class="status-badge status-${d.status}">${d.status}</span></td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
+        const container = document.getElementById('testimonialsPreview');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        testimonials.forEach(testimonial => {
+            const testimonialDiv = document.createElement('div');
+            testimonialDiv.className = 'testimonial-preview-item';
+            testimonialDiv.innerHTML = `
+                <img src="${testimonial.image_url || '/images/default-avatar.jpg'}" alt="${testimonial.name}">
+                <div class="testimonial-info">
+                    <div>${testimonial.name}</div>
+                    <div>"${testimonial.quote}"</div>
                 </div>
-                <div style="margin-top: 2rem; padding: 20px; background: #f5f5f5; border-radius: 8px;">
-                    <h4>Total Donations: $${donations.filter(d => d.status === 'completed').reduce((sum, d) => sum + d.amount, 0).toFixed(2)}</h4>
-                    <p>Total Records: ${donations.length}</p>
+                <div class="delete-overlay">
+                    <button class="edit-btn" onclick="editTestimonial(${testimonial.id})">Edit</button>
+                    <button class="delete-btn" onclick="deleteItem(${testimonial.id}, 'testimonials')">Delete</button>
                 </div>
-            </div>
-        `;
-
-        const donationsContent = document.querySelector('[data-content="donations"]');
-        if (donationsContent) {
-            donationsContent.innerHTML = donationsHtml;
-        }
-
-        console.log('✓ Donations loaded');
-    } catch (err) {
-        console.error('Error loading donations:', err);
-        showError('Failed to load donations');
+            `;
+            container.appendChild(testimonialDiv);
+        });
+    } catch (error) {
+        console.error('Failed to load testimonials:', error);
+        showNotification('Failed to load testimonials', 'error');
     }
 }
 
-// export bookings csv
-function exportBookings() {
-    const bookings = dashboardState.bookings || [];
-    let csv = 'Name,Email,Phone,Event,Attendees,Date\n';
-    bookings.forEach(b => {
-        csv += `"${b.name}","${b.email}","${b.phone || ''}","${b.event_title || ''}",${b.attendees},"${b.created_at}"\n`;
-    });
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'bookings.csv';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+async function handleTestimonialSubmit(e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('name', document.getElementById('testimonialName').value);
+    formData.append('quote', document.getElementById('testimonialQuote').value);
+
+    const imageFile = document.getElementById('testimonialImageInput').files[0];
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
+
+    try {
+        const response = await fetch('/api/testimonials', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            showNotification('Testimonial added successfully!', 'success');
+            e.target.reset();
+            document.getElementById('storyImagePreview').style.display = 'none';
+            loadTestimonials();
+        } else {
+            throw new Error('Failed to add testimonial');
+        }
+    } catch (error) {
+        console.error('Testimonial submit error:', error);
+        showNotification('Failed to add testimonial', 'error');
+    }
 }
 
-// load contact messages
+// ============================================
+// CONTENT SECTIONS MANAGEMENT
+// ============================================
+
+async function loadContentSections() {
+    try {
+        // Load Who We Are
+        const whoWeAreResponse = await fetch('/api/content-sections/who_we_are');
+        const whoWeAre = await whoWeAreResponse.json();
+        document.getElementById('whoWeAreContent').value = whoWeAre.content || '';
+        if (whoWeAre.image_url) {
+            document.getElementById('whoWeArePreview').src = whoWeAre.image_url;
+            document.getElementById('whoWeArePreview').style.display = 'block';
+        }
+
+        // Load Mission
+        const missionResponse = await fetch('/api/content-sections/mission');
+        const mission = await missionResponse.json();
+        document.getElementById('missionContent').value = mission.content || '';
+        if (mission.image_url) {
+            document.getElementById('missionPreview').src = mission.image_url;
+            document.getElementById('missionPreview').style.display = 'block';
+        }
+
+        // Load Vision
+        const visionResponse = await fetch('/api/content-sections/vision');
+        const vision = await visionResponse.json();
+        document.getElementById('visionContent').value = vision.content || '';
+        if (vision.image_url) {
+            document.getElementById('visionPreview').src = vision.image_url;
+            document.getElementById('visionPreview').style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Failed to load content sections:', error);
+        showNotification('Failed to load content sections', 'error');
+    }
+}
+
+async function updateContentSection(section) {
+    const contentElement = document.getElementById(`${section}Content`);
+    const imageInput = document.getElementById(`${section}ImageInput`);
+
+    if (!contentElement) return;
+
+    const formData = new FormData();
+    formData.append('content', contentElement.value);
+
+    if (imageInput && imageInput.files[0]) {
+        formData.append('image', imageInput.files[0]);
+    }
+
+    try {
+        const response = await fetch(`/api/content-sections/${section}`, {
+            method: 'PUT',
+            body: formData
+        });
+
+        if (response.ok) {
+            showNotification(`${section.replace('_', ' ').toUpperCase()} updated successfully!`, 'success');
+            loadContentSections();
+        } else {
+            throw new Error(`Failed to update ${section}`);
+        }
+    } catch (error) {
+        console.error(`Content update error for ${section}:`, error);
+        showNotification(`Failed to update ${section}`, 'error');
+    }
+}
+
+// ============================================
+// SOCIAL MEDIA MANAGEMENT
+// ============================================
+
+async function loadSocialMedia() {
+    try {
+        const response = await fetch('/api/social-media');
+        const links = await response.json();
+
+        const tableBody = document.querySelector('#socialTable tbody');
+        if (!tableBody) return;
+
+        tableBody.innerHTML = '';
+
+        links.forEach(link => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${link.platform}</td>
+                <td><a href="${link.url}" target="_blank">${link.url}</a></td>
+                <td>${link.icon_class}</td>
+                <td>
+                    <button class="edit-btn" onclick="editSocialLink(${link.id})">Edit</button>
+                    <button class="delete-btn" onclick="deleteItem(${link.id}, 'social-media')">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Failed to load social media:', error);
+        showNotification('Failed to load social media links', 'error');
+    }
+}
+
+async function handleSocialSubmit(e) {
+    e.preventDefault();
+
+    const data = {
+        platform: document.getElementById('socialPlatform').value,
+        url: document.getElementById('socialUrl').value,
+        icon_class: document.getElementById('socialIcon').value
+    };
+
+    try {
+        const response = await fetch('/api/social-media', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            showNotification('Social media link added successfully!', 'success');
+            e.target.reset();
+            loadSocialMedia();
+        } else {
+            throw new Error('Failed to add social media link');
+        }
+    } catch (error) {
+        console.error('Social submit error:', error);
+        showNotification('Failed to add social media link', 'error');
+    }
+}
+
+// ============================================
+// IMPACT STATS MANAGEMENT
+// ============================================
+
+async function loadImpactStats() {
+    try {
+        const response = await fetch('/api/impact-stats');
+        const stats = await response.json();
+
+        const tableBody = document.querySelector('#impactTable tbody');
+        if (!tableBody) return;
+
+        tableBody.innerHTML = '';
+
+        stats.forEach(stat => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${stat.label}</td>
+                <td>${stat.value}</td>
+                <td>
+                    <button class="edit-btn" onclick="editImpactStat(${stat.id})">Edit</button>
+                    <button class="delete-btn" onclick="deleteItem(${stat.id}, 'impact-stats')">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Failed to load impact stats:', error);
+        showNotification('Failed to load impact statistics', 'error');
+    }
+}
+
+async function handleImpactSubmit(e) {
+    e.preventDefault();
+
+    const data = {
+        label: document.getElementById('impactLabel').value,
+        value: parseInt(document.getElementById('impactValue').value)
+    };
+
+    try {
+        const response = await fetch('/api/impact-stats', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            showNotification('Impact statistic added successfully!', 'success');
+            e.target.reset();
+            loadImpactStats();
+        } else {
+            throw new Error('Failed to add impact statistic');
+        }
+    } catch (error) {
+        console.error('Impact submit error:', error);
+        showNotification('Failed to add impact statistic', 'error');
+    }
+}
+
+// ============================================
+// LOGO MANAGEMENT
+// ============================================
+
+async function loadLogo() {
+    try {
+        const response = await fetch('/api/logos');
+        const logos = await response.json();
+
+        const container = document.getElementById('currentLogoContainer');
+        if (!container) return;
+
+        if (logos.length > 0) {
+            const logo = logos[0];
+            container.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <img src="${logo.image_url}" alt="Current Logo" style="max-width: 200px; max-height: 200px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <p style="margin-top: 10px; color: #666;">Current Logo</p>
+                </div>
+            `;
+        } else {
+            container.innerHTML = '<p style="text-align: center; color: #666;">No logo uploaded yet</p>';
+        }
+    } catch (error) {
+        console.error('Failed to load logo:', error);
+        showNotification('Failed to load logo', 'error');
+    }
+}
+
+async function handleLogoSubmit(e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('image', document.getElementById('logoImageInput').files[0]);
+
+    try {
+        const response = await fetch('/api/logos', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            showNotification('Logo updated successfully!', 'success');
+            e.target.reset();
+            document.getElementById('logoPreview').style.display = 'none';
+            loadLogo();
+        } else {
+            throw new Error('Failed to update logo');
+        }
+    } catch (error) {
+        console.error('Logo submit error:', error);
+        showNotification('Failed to update logo', 'error');
+    }
+}
+
+// ============================================
+// CONTACT MESSAGES
+// ============================================
+
 async function loadContactMessages() {
     try {
-        const msgs = await api.getContactMessages();
-        const container = document.getElementById('contactMessagesContainer');
-        if (!container) return;
-        container.innerHTML = '';
-        msgs.forEach(m => {
-            const div = document.createElement('div');
-            div.className = 'contact-card';
-            div.innerHTML = `
-                <p><strong>${m.name || 'Anonymous'}</strong> <em>(${m.email || 'no email'})</em></p>
-                <p><strong>Subject:</strong> ${m.subject || ''}</p>
-                <p>${m.message}</p>
-                <small>${new Date(m.created_at).toLocaleString()}</small>
-                <hr>
+        const response = await fetch('/api/contact');
+        const messages = await response.json();
+
+        const tableBody = document.querySelector('#contactTable tbody');
+        if (!tableBody) return;
+
+        tableBody.innerHTML = '';
+
+        messages.forEach(message => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${message.name || 'Anonymous'}</td>
+                <td>${message.email || 'N/A'}</td>
+                <td>${message.message || 'N/A'}</td>
+                <td>${new Date(message.created_at).toLocaleDateString()}</td>
             `;
-            container.appendChild(div);
+            tableBody.appendChild(row);
         });
-    } catch (err) {
-        console.error('Error loading contact messages:', err);
-        showError('Failed to load messages');
+    } catch (error) {
+        console.error('Failed to load contact messages:', error);
+        showNotification('Failed to load contact messages', 'error');
     }
+}
+
+// ============================================
+// BOOKINGS MANAGEMENT
+// ============================================
+
+async function loadBookings() {
+    try {
+        const response = await fetch('/api/bookings');
+        const bookings = await response.json();
+
+        const tableBody = document.querySelector('#bookingsTable tbody');
+        if (!tableBody) return;
+
+        tableBody.innerHTML = '';
+
+        bookings.forEach(booking => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${booking.name}</td>
+                <td>${booking.email}</td>
+                <td>${booking.phone || 'N/A'}</td>
+                <td>${booking.event_title || 'N/A'}</td>
+                <td>${booking.attendees || 1}</td>
+                <td>${new Date(booking.created_at).toLocaleDateString()}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Failed to load bookings:', error);
+        showNotification('Failed to load bookings', 'error');
+    }
+}
+
+// ============================================
+// CRUD OPERATIONS
+// ============================================
+
+async function deleteItem(id, endpoint) {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+
+    try {
+        const response = await fetch(`/api/${endpoint}/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            showNotification('Item deleted successfully!', 'success');
+            // Reload the appropriate data
+            switch(endpoint) {
+                case 'gallery':
+                    loadGallery();
+                    break;
+                case 'events':
+                    loadEvents();
+                    break;
+                case 'testimonials':
+                    loadTestimonials();
+                    break;
+                case 'social-media':
+                    loadSocialMedia();
+                    break;
+                case 'impact-stats':
+                    loadImpactStats();
+                    break;
+            }
+        } else {
+            throw new Error('Failed to delete item');
+        }
+    } catch (error) {
+        console.error('Delete error:', error);
+        showNotification('Failed to delete item', 'error');
+    }
+}
+
+async function toggleApplaud(id, endpoint, applauded) {
+    try {
+        const response = await fetch(`/api/${endpoint}/${id}/applaud`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ applauded })
+        });
+
+        if (response.ok) {
+            showNotification(`Item ${applauded ? 'applauded' : 'unapplauded'} successfully!`, 'success');
+            if (endpoint === 'gallery') {
+                loadGallery();
+            }
+        } else {
+            throw new Error('Failed to update applauded status');
+        }
+    } catch (error) {
+        console.error('Applaud toggle error:', error);
+        showNotification('Failed to update applauded status', 'error');
+    }
+}
+
+// Placeholder functions for edit operations (can be implemented later)
+function editGalleryItem(id) {
+    showNotification('Edit functionality coming soon!', 'info');
+}
+
+function editEvent(id) {
+    showNotification('Edit functionality coming soon!', 'info');
+}
+
+function editTestimonial(id) {
+    showNotification('Edit functionality coming soon!', 'info');
+}
+
+function editSocialLink(id) {
+    showNotification('Edit functionality coming soon!', 'info');
+}
+
+function editImpactStat(id) {
+    showNotification('Edit functionality coming soon!', 'info');
 }
 
 // ============================================
 // NOTIFICATIONS
 // ============================================
 
-function showSuccess(message) {
+function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
-    notification.className = 'notification notification-success';
-    notification.textContent = '✓ ' + message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background-color: #4caf50;
-        color: white;
-        padding: 16px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
+    notification.className = 'admin-notification';
+
+    const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
+    notification.innerHTML = `
+        <h4>${icon} ${type.charAt(0).toUpperCase() + type.slice(1)}</h4>
+        <p>${message}</p>
     `;
 
-    document.body.appendChild(notification);
-    setTimeout(() => notification.remove(), 3000);
-}
-
-function showError(message) {
-    const notification = document.createElement('div');
-    notification.className = 'notification notification-error';
-    notification.textContent = '✕ ' + message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background-color: #f44336;
-        color: white;
-        padding: 16px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-    `;
-
-    document.body.appendChild(notification);
-    setTimeout(() => notification.remove(), 4000);
-}
-
-// ============================================
-// LOGOUT
-// ============================================
-
-function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('admin_token');
-        window.location.href = 'login.html';
+    // Override background color based on type
+    if (type === 'success') {
+        notification.style.borderLeftColor = '#4CAF50';
+    } else if (type === 'error') {
+        notification.style.borderLeftColor = '#f44336';
+    } else if (type === 'info') {
+        notification.style.borderLeftColor = '#2196F3';
     }
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('hide');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
 
-console.log('✨ Admin dashboard script loaded');
+// Initialize with gallery tab active
+document.addEventListener('DOMContentLoaded', () => {
+    switchTab('gallery');
+});

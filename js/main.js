@@ -1,7 +1,6 @@
 /* ============================================
-   CREATIVE ROOTS RWANDA - MAIN JAVASCRIPT
-   Updated to work with Storage System
-   Handles: Gallery, Events, Stories, Animations
+   INKINGI CREATIVE HUB - MAIN JAVASCRIPT
+   Clean, Professional, Fully Functional
    ============================================ */
 
 // ============================================
@@ -9,21 +8,17 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    StorageManager.init();
-    LanguageManager.init();
     initNavigation();
-    initHeroSection();
+    initHeroSlider();
+    loadDynamicContent();
+    initForms();
+    initGalleryModal();
+    initEventBookingModal();
     initScrollAnimations();
-    initCounters();
-    initGallery();
-    initEvents();
-    initStories();
-    initVolunteerSection();
-    initModalBackdrop();
 });
 
 // ============================================
-// 1. NAVIGATION - HAMBURGER MENU
+// 1. NAVIGATION
 // ============================================
 
 function initNavigation() {
@@ -35,6 +30,7 @@ function initNavigation() {
             navMenu.classList.toggle('active');
         });
 
+        // Close menu when clicking a link
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -42,6 +38,19 @@ function initNavigation() {
             });
         });
     }
+
+    // Handle dropdown clicks for mobile
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            // Only prevent default and handle click on mobile
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const dropdown = toggle.parentElement;
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
 
     // Update admin link based on login status
     updateAdminLink();
@@ -56,48 +65,584 @@ function updateAdminLink() {
         adminLink.textContent = 'Dashboard';
         adminLink.href = 'admin/dashboard.html';
     } else {
-        adminLink.textContent = 'Admin Login';
-        adminLink.href = 'secure-admin-portal';
+        adminLink.textContent = 'Login';
+        adminLink.href = 'admin/login.html';
     }
 }
 
 // ============================================
-// 2. HERO SECTION - AUTO-CHANGING TEXT
+// 2. HERO SLIDER - Automatic Image Slider
 // ============================================
 
-function initHeroSection() {
-    // Fetch landscape applauded images for slider
+function initHeroSlider() {
+    const slider = document.getElementById('hero-slider');
+    const indicators = document.getElementById('slider-indicators');
+
+    if (!slider || !indicators) return;
+
+    // Load applauded gallery images for slider
     fetch('/api/gallery')
         .then(response => response.json())
-        .then(items => {
-            const landscapeItems = items.filter(item => item.orientation === 'landscape');
-            if (landscapeItems.length > 0) {
-                createHeroSlides(landscapeItems);
+        .then(images => {
+            const applaudedImages = images.filter(img => img.applauded && img.orientation === 'landscape');
+            if (applaudedImages.length > 0) {
+                createHeroSlides(applaudedImages);
             } else {
-                // Fallback to text if no images
-                initHeroText();
+                // Fallback to default slide
+                createDefaultHeroSlide();
             }
         })
         .catch(err => {
             console.error('Failed to load hero images:', err);
-            initHeroText();
+            createDefaultHeroSlide();
         });
 }
 
-function createHeroSlides(items) {
-    const heroSection = document.querySelector('.hero');
-    if (!heroSection) return;
+function createHeroSlides(images) {
+    const slider = document.getElementById('hero-slider');
+    const indicators = document.getElementById('slider-indicators');
 
-    // Clear existing slides
-    const existingSlides = heroSection.querySelectorAll('.hero-slide');
-    existingSlides.forEach(slide => slide.remove());
+    slider.innerHTML = '';
+    indicators.innerHTML = '';
 
-    // Create new slides
-    items.forEach((item, index) => {
+    images.forEach((image, index) => {
+        // Create slide
         const slide = document.createElement('div');
         slide.className = `hero-slide ${index === 0 ? 'active' : ''}`;
-        slide.style.backgroundImage = `url(${item.image_url})`;
-        slide.innerHTML = `
+        slide.style.backgroundImage = `url(${image.image_url})`;
+        slider.appendChild(slide);
+
+        // Create indicator
+        const indicator = document.createElement('span');
+        indicator.className = index === 0 ? 'active' : '';
+        indicator.addEventListener('click', () => showSlide(index));
+        indicators.appendChild(indicator);
+    });
+
+    // Start automatic slideshow
+    startSlideshow(images.length);
+}
+
+function createDefaultHeroSlide() {
+    const slider = document.getElementById('hero-slider');
+    const indicators = document.getElementById('slider-indicators');
+
+    slider.innerHTML = '<div class="hero-slide active" style="background: linear-gradient(135deg, #8B5E3C, #D4A373);"></div>';
+    indicators.innerHTML = '<span class="active"></span>';
+}
+
+function showSlide(index) {
+    const slides = document.querySelectorAll('.hero-slide');
+    const indicators = document.querySelectorAll('.slider-indicators span');
+
+    slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+    });
+
+    indicators.forEach((indicator, i) => {
+        indicator.classList.toggle('active', i === index);
+    });
+}
+
+function startSlideshow(totalSlides) {
+    let currentSlide = 0;
+
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+    }, 5000); // Change slide every 5 seconds
+}
+
+// ============================================
+// 3. DYNAMIC CONTENT LOADING
+// ============================================
+
+function loadDynamicContent() {
+    loadSocialMedia();
+    loadAboutContent();
+    loadImpactStats();
+    loadTestimonials();
+    loadEvents();
+    loadGallery();
+    loadLogo();
+}
+
+// Load social media links
+function loadSocialMedia() {
+    fetch('/api/social-media')
+        .then(response => response.json())
+        .then(links => {
+            updateSocialNav(links);
+            updateFooterSocial(links);
+        })
+        .catch(err => console.error('Failed to load social media:', err));
+}
+
+function updateSocialNav(links) {
+    const nav = document.getElementById('social-media-nav');
+    if (!nav) return;
+
+    nav.innerHTML = '';
+    links.forEach(link => {
+        const a = document.createElement('a');
+        a.href = link.url;
+        a.target = '_blank';
+        a.className = 'social-nav-link';
+        a.innerHTML = `<i class="${link.icon_class}"></i>`;
+        a.title = link.platform;
+        nav.appendChild(a);
+    });
+}
+
+function updateFooterSocial(links) {
+    const footer = document.getElementById('footer-social-icons');
+    if (!footer) return;
+
+    footer.innerHTML = '';
+    links.forEach(link => {
+        const a = document.createElement('a');
+        a.href = link.url;
+        a.target = '_blank';
+        a.innerHTML = `<i class="${link.icon_class}"></i>`;
+        footer.appendChild(a);
+    });
+}
+
+// Load About Us content
+function loadAboutContent() {
+    const sections = ['who_we_are', 'mission', 'vision'];
+
+    sections.forEach(section => {
+        fetch(`/api/content-sections/${section}`)
+            .then(response => response.json())
+            .then(data => {
+                const contentElement = document.getElementById(`${section}-content`);
+                const imageElement = document.getElementById(`${section}-image`);
+
+                if (contentElement) contentElement.textContent = data.content;
+                if (imageElement && data.image_url) {
+                    imageElement.src = data.image_url;
+                    imageElement.style.display = 'block';
+                }
+            })
+            .catch(err => console.error(`Failed to load ${section}:`, err));
+    });
+}
+
+// Load impact statistics
+function loadImpactStats() {
+    const grid = document.getElementById('impact-grid');
+    if (!grid) return;
+
+    fetch('/api/impact-stats')
+        .then(response => response.json())
+        .then(stats => {
+            grid.innerHTML = '';
+            stats.forEach(stat => {
+                const card = document.createElement('div');
+                card.className = 'impact-card';
+                card.innerHTML = `
+                    <div class="impact-number counter" data-target="${stat.value}">0</div>
+                    <p class="impact-label">${stat.label}</p>
+                `;
+                grid.appendChild(card);
+            });
+            initCounters();
+        })
+        .catch(err => console.error('Failed to load impact stats:', err));
+}
+
+// Load testimonials
+function loadTestimonials() {
+    const slider = document.getElementById('testimonials-slider');
+    if (!slider) return;
+
+    fetch('/api/testimonials')
+        .then(response => response.json())
+        .then(testimonials => {
+            slider.innerHTML = '';
+            testimonials.forEach(testimonial => {
+                const card = document.createElement('div');
+                card.className = 'testimonial-card';
+                card.innerHTML = `
+                    <div class="testimonial-content">
+                        <p>"${testimonial.quote}"</p>
+                        <div class="testimonial-author">
+                            <img src="${testimonial.image_url || 'images/default-avatar.jpg'}" alt="${testimonial.name}" class="testimonial-avatar" onerror="this.style.display='none'">
+                            <span>${testimonial.name}</span>
+                        </div>
+                    </div>
+                `;
+                slider.appendChild(card);
+            });
+        })
+        .catch(err => console.error('Failed to load testimonials:', err));
+}
+
+// Load events
+function loadEvents() {
+    const grid = document.getElementById('events-grid');
+    if (!grid) return;
+
+    fetch('/api/events')
+        .then(response => response.json())
+        .then(events => {
+            grid.innerHTML = '';
+            events.forEach(event => {
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.innerHTML = `
+                    <div class="event-image">
+                        <img src="${event.image_url || 'images/default-event.jpg'}" alt="${event.title}">
+                    </div>
+                    <div class="event-content">
+                        <h3>${event.title}</h3>
+                        <p class="event-date">${new Date(event.date).toLocaleDateString()}</p>
+                        <p class="event-description">${event.description}</p>
+                        <button class="btn btn-primary book-event-btn" data-event-id="${event.id}">Book Now</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Add event booking listeners
+            initEventBooking();
+        })
+        .catch(err => console.error('Failed to load events:', err));
+}
+
+// Load gallery
+function loadGallery() {
+    const grid = document.getElementById('gallery-grid');
+    if (!grid) return;
+
+    fetch('/api/gallery')
+        .then(response => response.json())
+        .then(items => {
+            grid.innerHTML = '';
+            items.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <img src="${item.image_url}" alt="${item.title}" data-modal-src="${item.image_url}" data-modal-title="${item.title}" data-modal-desc="${item.description || ''}">
+                `;
+                grid.appendChild(galleryItem);
+            });
+        })
+        .catch(err => console.error('Failed to load gallery:', err));
+}
+
+// Load logo
+function loadLogo() {
+    fetch('/api/logo')
+        .then(response => response.json())
+        .then(logo => {
+            const logoElements = document.querySelectorAll('.logo-image');
+            logoElements.forEach(img => {
+                if (logo && logo.image_url) {
+                    img.src = logo.image_url;
+                    img.style.display = 'block';
+                } else {
+                    img.style.display = 'none';
+                }
+            });
+        })
+        .catch(err => console.error('Failed to load logo:', err));
+}
+
+// ============================================
+// 4. FORM HANDLING
+// ============================================
+
+function initForms() {
+    initContactForm();
+    initVolunteerForm();
+}
+
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                document.getElementById('contactSuccess').style.display = 'block';
+                document.getElementById('contactError').style.display = 'none';
+                form.reset();
+                setTimeout(() => {
+                    document.getElementById('contactSuccess').style.display = 'none';
+                }, 5000);
+            } else {
+                throw new Error('Failed to send message');
+            }
+        } catch (error) {
+            console.error('Contact form error:', error);
+            document.getElementById('contactError').style.display = 'block';
+            document.getElementById('contactSuccess').style.display = 'none';
+        }
+    });
+}
+
+function initVolunteerForm() {
+    const form = document.getElementById('volunteerForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+
+        try {
+            const response = await fetch('/api/volunteers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                document.getElementById('volunteerSuccess').style.display = 'block';
+                document.getElementById('volunteerError').style.display = 'none';
+                form.reset();
+                setTimeout(() => {
+                    document.getElementById('volunteerSuccess').style.display = 'none';
+                }, 5000);
+            } else {
+                throw new Error('Failed to submit application');
+            }
+        } catch (error) {
+            console.error('Volunteer form error:', error);
+            document.getElementById('volunteerError').style.display = 'block';
+            document.getElementById('volunteerSuccess').style.display = 'none';
+        }
+    });
+}
+
+// ============================================
+// 5. EVENT BOOKING
+// ============================================
+
+function initEventBooking() {
+    const bookButtons = document.querySelectorAll('.book-event-btn');
+    bookButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const eventId = e.target.getAttribute('data-event-id');
+            openEventBookingModal(eventId);
+        });
+    });
+}
+
+function openEventBookingModal(eventId) {
+    const modal = document.getElementById('eventModal');
+    const form = document.getElementById('eventBookingForm');
+
+    document.getElementById('bookingEventId').value = eventId;
+    modal.style.display = 'flex';
+
+    // Reset form
+    form.reset();
+    document.getElementById('bookingSuccess').style.display = 'none';
+    document.getElementById('bookingError').style.display = 'none';
+}
+
+function initEventBookingModal() {
+    const modal = document.getElementById('eventModal');
+    const closeBtn = modal.querySelector('.modal-close');
+    const form = document.getElementById('eventBookingForm');
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+
+        try {
+            const response = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                document.getElementById('bookingSuccess').style.display = 'block';
+                document.getElementById('bookingError').style.display = 'none';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 3000);
+            } else {
+                throw new Error('Failed to book event');
+            }
+        } catch (error) {
+            console.error('Event booking error:', error);
+            document.getElementById('bookingError').style.display = 'block';
+            document.getElementById('bookingSuccess').style.display = 'none';
+        }
+    });
+}
+
+// ============================================
+// 6. GALLERY MODAL
+// ============================================
+
+function initGalleryModal() {
+    const modal = document.getElementById('galleryModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDescription');
+    const closeBtn = modal.querySelector('.modal-close');
+
+    // Add click listeners to gallery images
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.gallery-item img')) {
+            const img = e.target;
+            modalImage.src = img.getAttribute('data-modal-src');
+            modalTitle.textContent = img.getAttribute('data-modal-title');
+            modalDesc.textContent = img.getAttribute('data-modal-desc');
+            modal.style.display = 'flex';
+        }
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+}
+
+// ============================================
+// 7. ANIMATIONS & EFFECTS
+// ============================================
+
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const fadeElements = document.querySelectorAll('.fade-on-scroll');
+    fadeElements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        observer.observe(element);
+    });
+}
+
+// Counter animation for impact stats
+function initCounters() {
+    const impactSection = document.querySelector('.impact-section');
+    if (!impactSection) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+
+    observer.observe(impactSection);
+}
+
+function animateCounters() {
+    const counters = document.querySelectorAll('.counter');
+
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                counter.textContent = target;
+                clearInterval(timer);
+            } else {
+                counter.textContent = Math.floor(current);
+            }
+        }, 16);
+    });
+}
+
+// ============================================
+// 6. GALLERY MODAL
+// ============================================
+
+function initGalleryModal() {
+    const modal = document.getElementById('modalBackdrop');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDescription');
+    const modalClose = document.querySelector('.modal-close');
+
+    if (!modal) return;
+
+    // Add click listeners to gallery images
+    const galleryImages = document.querySelectorAll('.gallery-item img');
+    galleryImages.forEach(img => {
+        img.addEventListener('click', () => {
+            modalImage.src = img.getAttribute('data-modal-src');
+            modalTitle.textContent = img.getAttribute('data-modal-title');
+            modalDesc.textContent = img.getAttribute('data-modal-desc');
+            modal.style.display = 'flex';
+        });
+    });
+
+    // Close modal
+    modalClose.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+}
+
+function initModalBackdrop() {
+    // Ensure modal is hidden on page load
+    const modal = document.getElementById('modalBackdrop');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
             <div class="hero-overlay">
                 <div class="hero-content">
                     <h1 class="hero-title">${item.title}</h1>

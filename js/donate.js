@@ -53,44 +53,37 @@ function initDonationForm() {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = form.fullName.value.trim();
-        const email = form.email.value.trim();
-        const amount = parseFloat(form.customAmount.value);
-        const method = document.querySelector('.payment-method.active')?.getAttribute('data-method');
-        const phone = form.phone ? form.phone.value.trim() : '';
-
-        if (!name || !email || !amount || amount < 1) {
-            alert('Please fill out all required fields with a valid amount.');
-            return;
-        }
+        
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        
+        // Get selected payment method
+        const activeMethod = document.querySelector('.payment-method.active');
+        data.payment_method = activeMethod ? activeMethod.getAttribute('data-method') : 'form';
 
         try {
-            if (method === 'card') {
-                const intent = await api.createDonationIntent(amount, email);
-                // in production you would use Stripe.js to confirm payment using intent.clientSecret
-                successMessage.textContent = '✓ Donation intent created. Please complete payment with the provided link or details.';
-                successMessage.classList.add('visible');
-            } else if (method === 'mobile') {
-                const resp = await api.createMoMoDonation(name, email, phone, amount);
-                if (resp.success) {
-                    successMessage.textContent = resp.message;
-                    successMessage.classList.add('visible');
-                } else {
-                    throw new Error(resp.error || 'Mobile donation failed');
-                }
-            } else {
-                alert('Please select a payment method');
-                return;
-            }
-        } catch (err) {
-            console.error('Donation error:', err);
-            alert(err.message || 'Donation could not be processed');
-        }
+            const response = await fetch('/api/donations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
 
-        form.reset();
-        document.querySelectorAll('.payment-method, .amount-btn').forEach(el => el.classList.remove('active'));
-        setTimeout(() => {
-            successMessage.classList.remove('visible');
-        }, 6000);
+            const result = await response.json();
+            
+            if (response.ok) {
+                successMessage.textContent = result.message;
+                successMessage.classList.add('show');
+                form.reset();
+                document.querySelectorAll('.payment-method, .amount-btn').forEach(el => el.classList.remove('active'));
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 6000);
+            } else {
+                throw new Error(result.error || 'Failed to submit donation');
+            }
+        } catch (error) {
+            console.error('Donation error:', error);
+            alert(error.message || 'Failed to submit donation. Please try again.');
+        }
     });
 }
