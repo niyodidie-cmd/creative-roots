@@ -30,16 +30,28 @@ class APIClient {
         };
 
         try {
+            console.log(`API Request: ${options.method || 'GET'} ${url}`);
             const response = await fetch(url, config);
-            const data = await response.json();
+            
+            let data;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = await response.text();
+            }
 
             if (!response.ok) {
-                throw new Error(data.error || 'API request failed');
+                const errorMsg = typeof data === 'object' ? data.error : data;
+                throw new Error(errorMsg || `API request failed with status ${response.status}`);
             }
 
             return data;
         } catch (err) {
-            console.error(`API Error [${endpoint}]:`, err);
+            console.error(`API Error [${endpoint}]:`, err.message || err);
+            if (err instanceof TypeError && err.message.includes('Failed to fetch')) {
+                throw new Error('Network error - Unable to connect to server. Make sure the server is running on ' + this.baseURL);
+            }
             throw err;
         }
     }

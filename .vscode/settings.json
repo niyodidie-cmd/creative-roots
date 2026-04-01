@@ -1,5 +1,11 @@
 {
   "css.lint.unknownAtRules": "ignore",
   "less.lint.unknownAtRules": "ignore",
-  "scss.lint.unknownAtRules": "ignore"
+  "scss.lint.unknownAtRules": "ignore",
+  "chat.tools.terminal.autoApprove": {
+    "/^cd /workspaces/creative-roots && git add -A && git commit -m \"Fix admin login: improve CORS, error handling, and API client\n\n- Updated CORS configuration to support development environment properly\n- Improved API client error messages with network error detection  \n- Added better logging and error messages in login\\.js\n- Display helpful error message if server is unreachable\n- Add loading state UI feedback during login\n- Provide specific error messages for different failure types\n- All login attempts now logged to browser console for debugging\n\nAdmin login now provides clear feedback on connection issues or invalid credentials\\.\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
 }
