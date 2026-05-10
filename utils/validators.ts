@@ -35,3 +35,9 @@ export const contactSchema = z.object({
   message: z.string().min(10),
   trap: z.string().optional()
 });
+
+export const newsletterSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  trap: z.string().optional()
+});

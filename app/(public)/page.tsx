@@ -55,6 +55,7 @@ export default function HomePage() {
             <SectionHeading
               title="Impact in motion"
               description="From immersive events to youth training and storytelling campaigns, our work is rooted in measurable transformation."
+              badge="Impact"
             />
             <div className="grid gap-6 md:grid-cols-4">
               {[
@@ -74,7 +75,7 @@ export default function HomePage() {
 
         <section className="bg-[#060a16] px-6 py-20 md:py-24">
           <div className="mx-auto max-w-7xl">
-            <SectionHeading title="Voice of impact" description="Hear from the young leaders, artists and partners whose lives were shaped by INKINGI." />
+            <SectionHeading title="Voice of impact" description="Hear from the young leaders, artists and partners whose lives were shaped by INKINGI." badge="Testimonials" />
             <div className="grid gap-6 md:grid-cols-2">
               {testimonials.map((item) => (
                 <motion.div key={item.author} whileHover={{ scale: 1.02 }} className="rounded-3xl border border-white/10 bg-[#11182f] p-10">
@@ -129,7 +130,7 @@ export default function HomePage() {
                 <h2 className="text-4xl font-semibold text-white">Join the movement</h2>
                 <p className="mt-4 text-sand/80 leading-8">Sign up for impact updates, event invitations and storytelling showcases from Rwanda’s leading creative tech hub.</p>
               </div>
-              <form action="/api/messages" method="post" className="space-y-4">
+              <form action="/api/newsletter" method="post" className="space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm text-sand/70">Name</label>
                   <input id="name" name="name" required className="mt-2 w-full rounded-3xl border border-white/10 bg-[#0d1224] px-4 py-3 text-sand outline-none focus:border-gold" />

@@ -35,7 +35,7 @@ export function BookingForm() {
       if (!response.ok) throw new Error(result.error || 'Unable to submit request.');
       setStatus('Your booking request has been submitted. Check your email for confirmation.');
       reset();
-    } catch (error) {
+    } catch {
       setStatus('There was an error submitting the booking. Please try again.');
     }
   };

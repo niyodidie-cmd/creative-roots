@@ -35,7 +35,7 @@ export function ContactForm() {
       if (!response.ok) throw new Error(result.error || 'Unable to send message.');
       setStatus('Message sent successfully. Our team will reach out soon.');
       reset();
-    } catch (error) {
+    } catch {
       setStatus('Unable to send message. Please try again later.');
     }
   };

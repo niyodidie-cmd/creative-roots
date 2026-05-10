@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 const navLinks = [
@@ -19,7 +19,8 @@ const navLinks = [
 
 export function Navbar() {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data || null;
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
@@ -27,7 +28,7 @@ export function Navbar() {
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
-  const userRole = (session?.user as any)?.role;
+  const userRole = session?.user ? (session.user as { role?: string }).role : undefined;
 
   return (
     <motion.nav
