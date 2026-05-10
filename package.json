@@ -1,38 +1,60 @@
 {
   "name": "inkingi-creative-hub",
   "version": "1.0.0",
-  "description": "INKINGI CREATIVE HUB - Professional website with admin control",
-  "main": "server.js",
+  "private": true,
+  "description": "INKINGI CREATIVE HUB - Full-stack creative, tourism, storytelling platform",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "vercel-build": "cd frontend && npm ci && npm run build"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
   },
   "engines": {
-    "node": "24.x"
+    "node": "^20 || ^24"
   },
   "dependencies": {
+    "@prisma/client": "^5.19.0",
+    "@tailwindcss/typography": "^0.5.9",
+    "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
-    "better-sqlite3": "^12.8.0",
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "express-rate-limit": "^7.1.5",
-    "express-session": "^1.17.3",
-    "helmet": "^7.1.0",
-    "image-size": "^1.0.2",
-    "jsonwebtoken": "^9.0.3",
-    "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.7",
-    "sqlite3": "^5.1.6",
-    "stripe": "^14.17.0",
-    "ejs": "^3.1.9",
-    "body-parser": "^1.20.2",
-    "fs-extra": "^11.2.0"
+    "cloudinary": "^1.37.0",
+    "framer-motion": "^11.0.0",
+    "next": "^14.2.5",
+    "next-auth": "^4.24.14",
+    "next-sitemap": "^4.2.3",
+    "nodemailer": "^7.0.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.57.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "@hookform/resolvers": "^3.3.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.5",
+    "postcss": "^8.4.57",
+    "prettier": "^3.5.0",
+    "prisma": "^5.19.0",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.4"
   },
-  "keywords": ["creative", "hub", "rwanda", "art", "admin", "responsive"],
+  "keywords": [
+    "creative",
+    "hub",
+    "rwanda",
+    "culture",
+    "tourism",
+    "storytelling",
+    "admin"
+  ],
   "author": "NIYOMUKIZA Didier",
   "license": "MIT"
 }

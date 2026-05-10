@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum MessageStatus {
+  NEW
+  READ
+  ARCHIVED
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  REJECTED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum VerificationType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+model User {
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  password       String
+  role           UserRole  @default(USER)
+  isVerified     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  bookings       Booking[]
+  messages       Message[]
+  donations      Donation[]
+  sponsorships   Sponsorship[]
+  verificationTokens VerificationToken[]
+}
+
+model Booking {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  service   String
+  message   String
+  status    BookingStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  user      User?         @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+model Event {
+  id          String        @id @default(uuid())
+  title       String
+  description String
+  date        DateTime
+  capacity    Int
+  status      ContentStatus @default(PUBLISHED)
+  createdAt   DateTime      @default(now())
+}
+
+model Post {
+  id        String        @id @default(uuid())
+  title     String
+  content   String
+  image     String?
+  published Boolean       @default(false)
+  createdAt DateTime      @default(now())
+}
+
+model GalleryItem {
+  id        String   @id @default(uuid())
+  imageUrl  String
+  category  String
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    MessageStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  user      User?         @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+model Donation {
+  id          String             @id @default(uuid())
+  name        String
+  email       String
+  amount      Float
+  status      TransactionStatus  @default(PENDING)
+  createdAt   DateTime           @default(now())
+  user        User?              @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model Sponsorship {
+  id            String    @id @default(uuid())
+  organization  String
+  email         String
+  message       String
+  status        TransactionStatus @default(PENDING)
+  createdAt     DateTime  @default(now())
+  user          User?     @relation(fields: [userId], references: [id])
+  userId        String?
+}
+
+model Media {
+  id        String    @id @default(uuid())
+  publicId  String
+  imageUrl  String
+  type      MediaType
+  createdAt DateTime  @default(now())
+}
+
+model VerificationToken {
+  id         String           @id @default(uuid())
+  token      String           @unique
+  type       VerificationType
+  expiresAt  DateTime
+  user       User             @relation(fields: [userId], references: [id])
+  userId     String
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  action      String
+  details     String?
+  createdAt   DateTime @default(now())
+}
